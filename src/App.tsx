@@ -1,26 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ChangeEvent } from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  return <input type="file" onChange={beginProcessing} />;
+}
+
+function beginProcessing(event: ChangeEvent<HTMLInputElement>) {
+  extractLines(event)?.then((x) => console.log(x));
+}
+
+function extractLines(
+  event: ChangeEvent<HTMLInputElement>
+): Promise<string> | undefined {
+  return event.currentTarget.files?.item(0)?.text();
 }
 
 export default App;
