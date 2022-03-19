@@ -1,17 +1,23 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 
 function App() {
-  return <input type="file" onChange={beginProcessing} />;
-}
+  const [text, setText] = useState("");
 
-function beginProcessing(event: ChangeEvent<HTMLInputElement>) {
-  extractLines(event)?.then((x) => console.log(x));
-}
+  const readText = (event: ChangeEvent<HTMLInputElement>) => {
+    event.currentTarget.files
+      ?.item(0)
+      ?.text()
+      ?.then((text) => setText(text));
+  };
 
-function extractLines(
-  event: ChangeEvent<HTMLInputElement>
-): Promise<string> | undefined {
-  return event.currentTarget.files?.item(0)?.text();
+  if (text === "")
+    return <input type="file" onChange={readText} accept=".btor2" />;
+
+  // TODO: do calculations with text
+
+  // TODO: display results
+  console.log(text);
+  return <>Results will be displayed here!</>;
 }
 
 export default App;
