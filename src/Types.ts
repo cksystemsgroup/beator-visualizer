@@ -1,10 +1,12 @@
-export interface Node {
+export interface NodeG {
   readonly nid: number;
 }
 
-interface NodeR extends Node {}
+export interface NodeR extends NodeG {
+  sort: NodeT;
+}
 
-interface NodeT extends Node {
+export interface NodeT extends NodeG {
   name: string;
 }
 
@@ -18,7 +20,7 @@ export interface Array extends NodeT {
 }
 
 export interface Const extends NodeR {
-  readonly sort: number;
+  readonly sort: NodeT;
   readonly imm: number;
 }
 
@@ -33,7 +35,7 @@ export interface Write extends NodeR {
   readonly value: NodeR;
 }
 
-interface Operation extends NodeR {
+export interface Operation extends NodeR {
   readonly left: NodeR;
   readonly right: NodeR;
 }
@@ -46,12 +48,11 @@ export interface Rem extends Operation {}
 export interface Ult extends Operation {}
 
 export interface Ext extends NodeR {
-  readonly from: NodeT;
-  readonly value: NodeR;
+  readonly from: NodeR;
+  readonly value: number;
 }
 
 export interface Ite extends Operation {
-  readonly sort: NodeT;
   readonly cond: NodeR;
 }
 
@@ -63,25 +64,22 @@ export interface Not extends NodeR {
 }
 
 export interface State extends NodeR {
-  readonly sort: NodeT;
-  readonly init?: NodeR;
-  readonly name?: string;
+  init?: NodeR;
+  readonly name: string;
 }
 
 export interface Next extends NodeR {
-  readonly sort: NodeT;
   readonly state: NodeR;
   readonly next: NodeR;
 }
 
 export interface Input extends NodeR {
-  readonly sort: NodeT;
   readonly name: string;
 }
 
-export interface Bad extends NodeR {
+export interface Bad extends NodeG {
   cond: NodeR;
-  name?: string;
+  name: string;
 }
 
 export interface Results {
@@ -94,4 +92,10 @@ export interface Results {
   dagPath: number; // TODO: change to path itself
   unrollPath: number; // TODO: change to path itself
   maxEntanglement: number;
+}
+
+export interface Model {
+  nodes: Map<number, NodeG>;
+  sorts: NodeT[];
+  roots: (Bad | Next)[];
 }

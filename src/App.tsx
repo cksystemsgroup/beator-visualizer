@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from "react";
+import ModelBuilder from "./ModelBuilder";
 
 function App() {
   const [text, setText] = useState("");
@@ -14,9 +15,9 @@ function App() {
     return <input type="file" onChange={readText} accept=".btor2" />;
 
   // TODO: do calculations with text
+  const mb = new ModelBuilder(text);
 
   // TODO: display results
-  console.log(text);
   return <>Results will be displayed here!</>;
 }
 
