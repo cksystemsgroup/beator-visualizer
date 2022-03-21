@@ -36,7 +36,7 @@ export default class ModelBuilder {
 
     const lines = text.split("\n");
     console.log(lines);
-    lines.forEach((x) => this.#createNodeG(x));
+    lines.forEach((x) => this.processLine(x));
     console.log(this.#nodes);
     console.log(this.#sorts);
     console.log(this.#roots);
@@ -45,173 +45,168 @@ export default class ModelBuilder {
   get model(): Model {
     return {
       nodes: this.#nodes,
-      sorts: [],
-      roots: [],
+      sorts: this.#sorts,
+      roots: this.#roots,
     };
   }
 
-  #createNodeG(line: string) {
+  private processLine(line: string) {
     if (line.startsWith(";")) return;
     if (line === "") return;
 
-    let [nidStr, inst, ...operands] = line.split(" ");
-    const nid = parseInt(nidStr);
+    this.#nodes.set(...this.createNode(line));
+  }
+
+  private createNode(line: string): [number, GenericNode] {
+    const [nidStr, inst, ...operands] = line.split(" ");
+    const [nid, ops] = [
+      parseInt(nidStr),
+      operands.map((x) => (parseInt(x) ? parseInt(x) : -1)),
+    ];
+
     let node: GenericNode;
 
-    // TODO: move into own method and simplify constructors
     switch (inst) {
       case "sort":
         if (operands[0] === "bitvec") {
-          node = new BitVector(
-            nid,
-            operands.slice(3).join(" "),
-            parseInt(operands[1])
-          );
+          node = new BitVector(nid, operands.slice(3).join(" "), ops[1]);
           this.#sorts.push(node as TypeNode);
         } else if (operands[0]) {
           node = new BitVecArray(
             nid,
             operands.slice(4).join(" "),
-            this.lookupSort(parseInt(operands[1])),
-            this.lookupSort(parseInt(operands[2]))
+            this.lookupSort(ops[1]),
+            this.lookupSort(ops[2])
           );
           this.#sorts.push(node as TypeNode);
         } else throw new Error(`Invalid sort: ${operands[0]}`);
         break;
       case "constd":
-        node = new Const(
-          nid,
-          this.lookupSort(parseInt(operands[0])),
-          parseInt(operands[1])
-        );
+        node = new Const(nid, this.lookupSort(ops[0]), ops[1]);
         break;
       case "read":
         node = new Read(
           nid,
-          this.lookupSort(parseInt(operands[0])),
-          this.lookupNode(parseInt(operands[1])),
-          this.lookupNode(parseInt(operands[2]))
+          this.lookupSort(ops[0]),
+          this.lookupNode(ops[1]),
+          this.lookupNode(ops[2])
         );
         break;
       case "write":
         node = new Write(
           nid,
-          this.lookupSort(parseInt(operands[0])),
-          this.lookupNode(parseInt(operands[1])),
-          this.lookupNode(parseInt(operands[2])),
-          this.lookupNode(parseInt(operands[3]))
+          this.lookupSort(ops[0]),
+          this.lookupNode(ops[1]),
+          this.lookupNode(ops[2]),
+          this.lookupNode(ops[3])
         );
         break;
       case "add":
         node = new Add(
           nid,
-          this.lookupSort(parseInt(operands[0])),
-          this.lookupNode(parseInt(operands[1])),
-          this.lookupNode(parseInt(operands[2]))
+          this.lookupSort(ops[0]),
+          this.lookupNode(ops[1]),
+          this.lookupNode(ops[2])
         );
         break;
       case "sub":
         node = new Sub(
           nid,
-          this.lookupSort(parseInt(operands[0])),
-          this.lookupNode(parseInt(operands[1])),
-          this.lookupNode(parseInt(operands[2]))
+          this.lookupSort(ops[0]),
+          this.lookupNode(ops[1]),
+          this.lookupNode(ops[2])
         );
         break;
       case "mul":
         node = new Mul(
           nid,
-          this.lookupSort(parseInt(operands[0])),
-          this.lookupNode(parseInt(operands[1])),
-          this.lookupNode(parseInt(operands[2]))
+          this.lookupSort(ops[0]),
+          this.lookupNode(ops[1]),
+          this.lookupNode(ops[2])
         );
         break;
       case "udiv":
         node = new Div(
           nid,
-          this.lookupSort(parseInt(operands[0])),
-          this.lookupNode(parseInt(operands[1])),
-          this.lookupNode(parseInt(operands[2]))
+          this.lookupSort(ops[0]),
+          this.lookupNode(ops[1]),
+          this.lookupNode(ops[2])
         );
         break;
       case "urem":
         node = new Rem(
           nid,
-          this.lookupSort(parseInt(operands[0])),
-          this.lookupNode(parseInt(operands[1])),
-          this.lookupNode(parseInt(operands[2]))
+          this.lookupSort(ops[0]),
+          this.lookupNode(ops[1]),
+          this.lookupNode(ops[2])
         );
         break;
       case "ult":
         node = new Ult(
           nid,
-          this.lookupSort(parseInt(operands[0])),
-          this.lookupNode(parseInt(operands[1])),
-          this.lookupNode(parseInt(operands[2]))
+          this.lookupSort(ops[0]),
+          this.lookupNode(ops[1]),
+          this.lookupNode(ops[2])
         );
         break;
       case "eq":
         node = new Eq(
           nid,
-          this.lookupSort(parseInt(operands[0])),
-          this.lookupNode(parseInt(operands[1])),
-          this.lookupNode(parseInt(operands[2]))
+          this.lookupSort(ops[0]),
+          this.lookupNode(ops[1]),
+          this.lookupNode(ops[2])
         );
         break;
       case "and":
         node = new And(
           nid,
-          this.lookupSort(parseInt(operands[0])),
-          this.lookupNode(parseInt(operands[1])),
-          this.lookupNode(parseInt(operands[2]))
+          this.lookupSort(ops[0]),
+          this.lookupNode(ops[1]),
+          this.lookupNode(ops[2])
         );
         break;
       case "uext":
         node = new Ext(
           nid,
-          this.lookupSort(parseInt(operands[0])),
-          this.lookupNode(parseInt(operands[1])),
-          parseInt(operands[2])
+          this.lookupSort(ops[0]),
+          this.lookupNode(ops[1]),
+          ops[2]
         );
         break;
       case "ite":
         node = new Ite(
           nid,
-          this.lookupSort(parseInt(operands[0])),
-          this.lookupNode(parseInt(operands[1])),
-          this.lookupNode(parseInt(operands[2])),
-          this.lookupNode(parseInt(operands[3]))
+          this.lookupSort(ops[0]),
+          this.lookupNode(ops[1]),
+          this.lookupNode(ops[2]),
+          this.lookupNode(ops[3])
         );
         break;
       case "not":
-        node = new Not(
-          nid,
-          this.lookupSort(parseInt(operands[0])),
-          this.lookupNode(parseInt(operands[1]))
-        );
+        node = new Not(nid, this.lookupSort(ops[0]), this.lookupNode(ops[1]));
         break;
       case "state":
         node = new State(
           nid,
-          this.lookupSort(parseInt(operands[0])),
+          this.lookupSort(ops[0]),
           operands.slice(1).join(" ")
         );
         break;
       case "init":
-        (this.lookupNode(parseInt(operands[1])) as State).init =
-          this.lookupNode(parseInt(operands[2]));
-        return;
+        const init = this.lookupNode(ops[1]) as State;
+        init.init = this.lookupNode(ops[2]);
+        return [init.nid, init];
       case "input":
         node = new Input(
           nid,
-          this.lookupSort(parseInt(operands[0])),
+          this.lookupSort(ops[0]),
           operands.slice(1).join(" ")
         );
         break;
       case "bad":
         node = new Bad(
           nid,
-          this.lookupNode(parseInt(operands[0])),
+          this.lookupNode(ops[0]),
           operands.slice(1).join(" ")
         );
         this.#roots.push(node as Bad);
@@ -219,9 +214,9 @@ export default class ModelBuilder {
       case "next":
         node = new Next(
           nid,
-          this.lookupSort(parseInt(operands[0])),
-          this.lookupNode(parseInt(operands[1])),
-          this.lookupNode(parseInt(operands[2]))
+          this.lookupSort(ops[0]),
+          this.lookupNode(ops[1]),
+          this.lookupNode(ops[2])
         );
         this.#roots.push(node as Next);
         break;
@@ -229,7 +224,7 @@ export default class ModelBuilder {
         throw new Error(`Unknown instruction: ${inst}`);
     }
 
-    this.#nodes.set(nid, node);
+    return [nid, node];
   }
 
   private lookupSort(nid: number): TypeNode {
