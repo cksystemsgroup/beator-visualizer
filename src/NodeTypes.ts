@@ -1,3 +1,8 @@
+export enum Part {
+  DAG,
+  PRE,
+}
+
 export abstract class GenericNode {
   #nid: number;
 
@@ -21,6 +26,8 @@ export abstract class InstructionNode extends GenericNode {
   get sort() {
     return this.#sort;
   }
+
+  abstract get parents(): [Part, InstructionNode[]];
 }
 
 export abstract class TypeNode extends GenericNode {
@@ -79,6 +86,10 @@ export class Const extends InstructionNode {
   get imm() {
     return this.#imm;
   }
+
+  get parents(): [Part, InstructionNode[]] {
+    return [Part.PRE, []];
+  }
 }
 
 export class Read extends InstructionNode {
@@ -102,6 +113,10 @@ export class Read extends InstructionNode {
 
   get address() {
     return this.#address;
+  }
+
+  get parents(): [Part, InstructionNode[]] {
+    return [Part.DAG, [this.#memory, this.#address]];
   }
 }
 
@@ -134,6 +149,10 @@ export class Write extends InstructionNode {
   get value() {
     return this.#value;
   }
+
+  get parents(): [Part, InstructionNode[]] {
+    return [Part.DAG, [this.#memory, this.#address, this.#value]];
+  }
 }
 
 export class Operation extends InstructionNode {
@@ -157,6 +176,10 @@ export class Operation extends InstructionNode {
 
   get right() {
     return this.#right;
+  }
+
+  get parents(): [Part, InstructionNode[]] {
+    return [Part.DAG, [this.#left, this.#right]];
   }
 }
 
@@ -194,6 +217,10 @@ export class Ext extends InstructionNode {
   get value() {
     return this.#value;
   }
+
+  get parents(): [Part, InstructionNode[]] {
+    return [Part.DAG, [this.#from]];
+  }
 }
 
 export class Ite extends Operation {
@@ -213,6 +240,10 @@ export class Ite extends Operation {
   get cond() {
     return this.#cond;
   }
+
+  get parents(): [Part, InstructionNode[]] {
+    return [Part.DAG, [this.left, this.right, this.#cond]];
+  }
 }
 
 export class Eq extends Operation {}
@@ -228,6 +259,10 @@ export class Not extends InstructionNode {
 
   get value() {
     return this.#value;
+  }
+
+  get parents(): [Part, InstructionNode[]] {
+    return [Part.DAG, [this.#value]];
   }
 }
 
@@ -259,6 +294,14 @@ export class State extends InstructionNode {
       throw Error(`Trying to redefine inital value of ${this.#name}`);
     this.#init = node;
   }
+
+  get parents(): [Part, InstructionNode[]] {
+    if (!this.#init) {
+      return [Part.PRE, []];
+    }
+
+    return [Part.PRE, [this.#init]];
+  }
 }
 
 export class Next extends InstructionNode {
@@ -283,6 +326,10 @@ export class Next extends InstructionNode {
   get next() {
     return this.#next;
   }
+
+  get parents(): [Part, InstructionNode[]] {
+    return [Part.DAG, [this.#state, this.#next]];
+  }
 }
 
 export class Input extends InstructionNode {
@@ -295,6 +342,10 @@ export class Input extends InstructionNode {
 
   get name() {
     return this.#name;
+  }
+
+  get parents(): [Part, InstructionNode[]] {
+    return [Part.PRE, []];
   }
 }
 

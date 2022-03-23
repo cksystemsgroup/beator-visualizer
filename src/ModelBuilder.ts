@@ -28,19 +28,22 @@ import {
 export default class ModelBuilder {
   #nodes;
   #sorts: TypeNode[];
-  #roots: (Bad | Next)[];
+  #rootsDag: (Bad | Next)[];
+  #rootsPre: State[];
 
   constructor(text: string) {
     this.#nodes = new Map<number, GenericNode>();
     this.#sorts = [];
-    this.#roots = [];
+    this.#rootsDag = [];
+    this.#rootsPre = [];
 
     const lines = text.split("\n");
     console.log(lines);
     lines.forEach((x) => this.processLine(x));
     console.log(this.#nodes);
     console.log(this.#sorts);
-    console.log(this.#roots);
+    console.log(this.#rootsDag);
+    console.log(this.#rootsPre);
   }
 
   private processLine(line: string) {
@@ -90,6 +93,7 @@ export default class ModelBuilder {
       case "init":
         const init = this.lookupNode(parseInt(operands[1])) as State;
         init.init = this.lookupNode(parseInt(operands[2]));
+        this.#rootsPre.push(init);
         return [init.nid, init];
       case "input":
         return [nid, this.inputNode(nid, operands)];
@@ -134,7 +138,7 @@ export default class ModelBuilder {
       this.lookupNode(ops[1]),
       this.lookupNode(ops[2])
     );
-    this.#roots.push(node as Next);
+    this.#rootsDag.push(node as Next);
     return node;
   }
 
@@ -145,7 +149,7 @@ export default class ModelBuilder {
       this.lookupNode(ops[0]),
       operands.slice(1).join(" ")
     );
-    this.#roots.push(node as Bad);
+    this.#rootsDag.push(node as Bad);
     return node;
   }
 
