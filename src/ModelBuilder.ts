@@ -31,7 +31,7 @@ export default class ModelBuilder {
   #rootsDag: (Bad | Next)[];
   #rootsPre: State[];
 
-  constructor(text: string) {
+  constructor(text: string, unrollDepth: number) {
     this.#nodes = new Map<number, GenericNode>();
     this.#sorts = [];
     this.#rootsDag = [];
@@ -39,6 +39,7 @@ export default class ModelBuilder {
 
     const lines = text.split("\n");
     console.log(lines);
+    console.log(unrollDepth);
     lines.forEach((x) => this.processLine(x));
     console.log(this.#nodes);
     console.log(this.#sorts);
