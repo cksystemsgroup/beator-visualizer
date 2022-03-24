@@ -16,7 +16,16 @@ function App() {
   const mb = new ModelBuilder(text, unroll || 0);
 
   // TODO: display results
-  return <>Results will be displayed here!</>;
+  return (
+    <>
+      <p>Results will be displayed here!</p>
+      {mb.printResults().map((x) => (
+        <>
+          {x} <br />
+        </>
+      ))}
+    </>
+  );
 }
 
 function Form(props: { readText: any }) {

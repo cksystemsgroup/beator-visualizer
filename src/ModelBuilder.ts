@@ -28,14 +28,18 @@ import {
 export default class ModelBuilder {
   #nodes;
   #sorts: TypeNode[];
+  #bads: Bad[];
   #rootsDag: (Bad | Next)[];
   #rootsPre: State[];
+  #unrollDepth;
 
   constructor(text: string, unrollDepth: number) {
     this.#nodes = new Map<number, GenericNode>();
     this.#sorts = [];
     this.#rootsDag = [];
     this.#rootsPre = [];
+    this.#bads = [];
+    this.#unrollDepth = unrollDepth;
 
     const lines = text.split("\n");
     console.log(lines);
@@ -150,7 +154,8 @@ export default class ModelBuilder {
       this.lookupNode(ops[0]),
       operands.slice(1).join(" ")
     );
-    this.#rootsDag.push(node as Bad);
+    this.#rootsDag.push(node);
+    this.#bads.push(node);
     return node;
   }
 
@@ -233,5 +238,25 @@ export default class ModelBuilder {
       this.#sorts.push(node as TypeNode);
     } else throw new Error(`Invalid sort: ${operands[0]}`);
     return node;
+  }
+
+  printResults(): string[] {
+    return [
+      `Number of nodes: ${this.#nodes.size} ${
+        this.#unrollDepth
+          ? `(${(this.#nodes.size / this.#unrollDepth).toFixed(3)})`
+          : ""
+      }`,
+      `Number of bads: ${this.#bads.length} ${
+        this.#unrollDepth
+          ? `(${(this.#bads.length / this.#unrollDepth).toFixed(3)})`
+          : ""
+      }`,
+      `Number of states: ${this.#rootsPre.length} ${
+        this.#unrollDepth
+          ? `(${(this.#rootsPre.length / this.#unrollDepth).toFixed(3)})`
+          : ""
+      }`,
+    ];
   }
 }
