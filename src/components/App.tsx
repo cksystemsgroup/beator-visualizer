@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ModelBuilder from "./ModelBuilder";
+import ModelProcessor from "../model/ModelProcessor";
 
 function App() {
   const [text, setText] = useState("");
@@ -12,17 +12,15 @@ function App() {
 
   if (text === "") return <Form readText={readText} />;
 
-  // TODO: do calculations with text
-  const mb = new ModelBuilder(text, unroll || 0);
+  const mb = new ModelProcessor(text, unroll || 0);
 
-  // TODO: display results
   return (
     <>
-      <p>Results will be displayed here!</p>
-      {mb.printResults().map((x) => (
-        <>
+      <p>Results:</p>
+      {mb.printResults().map((x, i) => (
+        <div key={i}>
           {x} <br />
-        </>
+        </div>
       ))}
     </>
   );

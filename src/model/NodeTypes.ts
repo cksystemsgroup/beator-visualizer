@@ -1,17 +1,52 @@
-export enum Part {
-  DAG,
-  PRE,
-}
+export type DagLeaf = State | Input | Const;
 
 export abstract class GenericNode {
   #nid: number;
+  #longestChild?: GenericNode;
+  #distance: number;
+  #entanglement: number;
+  #entanglers?: DagLeaf[];
 
   constructor(nid: number) {
     this.#nid = nid;
+    this.#distance = 0;
+    this.#entanglement = 0;
   }
 
   get nid() {
     return this.#nid;
+  }
+
+  get distance() {
+    return this.#distance;
+  }
+
+  get entanglement() {
+    return this.#entanglement;
+  }
+
+  set distance(x) {
+    this.#distance = x;
+  }
+
+  set entanglement(x) {
+    this.#entanglement = x;
+  }
+
+  get longestChild() {
+    return this.#longestChild;
+  }
+
+  set longestChild(x) {
+    this.#longestChild = x;
+  }
+
+  get entanglers() {
+    return this.#entanglers;
+  }
+
+  set entanglers(x) {
+    this.#entanglers = x;
   }
 }
 
@@ -27,7 +62,7 @@ export abstract class InstructionNode extends GenericNode {
     return this.#sort;
   }
 
-  abstract get parents(): [Part, InstructionNode[]];
+  abstract get parents(): (InstructionNode | Bad)[];
 }
 
 export abstract class TypeNode extends GenericNode {
@@ -87,8 +122,8 @@ export class Const extends InstructionNode {
     return this.#imm;
   }
 
-  get parents(): [Part, InstructionNode[]] {
-    return [Part.PRE, []];
+  get parents() {
+    return [];
   }
 }
 
@@ -115,8 +150,8 @@ export class Read extends InstructionNode {
     return this.#address;
   }
 
-  get parents(): [Part, InstructionNode[]] {
-    return [Part.DAG, [this.#memory, this.#address]];
+  get parents() {
+    return [this.#memory, this.#address];
   }
 }
 
@@ -150,8 +185,8 @@ export class Write extends InstructionNode {
     return this.#value;
   }
 
-  get parents(): [Part, InstructionNode[]] {
-    return [Part.DAG, [this.#memory, this.#address, this.#value]];
+  get parents() {
+    return [this.#memory, this.#address, this.#value];
   }
 }
 
@@ -178,8 +213,8 @@ export class Operation extends InstructionNode {
     return this.#right;
   }
 
-  get parents(): [Part, InstructionNode[]] {
-    return [Part.DAG, [this.#left, this.#right]];
+  get parents() {
+    return [this.#left, this.#right];
   }
 }
 
@@ -218,8 +253,8 @@ export class Ext extends InstructionNode {
     return this.#value;
   }
 
-  get parents(): [Part, InstructionNode[]] {
-    return [Part.DAG, [this.#from]];
+  get parents() {
+    return [this.#from];
   }
 }
 
@@ -241,8 +276,8 @@ export class Ite extends Operation {
     return this.#cond;
   }
 
-  get parents(): [Part, InstructionNode[]] {
-    return [Part.DAG, [this.left, this.right, this.#cond]];
+  get parents() {
+    return [this.left, this.right, this.#cond];
   }
 }
 
@@ -261,8 +296,8 @@ export class Not extends InstructionNode {
     return this.#value;
   }
 
-  get parents(): [Part, InstructionNode[]] {
-    return [Part.DAG, [this.#value]];
+  get parents() {
+    return [this.#value];
   }
 }
 
@@ -295,12 +330,12 @@ export class State extends InstructionNode {
     this.#init = node;
   }
 
-  get parents(): [Part, InstructionNode[]] {
+  get parents() {
     if (!this.#init) {
-      return [Part.PRE, []];
+      return [];
     }
 
-    return [Part.PRE, [this.#init]];
+    return [this.#init];
   }
 }
 
@@ -327,8 +362,8 @@ export class Next extends InstructionNode {
     return this.#next;
   }
 
-  get parents(): [Part, InstructionNode[]] {
-    return [Part.DAG, [this.#state, this.#next]];
+  get parents() {
+    return [this.#state, this.#next];
   }
 }
 
@@ -344,8 +379,8 @@ export class Input extends InstructionNode {
     return this.#name;
   }
 
-  get parents(): [Part, InstructionNode[]] {
-    return [Part.PRE, []];
+  get parents() {
+    return [];
   }
 }
 
@@ -365,5 +400,9 @@ export class Bad extends GenericNode {
 
   get name() {
     return this.#name;
+  }
+
+  get parents(): InstructionNode[] {
+    return [this.#cond];
   }
 }
