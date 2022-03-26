@@ -1,6 +1,7 @@
 import processLine from "./LineProcessor";
 import Model, { newModel } from "./Model";
 import processNodes from "./NodeProcessor";
+import { createMetrics } from "./Result";
 
 export default class ModelProcessor {
   #model: Model;
@@ -18,25 +19,9 @@ export default class ModelProcessor {
 
   printResults(): string[] {
     return [
-      `Number of nodes: ${this.#model.nodes.size} ${
-        this.#model.unrollDepth
-          ? `(${(this.#model.nodes.size / this.#model.unrollDepth).toFixed(3)})`
-          : ""
-      }`,
-      `Number of bads: ${this.#model.bads.length} ${
-        this.#model.unrollDepth
-          ? `(${(this.#model.bads.length / this.#model.unrollDepth).toFixed(
-              3
-            )})`
-          : ""
-      }`,
-      `Number of states: ${this.#model.rootsPre.length} ${
-        this.#model.unrollDepth
-          ? `(${(this.#model.rootsPre.length / this.#model.unrollDepth).toFixed(
-              3
-            )})`
-          : ""
-      }`,
+      ...Object.entries(createMetrics(this.#model)).map(
+        ([k, v]) => `${k}: ${v}`
+      ),
     ];
   }
 }
