@@ -9,6 +9,12 @@ export default interface Model {
   unrollDepth: number;
   globalMaxDagDepth: number;
   globalMaxDagStart?: GenericNode;
+  globalMaxPreDepth: number;
+  globalMaxPreStart?: GenericNode;
+  maxDagEntanglement: number;
+  maxPreEntanglement: number;
+  maxDagEntangled?: GenericNode;
+  maxPreEntangled?: GenericNode;
 }
 
 export function newModel(unrollDepth: number): Model {
@@ -20,5 +26,8 @@ export function newModel(unrollDepth: number): Model {
     bads: [],
     unrollDepth,
     globalMaxDagDepth: 0,
+    globalMaxPreDepth: 0,
+    maxDagEntanglement: 0,
+    maxPreEntanglement: 0,
   };
 }

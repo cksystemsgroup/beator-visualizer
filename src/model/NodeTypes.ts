@@ -1,52 +1,22 @@
 export type DagLeaf = State | Input | Const;
+export type PreLeaf = Input | Const;
 
 export abstract class GenericNode {
-  #nid: number;
-  #longestChild?: GenericNode;
-  #distance: number;
-  #entanglement: number;
-  #entanglers?: DagLeaf[];
+  nid: number;
+  longestChild?: GenericNode;
+  dagDepth: number;
+  preDepth: number;
+  dagEntanglement: number;
+  preEntanglement: number;
+  dagEntanglers?: DagLeaf[];
+  preEntanglers?: PreLeaf[];
 
   constructor(nid: number) {
-    this.#nid = nid;
-    this.#distance = 0;
-    this.#entanglement = 0;
-  }
-
-  get nid() {
-    return this.#nid;
-  }
-
-  get distance() {
-    return this.#distance;
-  }
-
-  get entanglement() {
-    return this.#entanglement;
-  }
-
-  set distance(x) {
-    this.#distance = x;
-  }
-
-  set entanglement(x) {
-    this.#entanglement = x;
-  }
-
-  get longestChild() {
-    return this.#longestChild;
-  }
-
-  set longestChild(x) {
-    this.#longestChild = x;
-  }
-
-  get entanglers() {
-    return this.#entanglers;
-  }
-
-  set entanglers(x) {
-    this.#entanglers = x;
+    this.nid = nid;
+    this.dagDepth = 0;
+    this.dagEntanglement = 0;
+    this.preDepth = 0;
+    this.preEntanglement = 0;
   }
 }
 
