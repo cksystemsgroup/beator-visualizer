@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ModelProcessor from "../model/ModelProcessor";
+import DagComponent from "./Dag";
 
 function App() {
   const [text, setText] = useState("");
@@ -14,16 +15,7 @@ function App() {
 
   const mb = new ModelProcessor(text, unroll || 0);
 
-  return (
-    <>
-      <p>Results:</p>
-      {mb.printResults().map((x, i) => (
-        <div key={i}>
-          {x} <br />
-        </div>
-      ))}
-    </>
-  );
+  return <DagComponent nodes={mb.dagify()} />;
 }
 
 function Form(props: { readText: any }) {

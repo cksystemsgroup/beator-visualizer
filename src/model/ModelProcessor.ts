@@ -1,5 +1,6 @@
 import processLine from "./LineProcessor";
 import Model, { newModel } from "./Model";
+import { dagifyModel } from "./ModelDagger";
 import processNodes from "./NodeProcessor";
 import { createMetrics } from "./Result";
 
@@ -23,5 +24,12 @@ export default class ModelProcessor {
         ([k, v]) => `${k}: ${v}`
       ),
     ];
+  }
+
+  dagify(): {
+    nodes: { id: string; group: number }[];
+    links: { source: string; target: string }[];
+  } {
+    return dagifyModel(this.#model);
   }
 }
