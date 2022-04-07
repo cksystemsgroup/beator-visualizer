@@ -2,22 +2,27 @@ import Model from "./Model";
 import { Bad, Const, Input, InstructionNode, Next, State } from "./NodeTypes";
 
 export function dagifyModel(model: Model): {
-  nodes: { id: string; group: number }[];
+  nodes: Map<string, { id: string; group: number; collapsed: boolean }>;
   links: { source: string; target: string }[];
 } {
-  let nodes: { id: string; group: number }[] = [];
+  let nodes: Map<string, { id: string; group: number; collapsed: boolean }> =
+    new Map();
   let links: { source: string; target: string }[] = [];
   for (const n of model.nodes.values()) {
     if (n instanceof InstructionNode) {
-      nodes.push({
+      nodes.set(n.nid.toString(), {
         id: n.nid.toString(),
         group: getGroup(n),
+        collapsed: true,
       });
       n.parents.forEach((x) =>
         links.push({ source: n.nid.toString(), target: x.nid.toString() })
       );
     }
   }
+
+  let first = nodes.get(model.bads[0].nid.toString());
+  if (first) first.collapsed = false;
 
   console.log("dagged");
 

@@ -27,7 +27,7 @@ export default class ModelProcessor {
   }
 
   dagify(): {
-    nodes: { id: string; group: number }[];
+    nodes: Map<string, { id: string; group: number; collapsed: boolean }>;
     links: { source: string; target: string }[];
   } {
     return dagifyModel(this.#model);

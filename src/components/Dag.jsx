@@ -47,21 +47,17 @@ export default function DagComponent({ nodes: ns }) {
       } = {}
     ) {
       // Compute values.
-      const N = d3.map(nodes, nodeId).map(intern);
+      const N = d3.map(nodes.values(), nodeId).map(intern);
       const LS = d3.map(links, linkSource).map(intern);
       const LT = d3.map(links, linkTarget).map(intern);
       if (nodeTitle === undefined) nodeTitle = (_, i) => N[i];
-      const T = nodeTitle == null ? null : d3.map(nodes, nodeTitle);
-      const G = nodeGroup == null ? null : d3.map(nodes, nodeGroup).map(intern);
-      const W =
-        typeof linkStrokeWidth !== "function"
+      const G =
+        nodeGroup == null
           ? null
-          : d3.map(links, linkStrokeWidth);
-      const L =
-        typeof linkStroke !== "function" ? null : d3.map(links, linkStroke);
+          : d3.map(nodes.values(), nodeGroup).map(intern);
 
       // Replace the input nodes and links with mutable objects for the simulation.
-      nodes = d3.map(nodes, (_, i) => ({ id: N[i] }));
+      let nodes2 = d3.map(nodes.values(), (_, i) => ({ id: N[i] }));
       links = d3.map(links, (_, i) => ({ source: LS[i], target: LT[i] }));
 
       // Compute default domains.
@@ -78,7 +74,7 @@ export default function DagComponent({ nodes: ns }) {
       if (linkStrength !== undefined) forceLink.strength(linkStrength);
 
       const simulation = d3
-        .forceSimulation(nodes)
+        .forceSimulation(nodes2)
         .force("link", forceLink)
         .force("charge", forceNode)
         .force("center", d3.forceCenter())
@@ -111,16 +107,11 @@ export default function DagComponent({ nodes: ns }) {
         .attr("stroke-opacity", nodeStrokeOpacity)
         .attr("stroke-width", nodeStrokeWidth)
         .selectAll("circle")
-        .data(nodes)
+        .data(nodes2)
         .join("circle")
         .attr("r", nodeRadius)
-        .call(drag(simulation));
-
-      if (W) link.attr("stroke-width", ({ index: i }) => W[i]);
-      if (L) link.attr("stroke", ({ index: i }) => L[i]);
-      if (G) node.attr("fill", ({ index: i }) => color(G[i]));
-      if (T) node.append("title").text(({ index: i }) => T[i]);
-      if (invalidation != null) invalidation.then(() => simulation.stop());
+        .attr("id", (d) => d.id)
+        .on("click", click);
 
       function intern(value) {
         return value !== null && typeof value === "object"
@@ -138,29 +129,11 @@ export default function DagComponent({ nodes: ns }) {
         node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
       }
 
-      function drag(simulation) {
-        function dragstarted(event) {
-          if (!event.active) simulation.alphaTarget(0.3).restart();
-          event.subject.fx = event.subject.x;
-          event.subject.fy = event.subject.y;
-        }
-
-        function dragged(event) {
-          event.subject.fx = event.x;
-          event.subject.fy = event.y;
-        }
-
-        function dragended(event) {
-          if (!event.active) simulation.alphaTarget(0);
-          event.subject.fx = null;
-          event.subject.fy = null;
-        }
-
-        return d3
-          .drag()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended);
+      function click(n) {
+        console.log(ns.nodes);
+        console.log(n.target.getAttribute("id"));
+        console.log(ns.nodes.get(n.target.getAttribute("id")));
+        n.target.setAttribute("fill", "#fff");
       }
 
       return Object.assign(svg.node(), { scales: { color } });
