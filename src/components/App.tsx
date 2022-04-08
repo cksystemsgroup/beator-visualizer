@@ -15,7 +15,7 @@ function App() {
 
   const mb = new ModelProcessor(text, unroll || 0);
 
-  return <DagComponent nodes={mb.dagify()} />;
+  return <DagComponent model={mb.model} />;
 }
 
 function Form(props: { readText: any }) {
