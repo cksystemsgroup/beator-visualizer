@@ -4,7 +4,13 @@ import Model from "../model/Model";
 import { ForceLink } from "d3";
 import { Bad, InstructionNode } from "../model/NodeTypes";
 
-type Node = { index: number; x?: number; y?: number; nid: number };
+type Node = {
+  index: number;
+  x?: number;
+  y?: number;
+  nid: number;
+  type: string;
+};
 type Link = { source: Node; target: Node };
 type Circle = d3.Selection<SVGCircleElement, Node, SVGGElement, unknown>;
 type Line = d3.Selection<SVGLineElement, Link, SVGGElement, unknown>;
@@ -15,6 +21,7 @@ export default function DagComponent({ model }: { model: Model }) {
   nodes.set(model.bads[0].nid, {
     index: model.bads[0].nid,
     nid: model.bads[0].nid,
+    type: model.bads[0].nodeType,
   });
   let links = new Map<number, Link[]>();
 
@@ -50,6 +57,7 @@ export default function DagComponent({ model }: { model: Model }) {
           d3.forceLink(Array.from(links.values()).flat()).distance(150)
         )
         .force("center", d3.forceCenter())
+        .force("x", d3.forceX())
         .on("tick", ticked);
 
     const onClick = (d: {
@@ -66,37 +74,85 @@ export default function DagComponent({ model }: { model: Model }) {
 
       if (n.collapsed) {
         n.parents.forEach((m) => {
-          const newNode = { index: m.nid, nid: m.nid };
+          const newNode = nodes.has(m.nid)
+            ? nodes.get(m.nid)!
+            : { index: m.nid, nid: m.nid, type: m.nodeType };
           const newLink = { source: nodes.get(nid)!, target: newNode };
           nodes.set(m.nid, newNode);
           setArray(links, m.nid, newLink);
         });
       } else {
-        n.parents.forEach((m) => {
+        const recDel = (m: InstructionNode | Bad) => {
+          m.parents.forEach(recDel);
+          m.collapsed = true;
           nodes.delete(m.nid);
           links.delete(m.nid);
-        });
+        };
+        n.parents.forEach(recDel);
       }
 
       n.collapsed = !n.collapsed;
       update();
     };
 
+    function drag(simulation: d3.Simulation<Node, Link>) {
+      function dragstarted(event: {
+        active: any;
+        subject: { fx: any; x: any; fy: any; y: any };
+      }) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        event.subject.fx = event.subject.x;
+        event.subject.fy = event.subject.y;
+      }
+
+      function dragged(event: {
+        subject: { fx: any; fy: any };
+        x: any;
+        y: any;
+      }) {
+        event.subject.fx = event.x;
+        event.subject.fy = event.y;
+      }
+
+      function dragended(event: {
+        active: any;
+        subject: { fx: null; fy: null };
+      }) {
+        if (!event.active) simulation.alphaTarget(0);
+        event.subject.fx = null;
+        event.subject.fy = null;
+      }
+
+      return d3
+        .drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended);
+    }
+
     const update = () => {
       node = node.data(Array.from(nodes.values()));
       node.exit().remove();
+
       node = node
         .enter()
         .append("circle")
-        .attr("fill", "#ccc")
+        .attr("fill", "#17BEBB")
         .attr("r", 10)
         .attr("nid", (d) => d.nid)
         .on("click", onClick)
+        .call(drag(simulation) as any)
         .merge(node);
+
+      node.append("title").text(({ type: t }) => t);
 
       link = link.data(Array.from(links.values()).flat());
       link.exit().remove();
-      link = link.enter().append("line").merge(link);
+      link = link
+        .enter()
+        .append("line")
+        .merge(link)
+        .attr("marker-end", "url(#triangle)");
 
       simulation.nodes(Array.from(nodes.values()));
       simulation
@@ -116,6 +172,18 @@ export default function DagComponent({ model }: { model: Model }) {
     };
 
     const g = selectPart();
+    g.append("defs")
+      .append("marker")
+      .attr("id", "triangle")
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 21)
+      .attr("refY", 0)
+      .attr("markerWidth", 6)
+      .attr("markerHeight", 6)
+      .attr("orient", "auto")
+      .append("path")
+      .attr("fill", "#000")
+      .attr("d", "M0,-5L10,0L0,5");
     let link = linkPart();
     let node = nodePart();
     const simulation = simulationPart();
