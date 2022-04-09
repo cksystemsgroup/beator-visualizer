@@ -41,21 +41,21 @@ export default function processLine(line: string, model: Model) {
       case "write":
         return [nid, writeNode(nid, operands)];
       case "add":
-        return [nid, opNode<Add>(nid, operands)];
+        return [nid, opNode<Add>(Add, nid, operands)];
       case "sub":
-        return [nid, opNode<Sub>(nid, operands)];
+        return [nid, opNode<Sub>(Sub, nid, operands)];
       case "mul":
-        return [nid, opNode<Mul>(nid, operands)];
+        return [nid, opNode<Mul>(Mul, nid, operands)];
       case "udiv":
-        return [nid, opNode<Div>(nid, operands)];
+        return [nid, opNode<Div>(Div, nid, operands)];
       case "urem":
-        return [nid, opNode<Rem>(nid, operands)];
+        return [nid, opNode<Rem>(Rem, nid, operands)];
       case "ult":
-        return [nid, opNode<Ult>(nid, operands)];
+        return [nid, opNode<Ult>(Ult, nid, operands)];
       case "eq":
-        return [nid, opNode<Eq>(nid, operands)];
+        return [nid, opNode<Eq>(Eq, nid, operands)];
       case "and":
-        return [nid, opNode<And>(nid, operands)];
+        return [nid, opNode<And>(And, nid, operands)];
       case "uext":
         return [nid, extNode(nid, operands)];
       case "ite":
@@ -94,9 +94,18 @@ export default function processLine(line: string, model: Model) {
     return node as InstructionNode;
   }
 
-  function opNode<T extends Operation>(nid: number, operands: string[]) {
+  function opNode<T extends Operation>(
+    type: new (
+      nid: number,
+      sort: TypeNode,
+      left: InstructionNode,
+      right: InstructionNode
+    ) => T,
+    nid: number,
+    operands: string[]
+  ) {
     const ops = operands.map((x) => (parseInt(x) ? parseInt(x) : -1));
-    return new Operation(
+    return new type(
       nid,
       lookupSort(ops[0]),
       lookupNode(ops[1]),

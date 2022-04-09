@@ -10,6 +10,8 @@ export abstract class GenericNode {
   preEntanglement: number;
   dagEntanglers?: DagLeaf[];
   preEntanglers?: PreLeaf[];
+  collapsed: boolean;
+  abstract nodeType: string;
 
   constructor(nid: number) {
     this.nid = nid;
@@ -17,6 +19,7 @@ export abstract class GenericNode {
     this.dagEntanglement = 0;
     this.preDepth = 0;
     this.preEntanglement = 0;
+    this.collapsed = true;
   }
 }
 
@@ -50,6 +53,7 @@ export abstract class TypeNode extends GenericNode {
 
 export class BitVector extends TypeNode {
   #size: number;
+  nodeType: string = "Bit Vector";
 
   constructor(nid: number, name: string, size: number) {
     super(nid, name);
@@ -64,6 +68,7 @@ export class BitVector extends TypeNode {
 export class BitVecArray extends TypeNode {
   #size: TypeNode;
   #address: TypeNode;
+  nodeType: string = "Bit Vector Array";
 
   constructor(nid: number, name: string, size: TypeNode, address: TypeNode) {
     super(nid, name);
@@ -82,6 +87,7 @@ export class BitVecArray extends TypeNode {
 
 export class Const extends InstructionNode {
   #imm: number;
+  nodeType: string = "Constant";
 
   constructor(nid: number, sort: TypeNode, imm: number) {
     super(nid, sort);
@@ -100,6 +106,7 @@ export class Const extends InstructionNode {
 export class Read extends InstructionNode {
   #memory: InstructionNode;
   #address: InstructionNode;
+  nodeType: string = "Read";
 
   constructor(
     nid: number,
@@ -129,6 +136,7 @@ export class Write extends InstructionNode {
   #memory: InstructionNode;
   #address: InstructionNode;
   #value: InstructionNode;
+  nodeType: string = "Write";
 
   constructor(
     nid: number,
@@ -160,7 +168,7 @@ export class Write extends InstructionNode {
   }
 }
 
-export class Operation extends InstructionNode {
+export abstract class Operation extends InstructionNode {
   #left: InstructionNode;
   #right: InstructionNode;
 
@@ -188,21 +196,34 @@ export class Operation extends InstructionNode {
   }
 }
 
-export class Add extends Operation {}
+export class Add extends Operation {
+  nodeType: string = "Addition";
+}
 
-export class Sub extends Operation {}
+export class Sub extends Operation {
+  nodeType: string = "Subtraction";
+}
 
-export class Mul extends Operation {}
+export class Mul extends Operation {
+  nodeType: string = "Multiplication";
+}
 
-export class Div extends Operation {}
+export class Div extends Operation {
+  nodeType: string = "Division";
+}
 
-export class Rem extends Operation {}
+export class Rem extends Operation {
+  nodeType: string = "Remainder";
+}
 
-export class Ult extends Operation {}
+export class Ult extends Operation {
+  nodeType: string = "Less Than";
+}
 
 export class Ext extends InstructionNode {
   #from: InstructionNode;
   #value: number;
+  nodeType: string = "Extend";
 
   constructor(
     nid: number,
@@ -230,6 +251,7 @@ export class Ext extends InstructionNode {
 
 export class Ite extends Operation {
   #cond: InstructionNode;
+  nodeType: string = "If then else";
 
   constructor(
     nid: number,
@@ -251,11 +273,16 @@ export class Ite extends Operation {
   }
 }
 
-export class Eq extends Operation {}
-export class And extends Operation {}
+export class Eq extends Operation {
+  nodeType: string = "Equals";
+}
+export class And extends Operation {
+  nodeType: string = "And";
+}
 
 export class Not extends InstructionNode {
   #value: InstructionNode;
+  nodeType: string = "Not";
 
   constructor(nid: number, sort: TypeNode, value: InstructionNode) {
     super(nid, sort);
@@ -274,6 +301,7 @@ export class Not extends InstructionNode {
 export class State extends InstructionNode {
   #init?: InstructionNode;
   #name: string;
+  nodeType: string = "State";
 
   constructor(
     nid: number,
@@ -312,6 +340,7 @@ export class State extends InstructionNode {
 export class Next extends InstructionNode {
   #state: InstructionNode;
   #next: InstructionNode;
+  nodeType: string = "Next";
 
   constructor(
     nid: number,
@@ -339,6 +368,7 @@ export class Next extends InstructionNode {
 
 export class Input extends InstructionNode {
   #name: string;
+  nodeType: string = "Input";
 
   constructor(nid: number, sort: TypeNode, name: string) {
     super(nid, sort);
@@ -357,6 +387,7 @@ export class Input extends InstructionNode {
 export class Bad extends GenericNode {
   #cond: InstructionNode;
   #name: string;
+  nodeType: string = "Bad";
 
   constructor(nid: number, cond: InstructionNode, name: string) {
     super(nid);
