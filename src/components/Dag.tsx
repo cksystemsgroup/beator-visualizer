@@ -1,11 +1,17 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import Model from "../model/Model";
+import { ForceLink } from "d3";
 
-const n1 = { id: 1 };
-const n2 = { id: 2 };
-const n3 = { id: 3 };
-const n4 = { id: 4 };
+type Node = { index: number; x?: number; y?: number };
+type Link = { source: Node; target: Node };
+type Circle = d3.Selection<SVGCircleElement, Node, SVGGElement, unknown>;
+type Line = d3.Selection<SVGLineElement, Link, SVGGElement, unknown>;
+
+const n1 = { index: 1 };
+const n2 = { index: 2 };
+const n3 = { index: 3 };
+const n4 = { index: 4 };
 
 let nodes = [n1, n2, n3]; // TODO
 let links = [
@@ -13,7 +19,7 @@ let links = [
   { source: n1, target: n3 },
 ]; // TODO
 
-export default function DagComponent({ model }) {
+export default function DagComponent({ model }: { model: Model }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -30,25 +36,25 @@ export default function DagComponent({ model }) {
         .append("g")
         .attr("stroke", "#000")
         .attr("stroke-width", 1.5)
-        .selectAll("line");
+        .selectAll("line") as Line;
 
     const nodePart = () =>
       g
         .append("g")
         .attr("stroke", "#fff")
         .attr("stroke-width", 1.5)
-        .selectAll("circle");
+        .selectAll("circle") as Circle;
 
     const simulationPart = () =>
       d3
-        .forceSimulation(nodes)
-        .force("charge", d3.forceManyBody().strength(-2000))
+        .forceSimulation<Node, Link>(nodes)
+        .force("charge", d3.forceManyBody<Node>().strength(-2000))
         .force("link", d3.forceLink(links).distance(150))
         .force("center", d3.forceCenter())
         .on("tick", ticked);
 
     const update = () => {
-      node = node.data(nodes, (d) => d.id);
+      node = node.data(nodes, (d) => d.index);
       node.exit().remove();
       node = node
         .enter()
@@ -67,23 +73,23 @@ export default function DagComponent({ model }) {
         })
         .merge(node);
 
-      link = link.data(links, (d) => `${d.source.id}-${d.target.id}`);
+      link = link.data(links, (d) => `${d.source.index}-${d.target.index}`);
       link.exit().remove();
       link = link.enter().append("line").merge(link);
 
       simulation.nodes(nodes);
-      simulation.force("link").links(links);
+      simulation.force<ForceLink<Node, Link>>("link")?.links(links);
       simulation.alpha(1).restart();
     };
 
     const ticked = () => {
       link
-        .attr("x1", (d) => d.source.x)
-        .attr("y1", (d) => d.source.y)
-        .attr("x2", (d) => d.target.x)
-        .attr("y2", (d) => d.target.y);
+        .attr("x1", (d) => d.source.x || 0)
+        .attr("y1", (d) => d.source.y || 0)
+        .attr("x2", (d) => d.target.x || 0)
+        .attr("y2", (d) => d.target.y || 0);
 
-      node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+      node.attr("cx", (d) => d.x || 0).attr("cy", (d) => d.y || 0);
     };
 
     const g = selectPart();
