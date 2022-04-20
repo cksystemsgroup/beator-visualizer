@@ -1,39 +1,31 @@
 import Model from "./Model";
-import {
-  Bad,
-  Const,
-  DagLeaf,
-  Input,
-  InstructionNode,
-  PreLeaf,
-  State,
-} from "./NodeTypes";
+import { ModelNode, NodeType } from "./NodeTypes";
 
 export default function processNodes(model: Model) {
   model.rootsDag.forEach((x) => recursivePathDag(x, 0, x));
-  model.rootsPre.forEach((x) => recursivePathPre(x.init, 0, x));
+  model.rootsPre.forEach((x) => recursivePathPre(x.parents[0], 0, x));
   console.log("Finished");
 
   function recursivePathDag(
-    n: InstructionNode | Bad,
+    n: ModelNode,
     depth: number,
-    caller: InstructionNode | Bad
-  ): [number, DagLeaf[]] {
+    caller: ModelNode
+  ): [number, ModelNode[]] {
     let aggregatorD = 0;
-    let aggregatorN: DagLeaf[] = [];
+    let aggregatorN: ModelNode[] = [];
 
-    if (n.dagDepth < depth) {
-      n.longestChild = caller;
-      n.dagDepth = depth;
+    if (n.stats.dagDepth < depth) {
+      n.stats.longestChild = caller;
+      n.stats.dagDepth = depth;
       if (depth > model.globalMaxDagDepth) {
         model.globalMaxDagDepth = depth;
         model.globalMaxDagStart = n;
       }
     }
 
-    if (n instanceof Const) return [1, [n]];
-    if (n instanceof Input) return [1, [n]];
-    if (n instanceof State) return [1, [n]];
+    if (n.type === NodeType.Const) return [1, [n]];
+    if (n.type === NodeType.Input) return [1, [n]];
+    if (n.type === NodeType.State) return [1, [n]];
 
     n.parents.forEach((x) => {
       const [d, p] = recursivePathDag(x, depth + 1, n);
@@ -45,27 +37,27 @@ export default function processNodes(model: Model) {
       model.maxDagEntanglement = aggregatorD;
       model.maxDagEntangled = n;
     }
-    n.dagEntanglement = aggregatorD;
-    n.dagEntanglers = aggregatorN;
+    n.stats.dagEntanglement = aggregatorD;
+    n.stats.dagEntanglers = aggregatorN;
     return [aggregatorD, aggregatorN];
   }
 
   function recursivePathPre(
-    n: InstructionNode | Bad | undefined,
+    n: ModelNode,
     depth: number,
-    caller: InstructionNode | Bad
-  ): [number, PreLeaf[]] {
+    caller: ModelNode
+  ): [number, ModelNode[]] {
     if (n === undefined) return [0, []];
 
     let aggregatorD = 0;
-    let aggregatorN: PreLeaf[] = [];
+    let aggregatorN: ModelNode[] = [];
 
-    if (n instanceof Const) return [1, [n]];
-    if (n instanceof Input) return [1, [n]];
+    if (n.type === NodeType.Const) return [1, [n]];
+    if (n.type === NodeType.Input) return [1, [n]];
 
-    if (n.preDepth < depth) {
-      n.longestChild = caller;
-      n.preDepth = depth;
+    if (n.stats.iniDepth < depth) {
+      n.stats.longestChild = caller;
+      n.stats.iniDepth = depth;
       if (depth > model.globalMaxPreDepth) {
         model.globalMaxPreDepth = depth;
         model.globalMaxPreStart = n;
@@ -82,8 +74,8 @@ export default function processNodes(model: Model) {
       model.maxPreEntanglement = aggregatorD;
       model.maxPreEntangled = caller;
     }
-    n.preEntanglement = aggregatorD;
-    n.preEntanglers = aggregatorN;
+    n.stats.iniEntanglement = aggregatorD;
+    n.stats.iniEntanglers = aggregatorN;
     return [aggregatorD, aggregatorN];
   }
 }

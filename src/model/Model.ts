@@ -1,26 +1,24 @@
-import { Bad, GenericNode, Next, State, TypeNode } from "./NodeTypes";
+import { ModelNode } from "./NodeTypes";
 
 export default interface Model {
-  nodes: Map<number, GenericNode>;
-  sorts: TypeNode[];
-  bads: Bad[];
-  rootsDag: (Bad | Next)[];
-  rootsPre: State[];
+  nodes: Map<number, ModelNode>;
+  bads: ModelNode[];
+  rootsDag: ModelNode[];
+  rootsPre: ModelNode[];
   unrollDepth: number;
   globalMaxDagDepth: number;
-  globalMaxDagStart?: GenericNode;
+  globalMaxDagStart?: ModelNode;
   globalMaxPreDepth: number;
-  globalMaxPreStart?: GenericNode;
+  globalMaxPreStart?: ModelNode;
   maxDagEntanglement: number;
   maxPreEntanglement: number;
-  maxDagEntangled?: GenericNode;
-  maxPreEntangled?: GenericNode;
+  maxDagEntangled?: ModelNode;
+  maxPreEntangled?: ModelNode;
 }
 
 export function newModel(unrollDepth: number): Model {
   return {
-    nodes: new Map<number, GenericNode>(),
-    sorts: [],
+    nodes: new Map(),
     rootsDag: [],
     rootsPre: [],
     bads: [],

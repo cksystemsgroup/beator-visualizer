@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import Model from "../model/Model";
 import { ForceLink } from "d3";
-import { Bad, InstructionNode } from "../model/NodeTypes";
+import { ModelNode } from "../model/NodeTypes";
 
 type Node = {
   index: number;
@@ -21,7 +21,7 @@ export default function DagComponent({ model }: { model: Model }) {
   nodes.set(model.bads[0].nid, {
     index: model.bads[0].nid,
     nid: model.bads[0].nid,
-    type: model.bads[0].nodeType,
+    type: model.bads[0].type,
   });
   let links = new Map<number, Link[]>();
 
@@ -67,31 +67,28 @@ export default function DagComponent({ model }: { model: Model }) {
       const n = model.nodes.get(nid);
       console.log(typeof n);
 
-      if (!(n instanceof Bad || n instanceof InstructionNode))
-        throw new Error("How did we get here? 🤔");
-
       if (!n) throw new Error("Could not find clicked Node in model. 💀");
 
-      if (n.collapsed) {
+      if (n.view.collapsed) {
         n.parents.forEach((m) => {
           const newNode = nodes.has(m.nid)
             ? nodes.get(m.nid)!
-            : { index: m.nid, nid: m.nid, type: m.nodeType };
+            : { index: m.nid, nid: m.nid, type: m.type };
           const newLink = { source: nodes.get(nid)!, target: newNode };
           nodes.set(m.nid, newNode);
           setArray(links, m.nid, newLink);
         });
       } else {
-        const recDel = (m: InstructionNode | Bad) => {
+        const recDel = (m: ModelNode) => {
           m.parents.forEach(recDel);
-          m.collapsed = true;
+          m.view.collapsed = true;
           nodes.delete(m.nid);
           links.delete(m.nid);
         };
         n.parents.forEach(recDel);
       }
 
-      n.collapsed = !n.collapsed;
+      n.view.collapsed = !n.view.collapsed;
       update();
     };
 
