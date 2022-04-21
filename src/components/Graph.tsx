@@ -63,14 +63,9 @@ function Graph({ model }: { model: Model }) {
           "link",
           d3.forceLink(Array.from(links.values()).flat()).distance(150)
         )
-        .force("center", d3.forceCenter())
-        .force("x", d3.forceX())
         .on("tick", ticked);
 
-    const onClick = (d: {
-      target: { getAttribute: (arg0: string) => string };
-    }) => {
-      const nid = parseInt(d.target.getAttribute("nid"));
+    const clicked = (nid: number) => {
       const n = model.nodes.get(nid);
 
       if (!n) throw new Error("Could not find clicked Node in model. 💀");
@@ -95,6 +90,13 @@ function Graph({ model }: { model: Model }) {
       }
 
       n.view.collapsed = !n.view.collapsed;
+    };
+
+    const onClick = (d: {
+      target: { getAttribute: (arg0: string) => string };
+    }) => {
+      const nid = parseInt(d.target.getAttribute("nid"));
+      clicked(nid);
       update();
     };
 
@@ -196,6 +198,16 @@ function Graph({ model }: { model: Model }) {
     });
 
     d3.select(ref.current).call(zoom);
+
+    const autoExpand = (x: ModelNode) => {
+      setTimeout(() => {
+        clicked(x.nid);
+        update();
+        x.parents.forEach(autoExpand);
+      }, 100);
+    };
+    clicked(model.bads[0].nid);
+    model.bads[0].parents.forEach(autoExpand);
 
     update();
   });
