@@ -7,13 +7,9 @@ export default interface Metrics {
   nrOfBadsPer?: number;
   nrOfStates: number;
   nrOfStatesPer?: number;
-  longestDagPathLength: number;
-  longestDagPathLengthPer?: number;
-  longestIniPathLength: number;
-  longestIniPathLengthPer?: number;
-  iniLengthPerdagLength?: number;
-  maxDagEntanglement: number;
-  maxIniEntanglement: number;
+  longestPathLength: number;
+  longestPathLengthPer?: number;
+  maxEntanglement: number;
 }
 
 export function createMetrics(model: Model): Metrics {
@@ -21,10 +17,8 @@ export function createMetrics(model: Model): Metrics {
     nrOfNodes: model.nodes.size,
     nrOfBads: model.bads.length,
     nrOfStates: model.dagRoots.length - model.bads.length,
-    longestDagPathLength: model.dagDepthMax,
-    longestIniPathLength: model.iniDepthMax,
-    maxDagEntanglement: model.dagEntanglementMax,
-    maxIniEntanglement: model.iniEntanglementMax,
+    longestPathLength: model.dagDepthMax,
+    maxEntanglement: model.dagEntanglementMax,
   };
 
   if (model.unrollDepth) {

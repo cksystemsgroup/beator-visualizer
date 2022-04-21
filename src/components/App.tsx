@@ -7,6 +7,7 @@ import Selection from "./Selection";
 
 import "../style.css";
 import Form from "./Form";
+import { createMetrics } from "../model/Result";
 
 function App() {
   const [text, setText] = useState("");
@@ -25,7 +26,7 @@ function App() {
     <>
       <Graph model={mb.model} />
       <LocalInfo />
-      <GlobalInfo />
+      <GlobalInfo result={createMetrics(mb.model)} />
       <Selection />
     </>
   );

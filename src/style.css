@@ -4,6 +4,7 @@ html {
   overflow: hidden;
   font-family: Arial, Helvetica, sans-serif;
   background-color: whitesmoke;
+  user-select: none;
 }
 
 details {
