@@ -6,16 +6,18 @@ html {
   background-color: whitesmoke;
 }
 
-.local,
-.global,
-.selection {
-  background-color: whitesmoke;
+details {
   position: fixed;
+  background-color: whitesmoke;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 5px;
   margin: 10px;
   padding: 10px;
   width: 20vw;
+  height: 2vh;
+}
+
+details[open] {
   height: 45vh;
 }
 

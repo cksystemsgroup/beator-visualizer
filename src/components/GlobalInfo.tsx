@@ -1,5 +1,14 @@
 function LocalInfo() {
-  return <div className="global">Global Information</div>;
+  return (
+    <details className="global" open>
+      <summary>Global Information</summary>
+      <ul>
+        <li>global</li>
+        <li>global</li>
+        <li>global</li>
+      </ul>
+    </details>
+  );
 }
 
 export default LocalInfo;

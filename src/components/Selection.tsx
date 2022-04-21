@@ -1,5 +1,14 @@
 function Selection() {
-  return <div className="selection">Selection</div>;
+  return (
+    <details className="selection" open>
+      <summary>Selection</summary>
+      <ul>
+        <li>select</li>
+        <li>select</li>
+        <li>select</li>
+      </ul>
+    </details>
+  );
 }
 
 export default Selection;
