@@ -15,7 +15,7 @@ type Link = { source: Node; target: Node };
 type Circle = d3.Selection<SVGCircleElement, Node, SVGGElement, unknown>;
 type Line = d3.Selection<SVGLineElement, Link, SVGGElement, unknown>;
 
-export default function DagComponent({ model }: { model: Model }) {
+function Graph({ model }: { model: Model }) {
   const ref = useRef(null);
   let nodes = new Map<number, Node>();
   nodes.set(model.bads[0].nid, {
@@ -29,10 +29,17 @@ export default function DagComponent({ model }: { model: Model }) {
     const selectPart = () =>
       d3
         .select(ref.current)
-        .attr("width", 1500)
-        .attr("height", 800)
+        .attr("width", window.innerWidth)
+        .attr("height", window.innerHeight)
         .append("g")
-        .attr("transform", "translate(" + 1500 / 2 + "," + 800 / 2 + ")");
+        .attr(
+          "transform",
+          "translate(" +
+            window.innerWidth / 2 +
+            "," +
+            window.innerHeight / 2 +
+            ")"
+        );
 
     const linkPart = () =>
       g
@@ -201,3 +208,5 @@ const setArray = (m: Map<unknown, unknown[]>, k: unknown, v: unknown) => {
   if (m.has(k)) m.get(k)!.push(v);
   else m.set(k, [v]);
 };
+
+export default Graph;

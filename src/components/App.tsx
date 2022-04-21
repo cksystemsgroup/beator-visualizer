@@ -1,6 +1,12 @@
 import { useState } from "react";
 import ModelProcessor from "../model/ModelProcessor";
-import DagComponent from "./Dag";
+import Graph from "./Graph";
+import GlobalInfo from "./GlobalInfo";
+import LocalInfo from "./LocalInfo";
+import Selection from "./Selection";
+
+import "../style.css";
+import Form from "./Form";
 
 function App() {
   const [text, setText] = useState("");
@@ -15,29 +21,13 @@ function App() {
 
   const mb = new ModelProcessor(text, unroll || 0);
 
-  return <DagComponent model={mb.model} />;
-}
-
-function Form(props: { readText: any }) {
-  let [unroll, setUnroll] = useState(0);
-  let [file, setFile] = useState<File>();
   return (
-    <div className="form">
-      <input
-        type="file"
-        accept=".btor2"
-        onChange={(e) => setFile(e.currentTarget.files?.item(0) || undefined)}
-      />{" "}
-      <input
-        type="number"
-        min="0"
-        value={unroll}
-        onChange={(e) => setUnroll(parseInt(e.target.value))}
-      ></input>
-      <button disabled={!file} onClick={() => props.readText(file, unroll)}>
-        Calculate
-      </button>
-    </div>
+    <>
+      <Graph model={mb.model} />
+      <LocalInfo />
+      <GlobalInfo />
+      <Selection />
+    </>
   );
 }
 
