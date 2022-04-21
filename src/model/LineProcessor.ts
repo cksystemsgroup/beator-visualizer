@@ -16,9 +16,9 @@ export default function processLine(line: string, model: Model) {
       ...determineParameters(type, operands)
     );
 
-    if (type === NodeType.Next) model.rootsDag.push(node);
+    if (type === NodeType.Next) model.dagRoots.push(node);
     else if (type === NodeType.Bad) {
-      model.rootsDag.push(node);
+      model.dagRoots.push(node);
       model.bads.push(node);
     }
 

@@ -2,9 +2,8 @@ import Model from "./Model";
 import { ModelNode, NodeType } from "./NodeTypes";
 
 export default function processNodes(model: Model) {
-  model.rootsDag.forEach((x) => recursivePathDag(x, 0, x));
-  model.rootsPre.forEach((x) => recursivePathPre(x.parents[0], 0, x));
-  console.log("Finished");
+  model.dagRoots.forEach((x) => recursivePathDag(x, 0, x));
+  model.iniRoots.forEach((x) => recursivePathIni(x.parents[0], 0, x));
 
   function recursivePathDag(
     n: ModelNode,
@@ -17,9 +16,9 @@ export default function processNodes(model: Model) {
     if (n.stats.dagDepth < depth) {
       n.stats.longestChild = caller;
       n.stats.dagDepth = depth;
-      if (depth > model.globalMaxDagDepth) {
-        model.globalMaxDagDepth = depth;
-        model.globalMaxDagStart = n;
+      if (depth > model.dagDepthMax) {
+        model.dagDepthMax = depth;
+        model.dagStartMax = n;
       }
     }
 
@@ -33,16 +32,16 @@ export default function processNodes(model: Model) {
       p.forEach((x) => aggregatorN.push(x));
     });
 
-    if (aggregatorD > model.maxDagEntanglement) {
-      model.maxDagEntanglement = aggregatorD;
-      model.maxDagEntangled = n;
+    if (aggregatorD > model.dagEntanglementMax) {
+      model.dagEntanglementMax = aggregatorD;
+      model.dagEntangledMax = n;
     }
     n.stats.dagEntanglement = aggregatorD;
     n.stats.dagEntanglers = aggregatorN;
     return [aggregatorD, aggregatorN];
   }
 
-  function recursivePathPre(
+  function recursivePathIni(
     n: ModelNode,
     depth: number,
     caller: ModelNode
@@ -58,21 +57,21 @@ export default function processNodes(model: Model) {
     if (n.stats.iniDepth < depth) {
       n.stats.longestChild = caller;
       n.stats.iniDepth = depth;
-      if (depth > model.globalMaxPreDepth) {
-        model.globalMaxPreDepth = depth;
-        model.globalMaxPreStart = n;
+      if (depth > model.iniDepthMax) {
+        model.iniDepthMax = depth;
+        model.iniStartMax = n;
       }
     }
 
     n.parents.forEach((x) => {
-      const [d, p] = recursivePathPre(x, depth + 1, n);
+      const [d, p] = recursivePathIni(x, depth + 1, n);
       aggregatorD += d;
       p.forEach((x) => aggregatorN.push(x));
     });
 
-    if (aggregatorD > model.maxPreEntanglement) {
-      model.maxPreEntanglement = aggregatorD;
-      model.maxPreEntangled = caller;
+    if (aggregatorD > model.iniEntanglementMax) {
+      model.iniEntanglementMax = aggregatorD;
+      model.iniEntangledMax = caller;
     }
     n.stats.iniEntanglement = aggregatorD;
     n.stats.iniEntanglers = aggregatorN;

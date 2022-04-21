@@ -72,7 +72,6 @@ function Graph({ model }: { model: Model }) {
     }) => {
       const nid = parseInt(d.target.getAttribute("nid"));
       const n = model.nodes.get(nid);
-      console.log(typeof n);
 
       if (!n) throw new Error("Could not find clicked Node in model. 💀");
 

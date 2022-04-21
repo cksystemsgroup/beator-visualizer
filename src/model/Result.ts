@@ -9,22 +9,22 @@ export default interface Metrics {
   nrOfStatesPer?: number;
   longestDagPathLength: number;
   longestDagPathLengthPer?: number;
-  longestPrePathLength: number;
-  longestPrePathLengthPer?: number;
-  preLengthPerdagLength?: number;
+  longestIniPathLength: number;
+  longestIniPathLengthPer?: number;
+  iniLengthPerdagLength?: number;
   maxDagEntanglement: number;
-  maxPreEntanglement: number;
+  maxIniEntanglement: number;
 }
 
 export function createMetrics(model: Model): Metrics {
   let metrics: Metrics = {
     nrOfNodes: model.nodes.size,
     nrOfBads: model.bads.length,
-    nrOfStates: model.rootsDag.length - model.bads.length,
-    longestDagPathLength: model.globalMaxDagDepth,
-    longestPrePathLength: model.globalMaxPreDepth,
-    maxDagEntanglement: model.maxDagEntanglement,
-    maxPreEntanglement: model.maxPreEntanglement,
+    nrOfStates: model.dagRoots.length - model.bads.length,
+    longestDagPathLength: model.dagDepthMax,
+    longestIniPathLength: model.iniDepthMax,
+    maxDagEntanglement: model.dagEntanglementMax,
+    maxIniEntanglement: model.iniEntanglementMax,
   };
 
   if (model.unrollDepth) {
@@ -32,11 +32,11 @@ export function createMetrics(model: Model): Metrics {
       nrOfNodesPer: model.nodes.size / model.unrollDepth,
       nrOfBadsPer: model.bads.length / model.unrollDepth,
       nrOfStatesPer:
-        (model.rootsDag.length - model.bads.length) / model.unrollDepth,
-      longestDagPathLengthPer: model.globalMaxDagDepth / model.unrollDepth,
-      longestPrePathLengthPer: model.globalMaxPreDepth / model.unrollDepth,
-      preLengthPerdagLength:
-        model.globalMaxPreDepth / model.unrollDepth / model.globalMaxDagDepth,
+        (model.dagRoots.length - model.bads.length) / model.unrollDepth,
+      longestDagPathLengthPer: model.dagDepthMax / model.unrollDepth,
+      longestIniPathLengthPer: model.iniDepthMax / model.unrollDepth,
+      iniLengthPerdagLength:
+        model.iniDepthMax / model.unrollDepth / model.dagDepthMax,
     });
   }
 

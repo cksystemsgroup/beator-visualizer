@@ -3,29 +3,29 @@ import { ModelNode } from "./NodeTypes";
 export default interface Model {
   nodes: Map<number, ModelNode>;
   bads: ModelNode[];
-  rootsDag: ModelNode[];
-  rootsPre: ModelNode[];
+  dagRoots: ModelNode[];
+  iniRoots: ModelNode[];
   unrollDepth: number;
-  globalMaxDagDepth: number;
-  globalMaxDagStart?: ModelNode;
-  globalMaxPreDepth: number;
-  globalMaxPreStart?: ModelNode;
-  maxDagEntanglement: number;
-  maxPreEntanglement: number;
-  maxDagEntangled?: ModelNode;
-  maxPreEntangled?: ModelNode;
+  dagDepthMax: number;
+  dagStartMax?: ModelNode;
+  iniDepthMax: number;
+  iniStartMax?: ModelNode;
+  dagEntanglementMax: number;
+  iniEntanglementMax: number;
+  dagEntangledMax?: ModelNode;
+  iniEntangledMax?: ModelNode;
 }
 
 export function newModel(unrollDepth: number): Model {
   return {
     nodes: new Map(),
-    rootsDag: [],
-    rootsPre: [],
+    dagRoots: [],
+    iniRoots: [],
     bads: [],
     unrollDepth,
-    globalMaxDagDepth: 0,
-    globalMaxPreDepth: 0,
-    maxDagEntanglement: 0,
-    maxPreEntanglement: 0,
+    dagDepthMax: 0,
+    iniDepthMax: 0,
+    dagEntanglementMax: 0,
+    iniEntanglementMax: 0,
   };
 }

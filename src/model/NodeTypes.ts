@@ -1,67 +1,35 @@
 export class ModelNode {
-  #type;
-  #parents;
-  #nid;
-  #immediate;
-  #name;
-
-  #stats: Stats;
-  #view: View;
+  readonly stats: Stats;
+  readonly view: View;
 
   constructor(
-    nid: number,
-    type: NodeType,
-    parents: ModelNode[],
-    immediate?: number,
-    name?: string
+    readonly nid: number,
+    readonly type: NodeType,
+    readonly parents: ModelNode[],
+    readonly _immediate?: number,
+    readonly _name?: string
   ) {
-    this.#nid = nid;
-    this.#type = type;
-    this.#parents = parents;
-    this.#immediate = immediate;
-    this.#name = name;
-
-    this.#stats = {
+    this.stats = {
       dagDepth: 0,
       iniDepth: 0,
       dagEntanglement: 0,
       iniEntanglement: 0,
     };
 
-    this.#view = {
+    this.view = {
       collapsed: true,
     };
   }
 
-  get nid() {
-    return this.#nid;
-  }
-
-  get type() {
-    return this.#type;
-  }
-
-  get parents() {
-    return this.#parents;
-  }
-
   get immediate() {
-    if (!this.#immediate) throw new Error("Illegal immediate access");
+    if (!this._immediate) throw new Error("Illegal immediate access");
 
-    return this.#immediate!;
-  }
-
-  get stats() {
-    return this.#stats;
-  }
-
-  get view() {
-    return this.#view;
+    return this._immediate!;
   }
 
   get name() {
-    if (this.#name) return this.#name;
-    return this.#type;
+    if (this._name) return this._name;
+    return this.type;
   }
 }
 
