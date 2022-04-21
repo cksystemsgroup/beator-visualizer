@@ -10,10 +10,8 @@ export class ModelNode {
     readonly _name?: string
   ) {
     this.stats = {
-      dagDepth: 0,
-      iniDepth: 0,
-      dagEntanglement: 0,
-      iniEntanglement: 0,
+      depth: 0,
+      entanglement: 0,
     };
 
     this.view = {
@@ -57,13 +55,10 @@ export enum NodeType {
 }
 
 interface Stats {
-  longestChild?: ModelNode;
-  dagDepth: number;
-  iniDepth: number;
-  dagEntanglement: number;
-  iniEntanglement: number;
-  dagEntanglers?: ModelNode[];
-  iniEntanglers?: ModelNode[];
+  pathChild?: ModelNode;
+  depth: number;
+  entanglement: number;
+  entanglers?: ModelNode[];
 }
 
 interface View {
