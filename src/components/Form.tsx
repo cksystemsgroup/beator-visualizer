@@ -8,14 +8,13 @@ function Form(props: { readText: any }) {
       <input
         type="file"
         accept=".btor2"
-        onChange={(e) => setFile(e.currentTarget.files?.item(0) || undefined)}
+        onChange={(e) => setFile(e.currentTarget.files!.item(0) || undefined)}
       />{" "}
       <input
         type="number"
         min="0"
         value={unroll}
-        onChange={(e) => setUnroll(parseInt(e.target.value))}
-      ></input>
+        onChange={(e) => setUnroll(parseInt(e.target.value))}></input>
       <button disabled={!file} onClick={() => props.readText(file, unroll)}>
         Calculate
       </button>

@@ -14,7 +14,6 @@ export default function processNodes(model: Model) {
     let aggregatorN: ModelNode[] = [];
 
     if (n.stats.depth < depth) {
-      console.log(depth);
       n.stats.pathChild = caller;
       n.stats.depth = depth;
       if (depth > model.dagDepthMax) {
