@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef } from "react";
 import Model from "../model/Model";
 import { ModelNode } from "../model/NodeTypes";
 import { createMetrics } from "../model/Result";
@@ -8,11 +8,11 @@ import LocalInfo from "./LocalInfo";
 import Selection from "./Selection";
 
 function Interface({ model }: { model: Model }) {
-  const [target, setTarget] = useState<ModelNode>();
+  const target = useRef<ModelNode | null>(null);
 
   return (
     <>
-      <Graph model={model} target={target} setTarget={setTarget} />
+      <Graph model={model} target={target} />
       <LocalInfo target={target} />
       <GlobalInfo result={createMetrics(model)} />
       <Selection />

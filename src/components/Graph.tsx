@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import Model from "../model/Model";
 import { ForceLink } from "d3";
@@ -18,11 +18,9 @@ type Line = d3.Selection<SVGLineElement, Link, SVGGElement, unknown>;
 function Graph({
   model,
   target,
-  setTarget,
 }: {
   model: Model;
-  target: ModelNode | undefined;
-  setTarget: React.Dispatch<React.SetStateAction<ModelNode | undefined>>;
+  target: React.MutableRefObject<ModelNode | null>;
 }) {
   const ref = useRef(null);
   let nodes = new Map<number, Node>();
@@ -32,16 +30,7 @@ function Graph({
     type: model.bads[0].type,
   });
   let links = new Map<number, Link[]>();
-  const node = useRef<Circle | null>(null);
-  const link = useRef<Line | null>(null);
-  const group = useRef<d3.Selection<
-    SVGGElement,
-    unknown,
-    null,
-    undefined
-  > | null>(null);
-  const simulation = useRef<d3.Simulation<Node, Link> | null>();
-  const t = useRef<Element | null>();
+  let t: Element;
 
   const clicked = (nid: number) => {
     const n = model.nodes.get(nid);
@@ -69,58 +58,60 @@ function Graph({
     n.view.collapsed = !n.view.collapsed;
   };
 
-  const onClick = (d: { target: Element }) => {
-    const nid = parseInt(d.target.getAttribute("nid")!);
-    if (!(target?.nid === nid)) {
-      t.current?.setAttribute("fill", "#17BEBB");
-      d.target.setAttribute("fill", "#f00");
-      setTarget(model.nodes.get(nid)!);
-      t.current = d.target;
-    } else {
-      clicked(nid);
-    }
-  };
-
-  function update() {
-    node.current = node.current!.data(Array.from(nodes.values()));
-    node.current.exit().remove();
-
-    node.current = node.current
-      .enter()
-      .append("circle")
-      .attr("fill", "#17BEBB")
-      .attr("r", 10)
-      .attr("nid", (d) => d.nid)
-      .on("click", onClick)
-      .call(drag(simulation.current!) as any)
-      .merge(node.current);
-
-    node.current.append("title").text(({ type: t }) => t);
-
-    link.current = link.current!.data(Array.from(links.values()).flat());
-    link.current.exit().remove();
-    link.current = link.current
-      .enter()
-      .append("line")
-      .merge(link.current)
-      .attr("marker-end", "url(#triangle)");
-
-    simulation.current!.nodes(Array.from(nodes.values()));
-    simulation
-      .current!.force<ForceLink<Node, Link>>("link")
-      ?.links(Array.from(links.values()).flat());
-    simulation.current!.alpha(1).restart();
-  }
-
   useEffect(() => {
+    function update() {
+      node = node!.data(Array.from(nodes.values()));
+      node.exit().remove();
+
+      node = node
+        .enter()
+        .append("circle")
+        .attr("fill", "#17BEBB")
+        .attr("r", 10)
+        .attr("nid", (d) => d.nid)
+        .on("click", onClick)
+        .call(drag(simulation!) as any)
+        .merge(node);
+
+      node.append("title").text(({ type: t }) => t);
+
+      link = link!.data(Array.from(links.values()).flat());
+      link.exit().remove();
+      link = link
+        .enter()
+        .append("line")
+        .merge(link)
+        .attr("marker-end", "url(#triangle)");
+
+      simulation!.nodes(Array.from(nodes.values()));
+      simulation!
+        .force<ForceLink<Node, Link>>("link")
+        ?.links(Array.from(links.values()).flat());
+      simulation!.alpha(1).restart();
+    }
+
+    const onClick = (d: { target: Element }) => {
+      const nid = parseInt(d.target.getAttribute("nid")!);
+      console.log(target.current?.nid, nid, target.current?.nid === nid);
+      if (!(target.current?.nid === nid)) {
+        t?.setAttribute("fill", "#17BEBB");
+        d.target.setAttribute("fill", "#f00");
+        target.current = model.nodes.get(nid)!;
+        t = d.target;
+      } else {
+        clicked(nid);
+        update();
+      }
+    };
+
     const ticked = () => {
-      link
-        .current!.attr("x1", (d) => d.source.x!)
+      link!
+        .attr("x1", (d) => d.source.x!)
         .attr("y1", (d) => d.source.y!)
         .attr("x2", (d) => d.target.x!)
         .attr("y2", (d) => d.target.y!);
 
-      node.current!.attr("cx", (d) => d.x!).attr("cy", (d) => d.y!);
+      node!.attr("cx", (d) => d.x!).attr("cy", (d) => d.y!);
     };
 
     const selectPart = () =>
@@ -181,10 +172,9 @@ function Graph({
     });
     d3.select(ref.current).call(zoom).on("dblclick.zoom", null);
 
-    link.current = linkPart();
-    node.current = nodePart();
-    simulation.current = simulationPart();
-    group.current = g;
+    let link = linkPart();
+    let node = nodePart();
+    let simulation = simulationPart();
 
     const autoExpand = (x: ModelNode) => {
       clicked(x.nid);
@@ -193,7 +183,7 @@ function Graph({
     clicked(model.bads[0].nid);
     model.bads[0].parents.forEach(autoExpand);
     update();
-  }, []);
+  });
 
   return <svg ref={ref} />;
 }
