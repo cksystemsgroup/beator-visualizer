@@ -9,20 +9,24 @@ function LocalInfo({ target }: { target: ModelNode | undefined }) {
         <p>No node selected!</p>
       ) : (
         <ul>
+          {target.name ? (
+            <li>
+              <b>Name:</b> {target.name}
+            </li>
+          ) : null}
           <li>
             <b>Type:</b> {target.type}
           </li>
-          <li>
-            <b>NID:</b> {target.nid}
-          </li>
+          {target.immediate ? (
+            <li>
+              <b>Value:</b> {target.immediate}
+            </li>
+          ) : null}
           <li>
             <b>Depth:</b> {target.stats.depth}
           </li>
           <li>
             <b>Entanglement:</b> {target.stats.entanglement}
-          </li>
-          <li>
-            <b>Collapsed:</b> {target.view.collapsed ? "true" : "false"}
           </li>
         </ul>
       )}

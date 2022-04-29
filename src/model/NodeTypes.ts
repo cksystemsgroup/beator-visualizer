@@ -6,8 +6,8 @@ export class ModelNode {
     readonly nid: number,
     readonly type: NodeType,
     readonly parents: ModelNode[],
-    readonly _immediate?: number,
-    readonly _name?: string
+    readonly immediate?: number,
+    readonly name?: string
   ) {
     this.stats = {
       depth: 0,
@@ -17,17 +17,6 @@ export class ModelNode {
     this.view = {
       collapsed: true,
     };
-  }
-
-  get immediate() {
-    if (!this._immediate) throw new Error("Illegal immediate access");
-
-    return this._immediate!;
-  }
-
-  get name() {
-    if (this._name) return this._name;
-    return this.type;
   }
 }
 
