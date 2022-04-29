@@ -4,7 +4,6 @@ import nodeClicked from "./nodeClicked";
 import { GraphState } from "./types";
 
 function autoExpand(model: Model, graphState: GraphState) {
-  // TODO: buggy
   const expand = (x: ModelNode) => {
     if (x.view.collapsed) {
       nodeClicked(x.nid, model, graphState);

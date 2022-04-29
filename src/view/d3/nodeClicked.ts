@@ -1,39 +1,59 @@
 import Model from "../../model/Model";
 import { ModelNode } from "../../model/NodeTypes";
-import { GraphState } from "./types";
+import { GraphState, Link } from "./types";
 
 function nodeClicked(nid: number, model: Model, graphState: GraphState) {
   const n = model.nodes.get(nid);
 
   if (!n) throw new Error("Could not find clicked Node in model. 💀");
 
-  if (n.view.collapsed) {
-    n.parents.forEach((m) => {
-      const newNode = graphState.nodes.has(m.nid)
-        ? graphState.nodes.get(m.nid)!
-        : { index: m.nid, nid: m.nid, type: m.type };
-      const newLink = {
-        source: graphState.nodes.get(nid)!,
-        target: newNode,
+  if (n.type === "Constant") return;
+
+  const whatHappensIfCollapsed = () => {
+    n.view.collapsed = false;
+    n.parents.forEach((x) => {
+      const newNode = graphState.nodes.get(x.nid) || {
+        index: x.nid,
+        nid: x.nid,
+        type: x.type,
       };
-      graphState.nodes.set(m.nid, newNode);
-      setArray(graphState.links, m.nid, newLink);
+      const newLink = { source: graphState.nodes.get(nid)!, target: newNode };
+
+      graphState.nodes.set(x.nid, newNode);
+      setArray(graphState.links, x.nid, newLink);
     });
-  } else {
-    const recDel = (m: ModelNode) => {
-      m.parents.forEach(recDel);
+  };
+
+  const whatHappensIfExpanded = () => {
+    const recursiveDeletion = (m: ModelNode, caller: ModelNode) => {
+      m.parents.forEach((x) => recursiveDeletion(x, m));
       m.view.collapsed = true;
-      graphState.nodes.delete(m.nid);
-      graphState.links.delete(m.nid);
+      if (graphState.links.get(m.nid)!.length === 1)
+        graphState.nodes.delete(m.nid);
+      filterArray(
+        graphState.links,
+        m.nid,
+        (x: Link) => x.source !== graphState.nodes.get(caller.nid)!
+      );
     };
-    n.parents.forEach(recDel);
-  }
-  n.view.collapsed = !n.view.collapsed;
+
+    n.parents.forEach((x) => recursiveDeletion(x, n));
+    n.view.collapsed = true;
+  };
+
+  n.view.collapsed ? whatHappensIfCollapsed() : whatHappensIfExpanded();
 }
 
-const setArray = (m: Map<unknown, unknown[]>, k: unknown, v: unknown) => {
-  if (m.has(k)) m.get(k)!.push(v);
-  else m.set(k, [v]);
+const setArray = (m: Map<unknown, unknown[]>, k: unknown, v: unknown) =>
+  m.get(k)?.push(v) || m.set(k, [v]);
+
+const filterArray = (
+  m: Map<unknown, unknown[]>,
+  key: unknown,
+  filter: (x: any) => boolean
+) => {
+  let arr = m.get(key)!.filter(filter);
+  m.set(key, arr);
 };
 
 export default nodeClicked;
