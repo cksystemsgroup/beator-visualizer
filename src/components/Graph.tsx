@@ -25,42 +25,42 @@ function Graph({
   setTarget: React.Dispatch<React.SetStateAction<ModelNode | undefined>>;
 }) {
   const ref = useRef(null);
-  let nodes = new Map<number, Node>();
-  nodes.set(model.bads[0].nid, {
-    index: model.bads[0].nid,
-    nid: model.bads[0].nid,
-    type: model.bads[0].type,
-  });
-  let links = new Map<number, Link[]>();
-  let t = useRef<Element>();
-
-  const clicked = (nid: number) => {
-    const n = model.nodes.get(nid);
-
-    if (!n) throw new Error("Could not find clicked Node in model. 💀");
-
-    if (n.view.collapsed) {
-      n.parents.forEach((m) => {
-        const newNode = nodes.has(m.nid)
-          ? nodes.get(m.nid)!
-          : { index: m.nid, nid: m.nid, type: m.type };
-        const newLink = { source: nodes.get(nid)!, target: newNode };
-        nodes.set(m.nid, newNode);
-        setArray(links, m.nid, newLink);
-      });
-    } else {
-      const recDel = (m: ModelNode) => {
-        m.parents.forEach(recDel);
-        m.view.collapsed = true;
-        nodes.delete(m.nid);
-        links.delete(m.nid);
-      };
-      n.parents.forEach(recDel);
-    }
-    n.view.collapsed = !n.view.collapsed;
-  };
+  const t = useRef<Element>();
 
   useEffect(() => {
+    let nodes = new Map<number, Node>();
+    nodes.set(model.bads[0].nid, {
+      index: model.bads[0].nid,
+      nid: model.bads[0].nid,
+      type: model.bads[0].type,
+    });
+    let links = new Map<number, Link[]>();
+
+    const clicked = (nid: number) => {
+      const n = model.nodes.get(nid);
+
+      if (!n) throw new Error("Could not find clicked Node in model. 💀");
+
+      if (n.view.collapsed) {
+        n.parents.forEach((m) => {
+          const newNode = nodes.has(m.nid)
+            ? nodes.get(m.nid)!
+            : { index: m.nid, nid: m.nid, type: m.type };
+          const newLink = { source: nodes.get(nid)!, target: newNode };
+          nodes.set(m.nid, newNode);
+          setArray(links, m.nid, newLink);
+        });
+      } else {
+        const recDel = (m: ModelNode) => {
+          m.parents.forEach(recDel);
+          m.view.collapsed = true;
+          nodes.delete(m.nid);
+          links.delete(m.nid);
+        };
+        n.parents.forEach(recDel);
+      }
+      n.view.collapsed = !n.view.collapsed;
+    };
     function update() {
       node = node!.data(Array.from(nodes.values()));
       node.exit().remove();
@@ -185,7 +185,7 @@ function Graph({
     //clicked(model.bads[0].nid);
     //model.bads[0].parents.forEach(autoExpand);
     update();
-  }, []);
+  }, [model.bads, model.nodes, setTarget]);
 
   return <svg ref={ref} />;
 }
