@@ -4,6 +4,8 @@ import Model from "../model/Model";
 import { ForceLink } from "d3";
 import { ModelNode } from "../model/NodeTypes";
 
+// TODO: clean up
+
 type Node = {
   index: number;
   x?: number;
@@ -17,10 +19,10 @@ type Line = d3.Selection<SVGLineElement, Link, SVGGElement, unknown>;
 
 function Graph({
   model,
-  target,
+  setTarget,
 }: {
   model: Model;
-  target: React.MutableRefObject<ModelNode | null>;
+  setTarget: React.Dispatch<React.SetStateAction<ModelNode | undefined>>;
 }) {
   const ref = useRef(null);
   let nodes = new Map<number, Node>();
@@ -30,7 +32,7 @@ function Graph({
     type: model.bads[0].type,
   });
   let links = new Map<number, Link[]>();
-  let t: Element;
+  let t = useRef<Element>();
 
   const clicked = (nid: number) => {
     const n = model.nodes.get(nid);
@@ -92,12 +94,11 @@ function Graph({
 
     const onClick = (d: { target: Element }) => {
       const nid = parseInt(d.target.getAttribute("nid")!);
-      console.log(target.current?.nid, nid, target.current?.nid === nid);
-      if (!(target.current?.nid === nid)) {
-        t?.setAttribute("fill", "#17BEBB");
+      if (!(parseInt(t.current?.getAttribute("nid")!) === nid)) {
+        t.current?.setAttribute("fill", "#17BEBB");
         d.target.setAttribute("fill", "#f00");
-        target.current = model.nodes.get(nid)!;
-        t = d.target;
+        setTarget(model.nodes.get(nid)!);
+        t.current = d.target;
       } else {
         clicked(nid);
         update();
@@ -176,14 +177,15 @@ function Graph({
     let node = nodePart();
     let simulation = simulationPart();
 
-    const autoExpand = (x: ModelNode) => {
-      clicked(x.nid);
-      x.parents.forEach(autoExpand);
-    };
-    clicked(model.bads[0].nid);
-    model.bads[0].parents.forEach(autoExpand);
+    // TODO: buggy
+    //const autoExpand = (x: ModelNode) => {
+    //  clicked(x.nid);
+    //  x.parents.forEach(autoExpand);
+    //};
+    //clicked(model.bads[0].nid);
+    //model.bads[0].parents.forEach(autoExpand);
     update();
-  });
+  }, []);
 
   return <svg ref={ref} />;
 }
