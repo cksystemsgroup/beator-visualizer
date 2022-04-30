@@ -15,11 +15,14 @@ details {
   margin: 10px;
   padding: 10px;
   width: 20vw;
-  height: 2vh;
 }
 
 details[open] {
   height: 45vh;
+}
+
+summary {
+  margin: 5px 0;
 }
 
 .local {
@@ -35,4 +38,38 @@ details[open] {
 .selection {
   top: 0;
   right: 0;
+  overflow: hidden;
+}
+
+.bloc-tabs {
+  display: flex;
+}
+
+.tabs {
+  padding: 15px;
+  text-align: center;
+  flex-grow: 1;
+  box-sizing: content-box;
+  outline: none;
+}
+
+.active-tabs {
+  background: #17bebb;
+}
+
+button {
+  border: none;
+}
+
+.content-tabs {
+  overflow-y: auto;
+  height: 80%;
+}
+
+.content {
+  display: none;
+}
+
+.active-content {
+  display: block;
 }

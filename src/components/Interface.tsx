@@ -15,7 +15,7 @@ function Interface({ model }: { model: Model }) {
       <Graph model={model} setTarget={setTarget} />
       <LocalInfo target={target} />
       <GlobalInfo result={createMetrics(model)} />
-      <Selection />
+      <Selection model={model} />
     </>
   );
 }
