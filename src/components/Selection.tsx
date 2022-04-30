@@ -2,7 +2,15 @@ import { useState } from "react";
 import Model from "../model/Model";
 import { ModelNode, NodeType } from "../model/NodeTypes";
 
-function Selection({ model }: { model: Model }) {
+function Selection({
+  model,
+  selected,
+  setSelected,
+}: {
+  model: Model;
+  selected: ModelNode;
+  setSelected: React.Dispatch<React.SetStateAction<ModelNode>>;
+}) {
   const [active, setActive] = useState(1);
 
   return (
@@ -10,7 +18,12 @@ function Selection({ model }: { model: Model }) {
       <summary>Selection</summary>
       <TabsItselves active={active} setActive={setActive} />
 
-      <TabContent model={model} active={active} />
+      <TabContent
+        model={model}
+        active={active}
+        selected={selected}
+        setSelected={setSelected}
+      />
     </details>
   );
 }
@@ -48,7 +61,17 @@ function TabsItselves({
   );
 }
 
-function TabContent({ model, active }: { model: Model; active: number }) {
+function TabContent({
+  model,
+  active,
+  selected,
+  setSelected,
+}: {
+  model: Model;
+  active: number;
+  selected: ModelNode;
+  setSelected: React.Dispatch<React.SetStateAction<ModelNode>>;
+}) {
   model.dagRoots.sort(sortRoots);
   const bads = model.bads.sort(sortRoots);
   const pcs = model.dagRoots.filter(filterPCs);
@@ -60,28 +83,48 @@ function TabContent({ model, active }: { model: Model; active: number }) {
       <div className={active === 1 ? "content  active-content" : "content"}>
         <ul>
           {bads.map((x) => (
-            <li key={`${x.nid}`}>{x.name}</li>
+            <li
+              className={x === selected ? "selected" : ""}
+              key={`${x.nid}`}
+              onClick={() => setSelected(x)}>
+              {x.name}
+            </li>
           ))}
         </ul>
       </div>
       <div className={active === 2 ? "content  active-content" : "content"}>
         <ul>
           {pcs.map((x) => (
-            <li key={`${x.nid}`}>{x.parents[0].name}</li>
+            <li
+              className={x === selected ? "selected" : ""}
+              key={`${x.nid}`}
+              onClick={() => setSelected(x)}>
+              {x.parents[0].name}
+            </li>
           ))}
         </ul>
       </div>
       <div className={active === 3 ? "content  active-content" : "content"}>
         <ul>
           {regs.map((x) => (
-            <li key={`${x.nid}`}>{x.parents[0].name}</li>
+            <li
+              className={x === selected ? "selected" : ""}
+              key={`${x.nid}`}
+              onClick={() => setSelected(x)}>
+              {x.parents[0].name}
+            </li>
           ))}
         </ul>
       </div>
       <div className={active === 4 ? "content  active-content" : "content"}>
         <ul>
           {oth.map((x) => (
-            <li key={`${x.nid}`}>{x.parents[0].name}</li>
+            <li
+              className={x === selected ? "selected" : ""}
+              key={`${x.nid}`}
+              onClick={() => setSelected(x)}>
+              {x.parents[0].name}
+            </li>
           ))}
         </ul>
       </div>

@@ -9,13 +9,14 @@ import Selection from "./Selection";
 
 function Interface({ model }: { model: Model }) {
   const [target, setTarget] = useState<ModelNode>();
+  const [selected, setSelected] = useState(model.bads[0]);
 
   return (
     <>
-      <Graph model={model} setTarget={setTarget} />
+      <Graph model={model} setTarget={setTarget} selected={selected} />
       <LocalInfo target={target} />
       <GlobalInfo result={createMetrics(model)} />
-      <Selection model={model} />
+      <Selection model={model} selected={selected} setSelected={setSelected} />
     </>
   );
 }

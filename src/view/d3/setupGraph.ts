@@ -1,4 +1,5 @@
 import Model from "../../model/Model";
+import { ModelNode } from "../../model/NodeTypes";
 import applyMarker from "./applyMarker";
 import createSimulation from "./createSimulation";
 import linkGroup from "./linkGroup";
@@ -7,7 +8,11 @@ import svgGroup from "./svgGroup";
 import { GraphState, Link, NodeD3, Simulation } from "./types";
 import zoom from "./zoom";
 
-function setupGraph(model: Model, element: null): [GraphState, Simulation] {
+function setupGraph(
+  model: Model,
+  element: null,
+  selected: ModelNode
+): [GraphState, Simulation] {
   const g = svgGroup(element);
   const graphState: GraphState = {
     links: new Map<number, Link[]>(),
@@ -17,10 +22,10 @@ function setupGraph(model: Model, element: null): [GraphState, Simulation] {
     svgGroup: g,
   };
 
-  graphState.nodes.set(model.bads[0].nid, {
-    index: model.bads[0].nid,
-    nid: model.bads[0].nid,
-    type: model.bads[0].type,
+  graphState.nodes.set(selected.nid, {
+    index: selected.nid,
+    nid: selected.nid,
+    type: selected.type,
   });
 
   applyMarker(g);

@@ -73,3 +73,8 @@ button {
 .active-content {
   display: block;
 }
+
+.selected {
+  font-weight: bold;
+  background-color: #17bebb;
+}
