@@ -8,7 +8,7 @@ export default function processLine(line: string, model: Model) {
     const type = determineType(inst);
 
     if (type === NodeType.Const)
-      return [nid, new ModelNode(nid, type, [], parseInt(operands[0]))];
+      return [nid, new ModelNode(nid, type, [], parseInt(operands[1]))];
 
     const node = new ModelNode(
       nid,
