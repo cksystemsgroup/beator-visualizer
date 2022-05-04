@@ -78,3 +78,61 @@ button {
   font-weight: bold;
   background-color: #17bebb;
 }
+
+.Constant,
+.Read,
+.Write,
+.Addition,
+.Subtraction,
+.Multiplication,
+.Division,
+.Remainder,
+.Less-than,
+.Extend,
+.If-then-else,
+.And,
+.Not,
+.Equals,
+.Input,
+.Bad,
+.State,
+.Next,
+.Sort,
+.Initialization {
+  fill: #17bebb;
+}
+
+.Bad,
+.Next {
+  fill: darkred;
+}
+
+.Constant,
+.Input {
+  fill: green;
+}
+
+.State {
+  fill: mediumseagreen;
+}
+
+.And {
+  fill: orange;
+}
+
+.Not {
+  fill: darkblue;
+}
+
+.Equals {
+  fill: plum;
+}
+
+.If-then-else {
+  fill: slategrey;
+}
+
+.clicked {
+  stroke: red;
+  stroke-width: 3px;
+}

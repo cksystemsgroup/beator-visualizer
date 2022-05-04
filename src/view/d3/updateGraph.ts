@@ -26,7 +26,7 @@ function updateGraph(
   graphState.nodeGroup = graphState.nodeGroup
     .enter()
     .append("circle")
-    .attr("fill", "#17BEBB")
+    .attr("class", (d) => d.type)
     .attr("r", 10)
     .attr("nid", (d) => d.nid)
     .on("click", onClick)

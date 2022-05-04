@@ -14,8 +14,10 @@ function nodeOnClick(
 ) {
   const nid = parseInt(d.target.getAttribute("nid")!);
   if (!(parseInt(t?.getAttribute("nid")!) === nid)) {
-    t?.setAttribute("fill", "#17BEBB");
-    d.target.setAttribute("fill", "#f00");
+    t?.setAttribute("class", t.getAttribute("class")!.split(" ")[0]);
+    t?.setAttribute("r", "10");
+    d.target.setAttribute("class", `${d.target.getAttribute("class")} clicked`);
+    d.target.setAttribute("r", "15");
     setTarget(model.nodes.get(nid)!);
     t = d.target;
   } else {
