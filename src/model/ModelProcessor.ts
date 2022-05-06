@@ -6,8 +6,8 @@ import { createMetrics } from "./Result";
 export default class ModelProcessor {
   #model: Model;
 
-  constructor(text: string, unrollDepth: number) {
-    this.#model = newModel(unrollDepth);
+  constructor(text: string) {
+    this.#model = newModel();
 
     const lines = text.split("\n");
     lines.forEach((x) => processLine(x, this.#model));

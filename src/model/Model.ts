@@ -5,7 +5,6 @@ export default interface Model {
   bads: ModelNode[];
   dagRoots: ModelNode[];
   iniRoots: ModelNode[];
-  unrollDepth: number;
   dagDepthMax: number;
   dagStartMax?: ModelNode;
   iniDepthMax: number;
@@ -16,13 +15,12 @@ export default interface Model {
   iniEntangledMax?: ModelNode;
 }
 
-export function newModel(unrollDepth: number): Model {
+export function newModel(): Model {
   return {
     nodes: new Map(),
     dagRoots: [],
     iniRoots: [],
     bads: [],
-    unrollDepth,
     dagDepthMax: 0,
     iniDepthMax: 0,
     dagEntanglementMax: 0,

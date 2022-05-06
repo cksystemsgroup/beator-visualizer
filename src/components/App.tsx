@@ -7,16 +7,14 @@ import Interface from "./Interface";
 
 function App() {
   const [text, setText] = useState("");
-  const [unroll, setUnroll] = useState<number>();
 
-  const readText = (file: File, unroll: number) => {
+  const readText = (file: File) => {
     file?.text().then((text) => setText(text));
-    setUnroll(unroll);
   };
 
   if (text === "") return <Form readText={readText} />;
 
-  const mb = new ModelProcessor(text, unroll!);
+  const mb = new ModelProcessor(text);
 
   return <Interface model={mb.model} />;
 }
