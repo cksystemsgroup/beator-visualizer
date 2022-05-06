@@ -1,31 +1,16 @@
 import processLine from "./LineProcessor";
-import Model, { newModel } from "./Model";
+import { newModel } from "./Model";
 import processNodes from "./NodeProcessor";
-import { createMetrics } from "./Result";
 
-export default class ModelProcessor {
-  #model: Model;
+function processModel(text: string) {
+  const model = newModel();
 
-  constructor(text: string) {
-    this.#model = newModel();
+  const lines = text.split("\n");
+  lines.forEach((x) => processLine(x, model));
 
-    const lines = text.split("\n");
-    lines.forEach((x) => processLine(x, this.#model));
+  processNodes(model);
 
-    processNodes(this.#model);
-
-    console.log(this.#model);
-  }
-
-  printResults(): string[] {
-    return [
-      ...Object.entries(createMetrics(this.#model)).map(
-        ([k, v]) => `${k}: ${v}`
-      ),
-    ];
-  }
-
-  get model() {
-    return this.#model;
-  }
+  return model;
 }
+
+export default processModel;
