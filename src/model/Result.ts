@@ -9,13 +9,11 @@ export default interface Metrics {
 }
 
 export function createMetrics(model: Model): Metrics {
-  let metrics: Metrics = {
+  return {
     nrOfNodes: model.nodes.size,
     nrOfBads: model.bads.length,
     nrOfStates: model.dagRoots.length - model.bads.length,
     longestPathLength: model.dagDepthMax,
     maxEntanglement: model.dagEntanglementMax,
   };
-
-  return metrics;
 }

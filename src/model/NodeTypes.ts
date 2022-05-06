@@ -1,6 +1,6 @@
 export class ModelNode {
   readonly stats: Stats;
-  readonly view: View;
+  view: View;
 
   constructor(
     readonly nid: number,
@@ -16,7 +16,32 @@ export class ModelNode {
 
     this.view = {
       collapsed: true,
+      index: nid,
     };
+  }
+
+  get index() {
+    return this.view.index;
+  }
+
+  set index(v) {
+    this.view.index = v;
+  }
+
+  get x() {
+    return this.view.x;
+  }
+
+  set x(v) {
+    this.view.x = v;
+  }
+
+  get y() {
+    return this.view.y;
+  }
+
+  set y(v) {
+    this.view.y = v;
   }
 }
 
@@ -52,4 +77,7 @@ interface Stats {
 
 interface View {
   collapsed: boolean;
+  index: number;
+  x?: number;
+  y?: number;
 }

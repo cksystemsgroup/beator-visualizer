@@ -16,11 +16,11 @@ function Graph({
   setTarget: TargetFunction;
   selected: ModelNode;
 }) {
-  const ref = useRef(null);
+  const ref = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
-    reset(model, setTarget, ref.current);
-    const [state, sim] = setupGraph(model, ref.current, selected);
+    reset(model, setTarget, ref.current!);
+    const [state, sim] = setupGraph(ref.current!, selected);
 
     autoExpand(model, state, selected);
 

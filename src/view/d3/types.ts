@@ -1,16 +1,9 @@
 import { ModelNode } from "../../model/NodeTypes";
 
-export type NodeD3 = {
-  index: number;
-  x?: number;
-  y?: number;
-  nid: number;
-  type: string;
-};
-export type Link = { source: NodeD3; target: NodeD3 };
+export type Link = { source: ModelNode; target: ModelNode };
 export type CircleGroup = d3.Selection<
   SVGCircleElement,
-  NodeD3,
+  ModelNode,
   SVGGElement,
   unknown
 >;
@@ -25,9 +18,9 @@ export type TargetFunction = React.Dispatch<
   React.SetStateAction<ModelNode | undefined>
 >;
 export type Group = d3.Selection<SVGGElement, unknown, null, undefined>;
-export type Simulation = d3.Simulation<NodeD3, Link>;
+export type Simulation = d3.Simulation<ModelNode, Link>;
 export type GraphState = {
-  nodes: Map<number, NodeD3>;
+  nodes: Map<number, ModelNode>;
   links: Map<number, Link[]>;
   nodeGroup: CircleGroup;
   linkGroup: LineGroup;
