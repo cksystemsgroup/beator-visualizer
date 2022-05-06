@@ -6,13 +6,11 @@ import Form from "./Form";
 import Interface from "./Interface";
 
 function App() {
-  const [text, setText] = useState("");
+  const [text, setText] = useState<string>();
 
-  const readText = (file: File) => {
-    file?.text().then((text) => setText(text));
-  };
+  const readText = (file: File) => file!.text().then(setText);
 
-  if (text === "") return <Form readText={readText} />;
+  if (!text) return <Form readText={readText} />;
 
   const mb = new ModelProcessor(text);
 
