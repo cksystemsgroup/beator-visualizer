@@ -3,8 +3,6 @@ import clickNode from "./clickNode";
 import { GraphState, Simulation, TargetFunction } from "./types";
 import updateGraph from "./updateGraph";
 
-let t: Element | undefined;
-
 function nodeOnClick(
   d: { target: Element },
   model: Model,
@@ -12,17 +10,23 @@ function nodeOnClick(
   simulation: Simulation,
   setTarget: TargetFunction
 ) {
-  const nid = parseInt(d.target.getAttribute("nid")!);
-  if (!(parseInt(t?.getAttribute("nid")!) === nid)) {
-    t?.setAttribute("class", t.getAttribute("class")!.split(" ")[0]);
-    t?.setAttribute("r", "10");
-    d.target.setAttribute("class", `${d.target.getAttribute("class")} clicked`);
-    d.target.setAttribute("r", "15");
-    setTarget(model.nodes.get(nid)!);
-    t = d.target;
+  const oldTargetElement = document.querySelector(".clicked");
+  const newTargetElement = d.target;
+  const clickedNode = model.nodes.get(
+    parseInt(newTargetElement.getAttribute("nid")!)
+  )!;
+
+  if (oldTargetElement !== newTargetElement) {
+    oldTargetElement?.classList.remove("clicked");
+    oldTargetElement?.setAttribute("r", "10");
+
+    newTargetElement.classList.add("clicked");
+    newTargetElement.setAttribute("r", "15");
+
+    setTarget(clickedNode);
   } else {
-    clickNode(model.nodes.get(nid)!, graphState);
-    updateGraph(graphState, simulation, { model, setTarget });
+    clickNode(clickedNode, graphState);
+    updateGraph(graphState, simulation, model, setTarget);
   }
 }
 

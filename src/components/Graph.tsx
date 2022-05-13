@@ -9,11 +9,13 @@ import expand from "../view/d3/expand";
 
 function Graph({
   model,
+  target,
   setTarget,
   selected,
   autoExpand,
 }: {
   model: Model;
+  target: ModelNode | undefined;
   setTarget: TargetFunction;
   selected: ModelNode;
   autoExpand: boolean;
@@ -26,7 +28,7 @@ function Graph({
 
     if (autoExpand) expand(state, selected);
 
-    updateGraph(state, sim, { model, setTarget });
+    updateGraph(state, sim, model, setTarget);
   }, [model, setTarget, selected, autoExpand]);
 
   return <svg ref={ref} />;

@@ -8,13 +8,8 @@ import { GraphState, Link, Simulation, TargetFunction } from "./types";
 function updateGraph(
   graphState: GraphState,
   simulation: Simulation,
-  {
-    model,
-    setTarget,
-  }: {
-    model: Model;
-    setTarget: TargetFunction;
-  }
+  model: Model,
+  setTarget: TargetFunction
 ) {
   const onClick = (d: { target: Element }) =>
     nodeOnClick(d, model, graphState, simulation, setTarget);
