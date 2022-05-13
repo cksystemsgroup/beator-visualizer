@@ -21,7 +21,7 @@ export type Group = d3.Selection<SVGGElement, unknown, null, undefined>;
 export type Simulation = d3.Simulation<ModelNode, Link>;
 export type GraphState = {
   nodes: Map<number, ModelNode>;
-  links: Map<number, Link[]>;
+  links: Link[];
   nodeGroup: CircleGroup;
   linkGroup: LineGroup;
   svgGroup: SvgGroup;

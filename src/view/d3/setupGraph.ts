@@ -2,7 +2,7 @@ import { ModelNode } from "../../model/NodeTypes";
 import * as d3 from "d3";
 import createSimulation from "./createSimulation";
 import { svgGroup, linkGroup, nodeGroup, applyMarker } from "./groups";
-import { GraphState, Group, Link, Simulation } from "./types";
+import { GraphState, Group, Simulation } from "./types";
 
 function setupGraph(
   element: Element,
@@ -10,7 +10,7 @@ function setupGraph(
 ): [GraphState, Simulation] {
   const g = svgGroup(element);
   const graphState: GraphState = {
-    links: new Map<number, Link[]>(),
+    links: [],
     nodes: new Map<number, ModelNode>(),
     linkGroup: linkGroup(g),
     nodeGroup: nodeGroup(g),

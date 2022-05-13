@@ -1,54 +1,31 @@
-import Model from "../../model/Model";
-import { ModelNode } from "../../model/NodeTypes";
-import { GraphState, Link } from "./types";
+import { ModelNode, NodeType } from "../../model/NodeTypes";
+import { GraphState } from "./types";
 
-function clickNode(nid: number, model: Model, graphState: GraphState) {
-  const n = model.nodes.get(nid);
+function clickNode(node: ModelNode, graphState: GraphState) {
+  const expand = () => {
+    node.view.collapsed = false;
 
-  if (!n) throw new Error("Could not find clicked Node in model. 💀");
-
-  if (n.type === "Constant") return;
-
-  const whatHappensIfCollapsed = () => {
-    n.view.collapsed = false;
-    n.parents.forEach((x) => {
-      const newLink = { source: graphState.nodes.get(nid)!, target: x };
-
+    node.parents.forEach((x) => {
       graphState.nodes.set(x.nid, x);
-      setArray(graphState.links, x.nid, newLink);
+      graphState.links.push({ source: node, target: x });
     });
   };
 
-  const whatHappensIfExpanded = () => {
-    const recursiveDeletion = (m: ModelNode, caller: ModelNode) => {
-      m.parents.forEach((x) => recursiveDeletion(x, m));
-      m.view.collapsed = true;
-      if (graphState.links.get(m.nid)!.length === 1)
-        graphState.nodes.delete(m.nid);
-      filterArray(
-        graphState.links,
-        m.nid,
-        (x: Link) => x.source !== graphState.nodes.get(caller.nid)!
-      );
-    };
-
-    n.parents.forEach((x) => recursiveDeletion(x, n));
+  const collapse = (n: ModelNode) => {
     n.view.collapsed = true;
+    graphState.links = graphState.links.filter((l) => l.source !== n);
+
+    n.parents.forEach((x) => {
+      if (graphState.links.filter((l) => l.target === x).length === 0) {
+        collapse(x);
+        graphState.nodes.delete(x.nid);
+      }
+    });
   };
 
-  n.view.collapsed ? whatHappensIfCollapsed() : whatHappensIfExpanded();
+  if (node.type === NodeType.Const) return;
+
+  node.view.collapsed ? expand() : collapse(node);
 }
-
-const setArray = (m: Map<unknown, unknown[]>, k: unknown, v: unknown) =>
-  m.get(k)?.push(v) || m.set(k, [v]);
-
-const filterArray = (
-  m: Map<unknown, unknown[]>,
-  key: unknown,
-  filter: (x: any) => boolean
-) => {
-  let arr = m.get(key)!.filter(filter);
-  m.set(key, arr);
-};
 
 export default clickNode;

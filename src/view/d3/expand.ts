@@ -1,16 +1,15 @@
-import Model from "../../model/Model";
 import { ModelNode } from "../../model/NodeTypes";
 import clickNode from "./clickNode";
 import { GraphState } from "./types";
 
-function expand(model: Model, graphState: GraphState, selected: ModelNode) {
-  const expand = (x: ModelNode) => {
+function expand(graphState: GraphState, selected: ModelNode) {
+  const exp = (x: ModelNode) => {
     if (x.view.collapsed) {
-      clickNode(x.nid, model, graphState);
-      x.parents.forEach(expand);
+      clickNode(x, graphState);
+      x.parents.forEach(exp);
     }
   };
-  expand(selected);
+  exp(selected);
 }
 
 export default expand;

@@ -24,7 +24,7 @@ function Graph({
     reset(model, setTarget, ref.current!);
     const [state, sim] = setupGraph(ref.current!, selected);
 
-    if (autoExpand) expand(model, state, selected);
+    if (autoExpand) expand(state, selected);
 
     updateGraph(state, sim, { model, setTarget });
   }, [model, setTarget, selected, autoExpand]);

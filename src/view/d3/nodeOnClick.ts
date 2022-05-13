@@ -21,7 +21,7 @@ function nodeOnClick(
     setTarget(model.nodes.get(nid)!);
     t = d.target;
   } else {
-    clickNode(nid, model, graphState);
+    clickNode(model.nodes.get(nid)!, graphState);
     updateGraph(graphState, simulation, { model, setTarget });
   }
 }
