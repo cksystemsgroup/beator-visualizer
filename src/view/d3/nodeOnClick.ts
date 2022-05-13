@@ -1,5 +1,5 @@
 import Model from "../../model/Model";
-import nodeClicked from "./nodeClicked";
+import clickNode from "./clickNode";
 import { GraphState, Simulation, TargetFunction } from "./types";
 import updateGraph from "./updateGraph";
 
@@ -21,7 +21,7 @@ function nodeOnClick(
     setTarget(model.nodes.get(nid)!);
     t = d.target;
   } else {
-    nodeClicked(nid, model, graphState);
+    clickNode(nid, model, graphState);
     updateGraph(graphState, simulation, { model, setTarget });
   }
 }

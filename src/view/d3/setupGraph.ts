@@ -1,38 +1,36 @@
-import Model from "../../model/Model";
 import { ModelNode } from "../../model/NodeTypes";
-import applyMarker from "./applyMarker";
+import * as d3 from "d3";
 import createSimulation from "./createSimulation";
-import linkGroup from "./linkGroup";
-import nodeGroup from "./nodeGroup";
-import svgGroup from "./svgGroup";
-import { GraphState, Link, NodeD3, Simulation } from "./types";
-import zoom from "./zoom";
+import { svgGroup, linkGroup, nodeGroup, applyMarker } from "./groups";
+import { GraphState, Group, Link, Simulation } from "./types";
 
 function setupGraph(
-  model: Model,
-  element: null,
+  element: Element,
   selected: ModelNode
 ): [GraphState, Simulation] {
   const g = svgGroup(element);
   const graphState: GraphState = {
     links: new Map<number, Link[]>(),
-    nodes: new Map<number, NodeD3>(),
+    nodes: new Map<number, ModelNode>(),
     linkGroup: linkGroup(g),
     nodeGroup: nodeGroup(g),
     svgGroup: g,
   };
 
-  graphState.nodes.set(selected.nid, {
-    index: selected.nid,
-    nid: selected.nid,
-    type: selected.type,
-  });
+  graphState.nodes.set(selected.nid, selected);
 
   applyMarker(g);
 
   zoom(g, element);
 
   return [graphState, createSimulation(graphState)];
+}
+
+function zoom(group: Group, element: Element) {
+  const zoom = d3.zoom<any, unknown>().on("zoom", function (event) {
+    group.selectAll("g").attr("transform", event.transform);
+  });
+  d3.select(element).call(zoom).on("dblclick.zoom", null);
 }
 
 export default setupGraph;

@@ -1,24 +1,26 @@
 import { useState } from "react";
 
-function Form(props: { readText: any }) {
-  let [unroll, setUnroll] = useState(0);
+function Form({
+  setText,
+}: {
+  setText: React.Dispatch<React.SetStateAction<string | undefined>>;
+}) {
   let [file, setFile] = useState<File>();
   return (
-    <div className="form">
+    <form>
       <input
         type="file"
         accept=".btor2"
-        onChange={(e) => setFile(e.currentTarget.files!.item(0) || undefined)}
+        onChange={(e) => setFile(e.currentTarget.files!.item(0)!)}
       />{" "}
-      <input
-        type="number"
-        min="0"
-        value={unroll}
-        onChange={(e) => setUnroll(parseInt(e.target.value))}></input>
-      <button disabled={!file} onClick={() => props.readText(file, unroll)}>
+      <button
+        type="button"
+        disabled={!file}
+        onClick={() => file!.text().then(setText)}
+      >
         Calculate
       </button>
-    </div>
+    </form>
   );
 }
 

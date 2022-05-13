@@ -2,7 +2,7 @@ import Model from "../../model/Model";
 import { ModelNode } from "../../model/NodeTypes";
 import { GraphState, Link } from "./types";
 
-function nodeClicked(nid: number, model: Model, graphState: GraphState) {
+function clickNode(nid: number, model: Model, graphState: GraphState) {
   const n = model.nodes.get(nid);
 
   if (!n) throw new Error("Could not find clicked Node in model. 💀");
@@ -12,14 +12,9 @@ function nodeClicked(nid: number, model: Model, graphState: GraphState) {
   const whatHappensIfCollapsed = () => {
     n.view.collapsed = false;
     n.parents.forEach((x) => {
-      const newNode = graphState.nodes.get(x.nid) || {
-        index: x.nid,
-        nid: x.nid,
-        type: x.type,
-      };
-      const newLink = { source: graphState.nodes.get(nid)!, target: newNode };
+      const newLink = { source: graphState.nodes.get(nid)!, target: x };
 
-      graphState.nodes.set(x.nid, newNode);
+      graphState.nodes.set(x.nid, x);
       setArray(graphState.links, x.nid, newLink);
     });
   };
@@ -56,4 +51,4 @@ const filterArray = (
   m.set(key, arr);
 };
 
-export default nodeClicked;
+export default clickNode;

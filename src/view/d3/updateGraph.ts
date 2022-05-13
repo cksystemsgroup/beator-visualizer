@@ -1,8 +1,9 @@
 import { ForceLink } from "d3";
 import Model from "../../model/Model";
+import { ModelNode } from "../../model/NodeTypes";
 import drag from "./drag";
 import nodeOnClick from "./nodeOnClick";
-import { GraphState, Link, NodeD3, Simulation, TargetFunction } from "./types";
+import { GraphState, Link, Simulation, TargetFunction } from "./types";
 
 function updateGraph(
   graphState: GraphState,
@@ -47,7 +48,7 @@ function updateGraph(
 
   simulation.nodes(Array.from(graphState.nodes.values()));
   simulation
-    .force<ForceLink<NodeD3, Link>>("link")
+    .force<ForceLink<ModelNode, Link>>("link")
     ?.links(Array.from(graphState.links.values()).flat());
   simulation.alpha(1).restart();
 }

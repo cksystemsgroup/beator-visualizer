@@ -7,9 +7,6 @@ export default function processLine(line: string, model: Model) {
     const nid = parseInt(nidStr);
     const type = determineType(inst);
 
-    if (type === NodeType.Const)
-      return [nid, new ModelNode(nid, type, [], parseInt(operands[1]))];
-
     const node = new ModelNode(
       nid,
       type,
@@ -29,6 +26,7 @@ export default function processLine(line: string, model: Model) {
     type: NodeType,
     operands: string[]
   ): [ModelNode[], number?, string?] {
+    if (type === NodeType.Const) return [[], parseInt(operands[1])];
     if (type === NodeType.State || type === NodeType.Input) {
       return [
         operands.slice(1, -1).map((x) => model.nodes.get(parseInt(x))!),

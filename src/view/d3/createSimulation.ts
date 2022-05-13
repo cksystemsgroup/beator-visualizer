@@ -1,5 +1,6 @@
 import * as d3 from "d3";
-import { GraphState, Link, NodeD3 } from "./types";
+import { ModelNode } from "../../model/NodeTypes";
+import { GraphState, Link } from "./types";
 
 function createSimulation(graphState: GraphState) {
   const ticked = () => {
@@ -13,11 +14,11 @@ function createSimulation(graphState: GraphState) {
   };
 
   return d3
-    .forceSimulation<NodeD3, Link>(Array.from(graphState.nodes.values()))
-    .force("charge", d3.forceManyBody<NodeD3>().strength(-100))
+    .forceSimulation<ModelNode, Link>(Array.from(graphState.nodes.values()))
+    .force("charge", d3.forceManyBody<ModelNode>().strength(-20))
     .force(
       "link",
-      d3.forceLink(Array.from(graphState.links.values()).flat()).distance(150)
+      d3.forceLink(Array.from(graphState.links.values()).flat()).distance(100)
     )
     .on("tick", ticked);
 }
