@@ -3,7 +3,7 @@ import { ModelNode } from "../../model/NodeTypes";
 import nodeClicked from "./nodeClicked";
 import { GraphState } from "./types";
 
-function autoExpand(model: Model, graphState: GraphState, selected: ModelNode) {
+function expand(model: Model, graphState: GraphState, selected: ModelNode) {
   const expand = (x: ModelNode) => {
     if (x.view.collapsed) {
       nodeClicked(x.nid, model, graphState);
@@ -13,4 +13,4 @@ function autoExpand(model: Model, graphState: GraphState, selected: ModelNode) {
   expand(selected);
 }
 
-export default autoExpand;
+export default expand;

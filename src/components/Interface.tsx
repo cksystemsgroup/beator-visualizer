@@ -6,17 +6,31 @@ import GlobalInfo from "./GlobalInfo";
 import Graph from "./Graph";
 import LocalInfo from "./LocalInfo";
 import Selection from "./Selection";
+import Settings from "./Settings";
 
 function Interface({ model }: { model: Model }) {
   const [target, setTarget] = useState<ModelNode>();
   const [selected, setSelected] = useState(model.bads[0]);
+  const [autoExpand, setAutoExpand] = useState(true);
+
+  const props = {
+    model,
+    target,
+    setTarget,
+    selected,
+    setSelected,
+    autoExpand,
+    setAutoExpand,
+    result: createMetrics(model),
+  };
 
   return (
     <>
-      <Graph model={model} setTarget={setTarget} selected={selected} />
-      <LocalInfo target={target} />
-      <GlobalInfo result={createMetrics(model)} />
-      <Selection model={model} selected={selected} setSelected={setSelected} />
+      <Graph {...props} />
+      <LocalInfo {...props} />
+      <GlobalInfo {...props} />
+      <Selection {...props} />
+      <Settings {...props} />
     </>
   );
 }
