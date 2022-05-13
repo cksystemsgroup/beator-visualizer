@@ -24,7 +24,7 @@ export function nodeGroup(group: Group) {
 export function linkGroup(group: Group) {
   return group
     .append("g")
-    .attr("stroke", "#000")
+    .attr("stroke", "#333")
     .attr("stroke-width", 1.5)
     .selectAll("line") as LineGroup;
 }
@@ -35,7 +35,7 @@ export function applyMarker(group: Group) {
     .append("marker")
     .attr("id", "triangle")
     .attr("viewBox", "0 -5 10 10")
-    .attr("refX", 21)
+    .attr("refX", 0)
     .attr("refY", 0)
     .attr("markerWidth", 6)
     .attr("markerHeight", 6)

@@ -1,6 +1,6 @@
 import { ForceLink } from "d3";
 import Model from "../../model/Model";
-import { ModelNode } from "../../model/NodeTypes";
+import { ModelNode, SortType } from "../../model/NodeTypes";
 import drag from "./drag";
 import nodeOnClick from "./nodeOnClick";
 import { GraphState, Link, Simulation, TargetFunction } from "./types";
@@ -39,7 +39,21 @@ function updateGraph(
     .enter()
     .append("line")
     .merge(graphState.linkGroup)
-    .attr("marker-end", "url(#triangle)");
+    .attr("marker-end", "url(#triangle)")
+    .attr("stroke-width", (d) => {
+      switch (d.sort) {
+        case SortType.Boolean:
+          return 1;
+        case SortType.Bytes:
+          return 1.5;
+        case SortType.Word:
+          return 2;
+        case SortType.Memory:
+          return 5;
+        default:
+          return 2;
+      }
+    });
 
   simulation.nodes(Array.from(graphState.nodes.values()));
   simulation

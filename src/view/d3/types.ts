@@ -1,6 +1,6 @@
-import { ModelNode } from "../../model/NodeTypes";
+import { ModelNode, SortType } from "../../model/NodeTypes";
 
-export type Link = { source: ModelNode; target: ModelNode };
+export type Link = { source: ModelNode; target: ModelNode; sort: SortType };
 export type CircleGroup = d3.Selection<
   SVGCircleElement,
   ModelNode,

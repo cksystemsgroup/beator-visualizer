@@ -1,4 +1,4 @@
-import { ModelNode } from "./NodeTypes";
+import { ModelNode, SortType } from "./NodeTypes";
 
 export default interface Model {
   nodes: Map<number, ModelNode>;
@@ -13,6 +13,7 @@ export default interface Model {
   iniEntanglementMax: number;
   dagEntangledMax?: ModelNode;
   iniEntangledMax?: ModelNode;
+  sortMap: Map<number, SortType>;
 }
 
 export function newModel(): Model {
@@ -25,5 +26,6 @@ export function newModel(): Model {
     iniDepthMax: 0,
     dagEntanglementMax: 0,
     iniEntanglementMax: 0,
+    sortMap: new Map(),
   };
 }

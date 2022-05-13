@@ -12,19 +12,24 @@ function LocalInfo({ target }: { target: ModelNode | undefined }) {
           <li>
             <b>NID:</b> {target.nid}
           </li>
-          {target.name ? (
+          {target.sort && (
+            <li>
+              <b>Sort Type:</b> {target.sort}
+            </li>
+          )}
+          {target.name && (
             <li>
               <b>Name:</b> {target.name}
             </li>
-          ) : null}
+          )}
           <li>
             <b>Type:</b> {target.type}
           </li>
-          {target.immediate !== undefined ? (
+          {target.immediate && (
             <li>
               <b>Value:</b> {target.immediate}
             </li>
-          ) : null}
+          )}
           <li>
             <b>Depth:</b> {target.stats.depth}
           </li>

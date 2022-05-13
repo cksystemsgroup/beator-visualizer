@@ -6,6 +6,7 @@ export class ModelNode {
     readonly nid: number,
     readonly type: NodeType,
     readonly parents: ModelNode[],
+    readonly sort: SortType,
     readonly immediate?: number,
     readonly name?: string
   ) {
@@ -66,6 +67,13 @@ export enum NodeType {
   Next = "Next",
   Sort = "Sort",
   Init = "Initialization",
+}
+
+export enum SortType {
+  Boolean = "Boolean",
+  Word = "Machine Word",
+  Memory = "Virtual Memory",
+  Bytes = "Bytes",
 }
 
 interface Stats {

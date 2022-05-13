@@ -7,7 +7,7 @@ function clickNode(node: ModelNode, graphState: GraphState) {
 
     node.parents.forEach((x) => {
       graphState.nodes.set(x.nid, x);
-      graphState.links.push({ source: node, target: x });
+      graphState.links.push({ source: node, target: x, sort: x.sort });
     });
   };
 

@@ -15,7 +15,7 @@ function createSimulation(graphState: GraphState) {
 
   return d3
     .forceSimulation<ModelNode, Link>(Array.from(graphState.nodes.values()))
-    .force("charge", d3.forceManyBody<ModelNode>().strength(-20))
+    .force("charge", d3.forceManyBody<ModelNode>().strength(-30))
     .force(
       "link",
       d3.forceLink(Array.from(graphState.links.values()).flat()).distance(100)
