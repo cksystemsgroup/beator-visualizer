@@ -4,11 +4,20 @@ import { GraphState, Link } from "./types";
 
 function createSimulation(graphState: GraphState) {
   const ticked = () => {
-    graphState.linkGroup
-      .attr("x1", (d) => d.source.x!)
-      .attr("y1", (d) => d.source.y!)
-      .attr("x2", (d) => d.target.x!)
-      .attr("y2", (d) => d.target.y!);
+    graphState.linkGroup.attr("d", (d: any) => {
+      const dx = d.target.view.x - d.source.view.x;
+      const dy = d.target.view.y - d.source.view.y;
+      const length = Math.sqrt(dx * dx + dy * dy);
+      const scaleFactor = (10 + 10) / length; // TODO: remove magic numbers (radius and arrowsize)
+
+      return d3.line()([
+        [d.source.view.x, d.source.view.y],
+        [
+          d.target.view.x - dx * scaleFactor,
+          d.target.view.y - dy * scaleFactor,
+        ],
+      ]);
+    });
 
     graphState.nodeGroup.attr("cx", (d) => d.x!).attr("cy", (d) => d.y!);
   };

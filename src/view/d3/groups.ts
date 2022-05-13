@@ -35,12 +35,13 @@ export function applyMarker(group: Group) {
     .append("marker")
     .attr("id", "triangle")
     .attr("viewBox", "0 -5 10 10")
-    .attr("refX", 0)
+    .attr("refX", 1)
     .attr("refY", 0)
-    .attr("markerWidth", 6)
-    .attr("markerHeight", 6)
+    .attr("markerWidth", 10)
+    .attr("markerHeight", 10)
+    .attr("markerUnits", "userSpaceOnUse")
     .attr("orient", "auto")
     .append("path")
-    .attr("fill", "#000")
+    .attr("fill", "#333")
     .attr("d", "M0,-5L10,0L0,5");
 }

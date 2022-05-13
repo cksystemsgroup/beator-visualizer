@@ -37,7 +37,7 @@ function updateGraph(
   graphState.linkGroup.exit().remove();
   graphState.linkGroup = graphState.linkGroup
     .enter()
-    .append("line")
+    .append("path")
     .merge(graphState.linkGroup)
     .attr("marker-end", "url(#triangle)")
     .attr("stroke-width", (d) => {

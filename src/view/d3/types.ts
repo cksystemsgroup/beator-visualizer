@@ -8,7 +8,7 @@ export type CircleGroup = d3.Selection<
   unknown
 >;
 export type LineGroup = d3.Selection<
-  SVGLineElement,
+  SVGPathElement,
   Link,
   SVGGElement,
   unknown
