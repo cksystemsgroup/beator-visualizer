@@ -1,18 +1,46 @@
 import { ForceLink } from "d3";
 import Model from "../../model/Model";
-import { ModelNode, SortType } from "../../model/NodeTypes";
+import { SortType } from "../../model/NodeTypes";
 import drag from "./drag";
 import nodeOnClick from "./nodeOnClick";
-import { GraphState, Link, Simulation, TargetFunction } from "./types";
+import {
+  GraphNode,
+  GraphState,
+  Link,
+  Simulation,
+  TargetFunction,
+} from "./types";
 
 function updateGraph(
   graphState: GraphState,
   simulation: Simulation,
   model: Model,
-  setTarget: TargetFunction
+  setTarget: TargetFunction,
+  {
+    clumpIf,
+    clumpLogic,
+    clumpConst,
+    clumpState,
+    clumpWrite,
+    clumpArith,
+  }: {
+    clumpIf: boolean;
+    clumpLogic: boolean;
+    clumpConst: boolean;
+    clumpState: boolean;
+    clumpWrite: boolean;
+    clumpArith: boolean;
+  }
 ) {
   const onClick = (d: { target: Element }) =>
-    nodeOnClick(d, model, graphState, simulation, setTarget);
+    nodeOnClick(d, model, graphState, simulation, setTarget, {
+      clumpIf,
+      clumpLogic,
+      clumpConst,
+      clumpState,
+      clumpWrite,
+      clumpArith,
+    });
 
   graphState.nodeGroup = graphState.nodeGroup.data(
     Array.from(graphState.nodes.values()) // Filter and update
@@ -24,7 +52,7 @@ function updateGraph(
     .append("circle")
     .attr("class", (d) => d.type)
     .attr("r", (d) => d.radius)
-    .attr("nid", (d) => d.nid)
+    .attr("nid", (d) => d.id)
     .on("click", onClick)
     .call(drag(simulation) as any)
     .merge(graphState.nodeGroup);
@@ -55,7 +83,7 @@ function updateGraph(
 
   simulation.nodes(Array.from(graphState.nodes.values()));
   simulation
-    .force<ForceLink<ModelNode, Link>>("link")
+    .force<ForceLink<GraphNode, Link>>("link")
     ?.links(Array.from(graphState.links.values()).flat());
   simulation.alpha(1).restart();
 }

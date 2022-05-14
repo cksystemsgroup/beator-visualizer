@@ -8,7 +8,22 @@ function nodeOnClick(
   model: Model,
   graphState: GraphState,
   simulation: Simulation,
-  setTarget: TargetFunction
+  setTarget: TargetFunction,
+  {
+    clumpIf,
+    clumpLogic,
+    clumpConst,
+    clumpState,
+    clumpWrite,
+    clumpArith,
+  }: {
+    clumpIf: boolean;
+    clumpLogic: boolean;
+    clumpConst: boolean;
+    clumpState: boolean;
+    clumpWrite: boolean;
+    clumpArith: boolean;
+  }
 ) {
   const oldTargetElement = document.querySelector(".clicked");
   const newTargetElement = d.target;
@@ -24,9 +39,25 @@ function nodeOnClick(
     newTargetElement.setAttribute("r", "15");
 
     setTarget(clickedNode);
-  } else {
+  } else if (
+    !(
+      clumpIf ||
+      clumpLogic ||
+      clumpConst ||
+      clumpState ||
+      clumpWrite ||
+      clumpArith
+    )
+  ) {
     clickNode(clickedNode, graphState);
-    updateGraph(graphState, simulation, model, setTarget);
+    updateGraph(graphState, simulation, model, setTarget, {
+      clumpIf,
+      clumpLogic,
+      clumpConst,
+      clumpState,
+      clumpWrite,
+      clumpArith,
+    });
   }
 }
 

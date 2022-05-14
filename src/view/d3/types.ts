@@ -1,12 +1,13 @@
 import { ModelNode, SortType } from "../../model/NodeTypes";
 
-export type Link = { source: ModelNode; target: ModelNode; sort: SortType };
+export type Link = { source: GraphNode; target: GraphNode; sort: SortType };
 export type CircleGroup = d3.Selection<
   SVGCircleElement,
-  ModelNode,
+  GraphNode,
   SVGGElement,
   unknown
 >;
+export type GraphNode = ModelNode | ClumpNode;
 export type LineGroup = d3.Selection<
   SVGPathElement,
   Link,
@@ -15,12 +16,12 @@ export type LineGroup = d3.Selection<
 >;
 export type SvgGroup = d3.Selection<SVGGElement, unknown, null, undefined>;
 export type TargetFunction = React.Dispatch<
-  React.SetStateAction<ModelNode | undefined>
+  React.SetStateAction<GraphNode | undefined>
 >;
 export type Group = d3.Selection<SVGGElement, unknown, null, undefined>;
-export type Simulation = d3.Simulation<ModelNode, Link>;
+export type Simulation = d3.Simulation<GraphNode, Link>;
 export type GraphState = {
-  nodes: Map<number, ModelNode>;
+  nodes: Map<number, GraphNode>;
   links: Link[];
   nodeGroup: CircleGroup;
   linkGroup: LineGroup;
@@ -40,4 +41,12 @@ export type ClumpObject = {
   setClumpWrite: React.Dispatch<React.SetStateAction<boolean>>;
   clumpArith: boolean;
   setClumpArith: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type ClumpNode = {
+  x: number;
+  y: number;
+  radius: number;
+  type: string;
+  id: number;
 };

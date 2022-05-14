@@ -22,6 +22,10 @@ export class ModelNode {
     };
   }
 
+  get id() {
+    return this.nid;
+  }
+
   get index() {
     return this.view.index;
   }

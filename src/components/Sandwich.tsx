@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { ModelNode } from "../model/NodeTypes";
-import { ClumpObject } from "../view/d3/types";
+import { ClumpObject, GraphNode } from "../view/d3/types";
 
 function Sandwich(props: {
   autoExpand: boolean;
   setAutoExpand: React.Dispatch<React.SetStateAction<boolean>>;
-  setTarget: React.Dispatch<React.SetStateAction<ModelNode | undefined>>;
+  setTarget: React.Dispatch<React.SetStateAction<GraphNode | undefined>>;
   clump: ClumpObject;
 }) {
   const [active, setActive] = useState(1);
@@ -58,7 +57,7 @@ function TabContent({
   active: number;
   autoExpand: boolean;
   setAutoExpand: React.Dispatch<React.SetStateAction<boolean>>;
-  setTarget: React.Dispatch<React.SetStateAction<ModelNode | undefined>>;
+  setTarget: React.Dispatch<React.SetStateAction<GraphNode | undefined>>;
   clump: ClumpObject;
 }) {
   return (

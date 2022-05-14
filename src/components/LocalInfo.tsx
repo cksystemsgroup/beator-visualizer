@@ -1,13 +1,14 @@
 import { ModelNode } from "../model/NodeTypes";
 import "../style.css";
+import { GraphNode } from "../view/d3/types";
 
-function LocalInfo({ target }: { target: ModelNode | undefined }) {
+function LocalInfo({ target }: { target: GraphNode | undefined }) {
   return (
     <details className="local" open>
       <summary>Local Information</summary>
       {!target ? (
         <p className="no-node">No node selected!</p>
-      ) : (
+      ) : target instanceof ModelNode ? (
         <ul>
           <li>
             <b>NID:</b> {target.nid}
@@ -37,6 +38,8 @@ function LocalInfo({ target }: { target: ModelNode | undefined }) {
             <b>Entanglement:</b> {target.stats.entanglement}
           </li>
         </ul>
+      ) : (
+        <p>Clumperino</p>
       )}
     </details>
   );

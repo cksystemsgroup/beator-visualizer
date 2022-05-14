@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { ModelNode } from "../../model/NodeTypes";
-import { GraphState, Link } from "./types";
+import { GraphNode, GraphState, Link } from "./types";
 
 function createSimulation(graphState: GraphState) {
   const ticked = () => {
@@ -20,7 +20,7 @@ function createSimulation(graphState: GraphState) {
   };
 
   return d3
-    .forceSimulation<ModelNode, Link>(Array.from(graphState.nodes.values()))
+    .forceSimulation<GraphNode, Link>(Array.from(graphState.nodes.values()))
     .force("charge", d3.forceManyBody<ModelNode>().strength(-30))
     .force(
       "link",
