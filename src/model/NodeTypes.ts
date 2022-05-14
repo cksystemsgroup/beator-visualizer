@@ -12,7 +12,7 @@ export class ModelNode {
   ) {
     this.stats = {
       depth: 0,
-      entanglement: 0,
+      dependancy: 0,
     };
 
     this.view = {
@@ -103,8 +103,8 @@ export enum SortType {
 interface Stats {
   pathChild?: ModelNode;
   depth: number;
-  entanglement: number;
-  entanglers?: ModelNode[];
+  dependancy: number;
+  dependants?: ModelNode[];
 }
 
 interface View {

@@ -35,7 +35,7 @@ function LocalInfo({ target }: { target: GraphNode | undefined }) {
             <b>Depth:</b> {target.stats.depth}
           </li>
           <li>
-            <b>Entanglement:</b> {target.stats.entanglement}
+            <b>Dependancy:</b> {target.stats.dependancy}
           </li>
         </ul>
       ) : (
@@ -49,6 +49,12 @@ function LocalInfo({ target }: { target: GraphNode | undefined }) {
             </li>
             <li>
               <b>Number of contained Nodes:</b> {target.size}
+            </li>
+            <li>
+              <b>Minimum depth:</b> {target.minDepth}
+            </li>
+            <li>
+              <b>Maximum depth:</b> {target.maxDepth}
             </li>
           </ul>
         </>

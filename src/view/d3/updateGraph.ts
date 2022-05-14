@@ -1,6 +1,6 @@
 import { ForceLink } from "d3";
 import Model from "../../model/Model";
-import { NodeType, SortType } from "../../model/NodeTypes";
+import { ModelNode, NodeType, SortType } from "../../model/NodeTypes";
 import drag from "./drag";
 import nodeOnClick from "./nodeOnClick";
 import {
@@ -145,6 +145,8 @@ function updateGraph(
     )
     .attr("stroke-width", (d) => {
       switch (d.sort) {
+        case SortType.Clump:
+          return 2;
         case SortType.Boolean:
           return 1;
         case SortType.Bytes:
@@ -181,11 +183,42 @@ function clumper(
     radius: 20,
     size: nrOfFiltered,
     sort: SortType.Clump,
+    minDepth: Infinity,
+    maxDepth: 0,
   };
 
   linkCandidates.forEach((x) => {
-    if (typer(types, x.source)) x.source = newClump;
-    if (typer(types, x.target)) x.target = newClump;
+    if (typer(types, x.source)) {
+      if (
+        x.source instanceof ModelNode &&
+        x.source.stats.depth < newClump.minDepth
+      )
+        newClump.minDepth = x.source.stats.depth;
+      if (
+        x.source instanceof ModelNode &&
+        x.source.stats.depth > newClump.maxDepth
+      )
+        newClump.maxDepth = x.source.stats.depth;
+
+      if (x.target.sort === SortType.Clump) console.log("here");
+      x.source = newClump;
+    }
+
+    if (typer(types, x.target)) {
+      if (
+        x.target instanceof ModelNode &&
+        x.target.stats.depth < newClump.minDepth
+      )
+        newClump.minDepth = x.target.stats.depth;
+
+      if (
+        x.target instanceof ModelNode &&
+        x.target.stats.depth > newClump.maxDepth
+      )
+        newClump.maxDepth = x.target.stats.depth;
+
+      x.target = newClump;
+    }
 
     if (x.target.sort === SortType.Clump && x.source.sort === SortType.Clump)
       x.sort = SortType.Clump;

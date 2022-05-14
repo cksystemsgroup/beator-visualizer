@@ -54,4 +54,6 @@ export type ClumpNode = {
   id: string;
   size: number;
   sort: SortType.Clump;
+  minDepth: number;
+  maxDepth: number;
 };

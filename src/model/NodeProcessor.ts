@@ -36,8 +36,8 @@ export default function processNodes(model: Model) {
       model.dagEntanglementMax = aggregatorD;
       model.dagEntangledMax = n;
     }
-    n.stats.entanglement = aggregatorD;
-    n.stats.entanglers = aggregatorN;
+    n.stats.dependancy = aggregatorD;
+    n.stats.dependants = aggregatorN;
     return [aggregatorD, aggregatorN];
   }
 }
