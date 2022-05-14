@@ -25,8 +25,17 @@ html {
   width: 20vw;
 }
 
+.local,
+.global {
+  width: 16vw;
+}
+
 .local[open],
-.global[open],
+.global[open] {
+  min-height: 15vh;
+  max-height: 45vh;
+}
+
 .selection[open],
 .sandwich[open] {
   height: 45vh;
@@ -267,4 +276,13 @@ li.Write::before {
 
 .clumping-summary {
   margin-left: 8px;
+}
+
+.no-node {
+  text-align: center;
+  align-self: center;
+  margin: 0;
+  line-height: 10vh;
+  font-style: italic;
+  color: #777;
 }

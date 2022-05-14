@@ -6,7 +6,7 @@ function LocalInfo({ target }: { target: ModelNode | undefined }) {
     <details className="local" open>
       <summary>Local Information</summary>
       {!target ? (
-        <p>No node selected!</p>
+        <p className="no-node">No node selected!</p>
       ) : (
         <ul>
           <li>
