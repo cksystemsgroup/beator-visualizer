@@ -1,6 +1,6 @@
 import { ForceLink } from "d3";
 import Model from "../../model/Model";
-import { SortType } from "../../model/NodeTypes";
+import { NodeType, SortType } from "../../model/NodeTypes";
 import drag from "./drag";
 import nodeOnClick from "./nodeOnClick";
 import {
@@ -42,10 +42,67 @@ function updateGraph(
       clumpArith,
     });
 
-  graphState.nodeGroup = graphState.nodeGroup.data(
-    Array.from(graphState.nodes.values()) // Filter and update
-  );
+  let nodeCandidates = Array.from(graphState.nodes.values());
+  let linkCandidates = graphState.links;
+
+  if (clumpIf)
+    [nodeCandidates, linkCandidates] = clumper(
+      nodeCandidates,
+      linkCandidates,
+      "If-then-else",
+      [NodeType.Ite]
+    );
+
+  if (clumpLogic)
+    [nodeCandidates, linkCandidates] = clumper(
+      nodeCandidates,
+      linkCandidates,
+      "Logic",
+      [NodeType.And, NodeType.Eq, NodeType.Ult, NodeType.Not]
+    );
+
+  if (clumpConst)
+    [nodeCandidates, linkCandidates] = clumper(
+      nodeCandidates,
+      linkCandidates,
+      "Constant",
+      [NodeType.Const]
+    );
+
+  if (clumpState)
+    [nodeCandidates, linkCandidates] = clumper(
+      nodeCandidates,
+      linkCandidates,
+      "State",
+      [NodeType.State]
+    );
+
+  if (clumpWrite)
+    [nodeCandidates, linkCandidates] = clumper(
+      nodeCandidates,
+      linkCandidates,
+      "Write",
+      [NodeType.Write]
+    );
+
+  if (clumpArith)
+    [nodeCandidates, linkCandidates] = clumper(
+      nodeCandidates,
+      linkCandidates,
+      "Arithmetic",
+      [
+        NodeType.Add,
+        NodeType.Sub,
+        NodeType.Div,
+        NodeType.Ext,
+        NodeType.Mul,
+        NodeType.Rem,
+      ]
+    );
+
+  graphState.nodeGroup = graphState.nodeGroup.data(nodeCandidates);
   graphState.nodeGroup.exit().remove();
+  console.log(graphState.nodeGroup);
 
   graphState.nodeGroup = graphState.nodeGroup
     .enter()
@@ -59,7 +116,7 @@ function updateGraph(
 
   graphState.nodeGroup.append("title").text(({ type: t }) => t);
 
-  graphState.linkGroup = graphState.linkGroup.data(graphState.links); // update
+  graphState.linkGroup = graphState.linkGroup.data(linkCandidates);
   graphState.linkGroup.exit().remove();
   graphState.linkGroup = graphState.linkGroup
     .enter()
@@ -81,11 +138,43 @@ function updateGraph(
       }
     });
 
-  simulation.nodes(Array.from(graphState.nodes.values()));
-  simulation
-    .force<ForceLink<GraphNode, Link>>("link")
-    ?.links(Array.from(graphState.links.values()).flat());
+  simulation.nodes(nodeCandidates);
+  simulation.force<ForceLink<GraphNode, Link>>("link")?.links(linkCandidates);
   simulation.alpha(1).restart();
+}
+
+function clumper(
+  nodeCandidates: GraphNode[],
+  linkCandidates: Link[],
+  clumpType: string,
+  types: NodeType[]
+): [GraphNode[], Link[]] {
+  const nrOfFiltered = nodeCandidates.filter((x) => typer(types, x)).length;
+  nodeCandidates = nodeCandidates.filter((x) => !typer(types, x));
+  const newClump = {
+    id: 0,
+    x: 0,
+    y: 0,
+    type: clumpType,
+    radius: 20,
+    size: nrOfFiltered,
+  };
+
+  linkCandidates.forEach((x) => {
+    if (typer(types, x.source)) x.source = newClump;
+    if (typer(types, x.target)) x.target = newClump;
+  });
+
+  if (nrOfFiltered) nodeCandidates.push(newClump);
+  return [nodeCandidates, [...new Set(linkCandidates)]];
+}
+
+function typer(types: NodeType[], n: GraphNode) {
+  for (const type of types) {
+    if (n.type === type) return true;
+  }
+
+  return false;
 }
 
 export default updateGraph;

@@ -33,10 +33,8 @@ function nodeOnClick(
 
   if (oldTargetElement !== newTargetElement) {
     oldTargetElement?.classList.remove("clicked");
-    oldTargetElement?.setAttribute("r", "10");
 
     newTargetElement.classList.add("clicked");
-    newTargetElement.setAttribute("r", "15");
 
     setTarget(clickedNode);
   } else if (

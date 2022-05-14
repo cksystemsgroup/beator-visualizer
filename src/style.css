@@ -165,7 +165,8 @@ summary {
 .And,
 .Equals,
 .Less-than,
-.Not {
+.Not,
+.Logic {
   fill: #f28e2b;
 }
 
@@ -178,7 +179,8 @@ summary {
 .Extend,
 .Multiplication,
 .Remainder,
-.Subtraction {
+.Subtraction,
+.Arithmetic {
   fill: #ff9da7;
 }
 

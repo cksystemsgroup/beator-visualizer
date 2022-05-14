@@ -19,6 +19,8 @@ export class ModelNode {
       collapsed: true,
       index: nid,
       radius: 10,
+      x: 0,
+      y: 0,
     };
   }
 
@@ -76,7 +78,7 @@ export enum NodeType {
   Mul = "Multiplication",
   Div = "Division",
   Rem = "Remainder",
-  Ult = "Constant",
+  Ult = "Less-than",
   Ext = "Extend",
   Ite = "If-then-else",
   And = "And",
@@ -107,7 +109,7 @@ interface Stats {
 interface View {
   collapsed: boolean;
   index: number;
-  x?: number;
-  y?: number;
+  x: number;
+  y: number;
   radius: number;
 }

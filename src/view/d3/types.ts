@@ -49,4 +49,5 @@ export type ClumpNode = {
   radius: number;
   type: string;
   id: number;
+  size: number;
 };

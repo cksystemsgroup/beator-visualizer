@@ -16,16 +16,14 @@ function createSimulation(graphState: GraphState) {
       ]);
     });
 
-    graphState.nodeGroup.attr("cx", (d) => d.x!).attr("cy", (d) => d.y!);
+    graphState.nodeGroup.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
   };
 
   return d3
     .forceSimulation<GraphNode, Link>(Array.from(graphState.nodes.values()))
     .force("charge", d3.forceManyBody<ModelNode>().strength(-30))
-    .force(
-      "link",
-      d3.forceLink(Array.from(graphState.links.values()).flat()).distance(100)
-    )
+    .force("link", d3.forceLink(graphState.links).distance(100))
+    .force("collide", d3.forceCollide().radius(20))
     .on("tick", ticked);
 }
 

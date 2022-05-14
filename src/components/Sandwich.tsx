@@ -111,6 +111,37 @@ function TabContent({
             <label>
               <input
                 type="checkbox"
+                checked={
+                  clump.clumpIf &&
+                  clump.clumpArith &&
+                  clump.clumpConst &&
+                  clump.clumpLogic &&
+                  clump.clumpWrite &&
+                  clump.clumpState
+                }
+                onChange={() => {
+                  const b = !(
+                    clump.clumpIf &&
+                    clump.clumpArith &&
+                    clump.clumpConst &&
+                    clump.clumpLogic &&
+                    clump.clumpWrite &&
+                    clump.clumpState
+                  );
+                  clump.setClumpIf(b);
+                  clump.setClumpArith(b);
+                  clump.setClumpConst(b);
+                  clump.setClumpLogic(b);
+                  clump.setClumpWrite(b);
+                  clump.setClumpState(b);
+                }}
+              />
+              All
+            </label>
+            <br />
+            <label>
+              <input
+                type="checkbox"
                 checked={clump.clumpIf}
                 onChange={() => clump.setClumpIf((x) => !x)}
               />
