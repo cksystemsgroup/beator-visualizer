@@ -10,7 +10,7 @@ function Sandwich(props: {
 
   return (
     <details className="sandwich">
-      <summary>☰</summary>
+      <summary className="s-summary">☰</summary>
       <TabsItselves active={active} setActive={setActive} />
 
       <TabContent {...props} active={active} />
@@ -102,6 +102,38 @@ function TabContent({
             />
             Auto Expand
           </label>
+          <details className="clumping-summary">
+            <summary>Clumping</summary>
+            <label>
+              <input type="checkbox" onChange={() => {}} />
+              If-then-else
+            </label>
+            <br />
+            <label>
+              <input type="checkbox" onChange={() => {}} />
+              Logic
+            </label>
+            <br />
+            <label>
+              <input type="checkbox" onChange={() => {}} />
+              Constant
+            </label>
+            <br />
+            <label>
+              <input type="checkbox" onChange={() => {}} />
+              State
+            </label>
+            <br />
+            <label>
+              <input type="checkbox" onChange={() => {}} />
+              Write
+            </label>
+            <br />
+            <label>
+              <input type="checkbox" onChange={() => {}} />
+              Arithmetic
+            </label>
+          </details>
         </p>
       </div>
       <div className={active === 3 ? "content  active-content" : "content"}>

@@ -13,7 +13,10 @@ html {
   user-select: none;
 }
 
-details {
+.local,
+.global,
+.selection,
+.sandwich {
   position: fixed;
   box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
   border-radius: 5px;
@@ -22,7 +25,10 @@ details {
   width: 20vw;
 }
 
-details[open] {
+.local[open],
+.global[open],
+.selection[open],
+.sandwich[open] {
   height: 45vh;
 }
 
@@ -244,17 +250,21 @@ li.Write::before {
   height: 1vw;
 }
 
-.sandwich summary {
+.sandwich .s-summary {
   list-style-type: none;
   margin: 0;
   text-align: center;
 }
 
-.sandwich[open] summary {
+.sandwich[open] .s-summary {
   margin-bottom: 5px;
   text-align: right;
 }
 
 .sandwich[open] {
   width: 20vw;
+}
+
+.clumping-summary {
+  margin-left: 8px;
 }
