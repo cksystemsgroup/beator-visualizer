@@ -7,7 +7,7 @@ function Sandwich(props: {
   setTarget: React.Dispatch<React.SetStateAction<GraphNode | undefined>>;
   clump: ClumpObject;
 }) {
-  const [active, setActive] = useState(1);
+  const [active, setActive] = useState(2);
 
   return (
     <details className="sandwich">
@@ -106,7 +106,7 @@ function TabContent({
             />
             Auto Expand
           </label>
-          <details className="clumping-summary">
+          <details className="clumping-summary" open>
             <summary>Clumping (disables collapsing)</summary>
             <label>
               <input
@@ -117,7 +117,8 @@ function TabContent({
                   clump.clumpConst &&
                   clump.clumpLogic &&
                   clump.clumpWrite &&
-                  clump.clumpState
+                  clump.clumpState &&
+                  clump.clumpInput
                 }
                 onChange={() => {
                   const b = !(
@@ -126,7 +127,8 @@ function TabContent({
                     clump.clumpConst &&
                     clump.clumpLogic &&
                     clump.clumpWrite &&
-                    clump.clumpState
+                    clump.clumpState &&
+                    clump.clumpInput
                   );
                   clump.setClumpIf(b);
                   clump.setClumpArith(b);
@@ -134,6 +136,7 @@ function TabContent({
                   clump.setClumpLogic(b);
                   clump.setClumpWrite(b);
                   clump.setClumpState(b);
+                  clump.setClumpInput(b);
                 }}
               />
               All
@@ -191,6 +194,15 @@ function TabContent({
                 onChange={() => clump.setClumpArith((x) => !x)}
               />
               Arithmetic
+            </label>{" "}
+            <br />
+            <label>
+              <input
+                type="checkbox"
+                checked={clump.clumpInput}
+                onChange={() => clump.setClumpInput((x) => !x)}
+              />
+              Input
             </label>
           </details>
         </form>

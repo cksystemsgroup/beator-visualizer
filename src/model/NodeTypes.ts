@@ -97,6 +97,7 @@ export enum SortType {
   Word = "Machine Word",
   Memory = "Virtual Memory",
   Bytes = "Bytes",
+  Clump = "Clump",
 }
 
 interface Stats {

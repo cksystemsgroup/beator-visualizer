@@ -19,6 +19,7 @@ function Interface({ model }: { model: Model }) {
   const [clumpState, setClumpState] = useState(false);
   const [clumpWrite, setClumpWrite] = useState(false);
   const [clumpArith, setClumpArith] = useState(false);
+  const [clumpInput, setClumpInput] = useState(false);
 
   const props = {
     model,
@@ -42,6 +43,8 @@ function Interface({ model }: { model: Model }) {
       setClumpWrite,
       clumpArith,
       setClumpArith,
+      clumpInput,
+      setClumpInput,
     },
   };
 

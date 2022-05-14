@@ -16,6 +16,7 @@ function nodeOnClick(
     clumpState,
     clumpWrite,
     clumpArith,
+    clumpInput,
   }: {
     clumpIf: boolean;
     clumpLogic: boolean;
@@ -23,6 +24,7 @@ function nodeOnClick(
     clumpState: boolean;
     clumpWrite: boolean;
     clumpArith: boolean;
+    clumpInput: boolean;
   }
 ) {
   const oldTargetElement = document.querySelector(".clicked");
@@ -36,7 +38,10 @@ function nodeOnClick(
 
     newTargetElement.classList.add("clicked");
 
-    setTarget(clickedNode);
+    if (clickedNode) setTarget(clickedNode);
+    else {
+      setTarget(graphState.clumps.get(newTargetElement.getAttribute("nid")!));
+    }
   } else if (
     !(
       clumpIf ||
@@ -44,7 +49,8 @@ function nodeOnClick(
       clumpConst ||
       clumpState ||
       clumpWrite ||
-      clumpArith
+      clumpArith ||
+      clumpInput
     )
   ) {
     clickNode(clickedNode, graphState);
@@ -55,6 +61,7 @@ function nodeOnClick(
       clumpState,
       clumpWrite,
       clumpArith,
+      clumpInput,
     });
   }
 }

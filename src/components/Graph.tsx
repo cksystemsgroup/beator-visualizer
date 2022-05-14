@@ -19,6 +19,7 @@ function Graph({
     clumpState,
     clumpWrite,
     clumpArith,
+    clumpInput,
   },
 }: {
   model: Model;
@@ -40,7 +41,8 @@ function Graph({
       clumpConst ||
       clumpState ||
       clumpWrite ||
-      clumpArith
+      clumpArith ||
+      clumpInput
     )
       expand(state, selected);
     updateGraph(state, sim, model, setTarget, {
@@ -50,6 +52,7 @@ function Graph({
       clumpState,
       clumpWrite,
       clumpArith,
+      clumpInput,
     });
   }, [
     model,
@@ -62,6 +65,7 @@ function Graph({
     clumpState,
     clumpWrite,
     clumpArith,
+    clumpInput,
   ]);
 
   return <svg ref={ref} />;

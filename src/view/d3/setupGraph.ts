@@ -15,6 +15,7 @@ function setupGraph(
     linkGroup: linkGroup(g),
     nodeGroup: nodeGroup(g),
     svgGroup: g,
+    clumps: new Map(),
   };
 
   graphState.nodes.set(selected.nid, selected);

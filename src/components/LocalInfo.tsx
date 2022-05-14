@@ -39,7 +39,19 @@ function LocalInfo({ target }: { target: GraphNode | undefined }) {
           </li>
         </ul>
       ) : (
-        <p>Clumperino</p>
+        <>
+          <p>
+            This is a clump, a collection of one or more nodes of the same kind.
+          </p>
+          <ul>
+            <li>
+              <b>Type:</b> {target.type}
+            </li>
+            <li>
+              <b>Number of contained Nodes:</b> {target.size}
+            </li>
+          </ul>
+        </>
       )}
     </details>
   );

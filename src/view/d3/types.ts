@@ -26,6 +26,7 @@ export type GraphState = {
   nodeGroup: CircleGroup;
   linkGroup: LineGroup;
   svgGroup: SvgGroup;
+  clumps: Map<string, ClumpNode>;
 };
 
 export type ClumpObject = {
@@ -41,6 +42,8 @@ export type ClumpObject = {
   setClumpWrite: React.Dispatch<React.SetStateAction<boolean>>;
   clumpArith: boolean;
   setClumpArith: React.Dispatch<React.SetStateAction<boolean>>;
+  clumpInput: boolean;
+  setClumpInput: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type ClumpNode = {
@@ -48,6 +51,7 @@ export type ClumpNode = {
   y: number;
   radius: number;
   type: string;
-  id: number;
+  id: string;
   size: number;
+  sort: SortType.Clump;
 };

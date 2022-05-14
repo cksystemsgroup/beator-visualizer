@@ -4,6 +4,7 @@ import { NodeType, SortType } from "../../model/NodeTypes";
 import drag from "./drag";
 import nodeOnClick from "./nodeOnClick";
 import {
+  ClumpNode,
   GraphNode,
   GraphState,
   Link,
@@ -23,6 +24,7 @@ function updateGraph(
     clumpState,
     clumpWrite,
     clumpArith,
+    clumpInput,
   }: {
     clumpIf: boolean;
     clumpLogic: boolean;
@@ -30,6 +32,7 @@ function updateGraph(
     clumpState: boolean;
     clumpWrite: boolean;
     clumpArith: boolean;
+    clumpInput: boolean;
   }
 ) {
   const onClick = (d: { target: Element }) =>
@@ -40,6 +43,7 @@ function updateGraph(
       clumpState,
       clumpWrite,
       clumpArith,
+      clumpInput,
     });
 
   let nodeCandidates = Array.from(graphState.nodes.values());
@@ -50,7 +54,8 @@ function updateGraph(
       nodeCandidates,
       linkCandidates,
       "If-then-else",
-      [NodeType.Ite]
+      [NodeType.Ite],
+      graphState
     );
 
   if (clumpLogic)
@@ -58,7 +63,8 @@ function updateGraph(
       nodeCandidates,
       linkCandidates,
       "Logic",
-      [NodeType.And, NodeType.Eq, NodeType.Ult, NodeType.Not]
+      [NodeType.And, NodeType.Eq, NodeType.Ult, NodeType.Not],
+      graphState
     );
 
   if (clumpConst)
@@ -66,7 +72,8 @@ function updateGraph(
       nodeCandidates,
       linkCandidates,
       "Constant",
-      [NodeType.Const]
+      [NodeType.Const],
+      graphState
     );
 
   if (clumpState)
@@ -74,7 +81,8 @@ function updateGraph(
       nodeCandidates,
       linkCandidates,
       "State",
-      [NodeType.State]
+      [NodeType.State],
+      graphState
     );
 
   if (clumpWrite)
@@ -82,7 +90,8 @@ function updateGraph(
       nodeCandidates,
       linkCandidates,
       "Write",
-      [NodeType.Write]
+      [NodeType.Write],
+      graphState
     );
 
   if (clumpArith)
@@ -97,12 +106,21 @@ function updateGraph(
         NodeType.Ext,
         NodeType.Mul,
         NodeType.Rem,
-      ]
+      ],
+      graphState
+    );
+
+  if (clumpInput)
+    [nodeCandidates, linkCandidates] = clumper(
+      nodeCandidates,
+      linkCandidates,
+      "Input",
+      [NodeType.Input],
+      graphState
     );
 
   graphState.nodeGroup = graphState.nodeGroup.data(nodeCandidates);
   graphState.nodeGroup.exit().remove();
-  console.log(graphState.nodeGroup);
 
   graphState.nodeGroup = graphState.nodeGroup
     .enter()
@@ -122,7 +140,9 @@ function updateGraph(
     .enter()
     .append("path")
     .merge(graphState.linkGroup)
-    .attr("marker-end", "url(#triangle)")
+    .attr("marker-end", (d) =>
+      d.sort !== SortType.Clump ? "url(#triangle)" : ""
+    )
     .attr("stroke-width", (d) => {
       switch (d.sort) {
         case SortType.Boolean:
@@ -136,7 +156,8 @@ function updateGraph(
         default:
           return 2;
       }
-    });
+    })
+    .attr("stroke-dasharray", (d) => (d.sort === SortType.Clump ? "4 4" : ""));
 
   simulation.nodes(nodeCandidates);
   simulation.force<ForceLink<GraphNode, Link>>("link")?.links(linkCandidates);
@@ -147,25 +168,33 @@ function clumper(
   nodeCandidates: GraphNode[],
   linkCandidates: Link[],
   clumpType: string,
-  types: NodeType[]
+  types: NodeType[],
+  graphState: GraphState
 ): [GraphNode[], Link[]] {
   const nrOfFiltered = nodeCandidates.filter((x) => typer(types, x)).length;
   nodeCandidates = nodeCandidates.filter((x) => !typer(types, x));
-  const newClump = {
-    id: 0,
+  const newClump: ClumpNode = {
+    id: clumpType,
     x: 0,
     y: 0,
     type: clumpType,
     radius: 20,
     size: nrOfFiltered,
+    sort: SortType.Clump,
   };
 
   linkCandidates.forEach((x) => {
     if (typer(types, x.source)) x.source = newClump;
     if (typer(types, x.target)) x.target = newClump;
+
+    if (x.target.sort === SortType.Clump && x.source.sort === SortType.Clump)
+      x.sort = SortType.Clump;
   });
 
-  if (nrOfFiltered) nodeCandidates.push(newClump);
+  if (nrOfFiltered) {
+    nodeCandidates.push(newClump);
+    graphState.clumps.set(clumpType, newClump);
+  }
   return [nodeCandidates, [...new Set(linkCandidates)]];
 }
 
