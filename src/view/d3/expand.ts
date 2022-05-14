@@ -4,7 +4,7 @@ import { GraphState } from "./types";
 
 function expand(graphState: GraphState, selected: ModelNode) {
   const exp = (x: ModelNode) => {
-    if (x.view.collapsed) {
+    if (x.collapsed) {
       clickNode(x, graphState);
       x.parents.forEach(exp);
     }

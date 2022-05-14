@@ -45,6 +45,22 @@ export class ModelNode {
   set y(v) {
     this.view.y = v;
   }
+
+  get radius() {
+    return this.view.radius;
+  }
+
+  set radius(v) {
+    this.view.radius = v;
+  }
+
+  get collapsed() {
+    return this.view.collapsed;
+  }
+
+  set collapsed(v) {
+    this.view.collapsed = v;
+  }
 }
 
 export enum NodeType {

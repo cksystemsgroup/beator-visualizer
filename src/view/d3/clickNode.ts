@@ -3,7 +3,7 @@ import { GraphState } from "./types";
 
 function clickNode(node: ModelNode, graphState: GraphState) {
   const expand = () => {
-    node.view.collapsed = false;
+    node.collapsed = false;
 
     node.parents.forEach((x) => {
       graphState.nodes.set(x.nid, x);
@@ -12,7 +12,7 @@ function clickNode(node: ModelNode, graphState: GraphState) {
   };
 
   const collapse = (n: ModelNode) => {
-    n.view.collapsed = true;
+    n.collapsed = true;
     graphState.links = graphState.links.filter((l) => l.source !== n);
 
     n.parents.forEach((x) => {
@@ -25,7 +25,7 @@ function clickNode(node: ModelNode, graphState: GraphState) {
 
   if (node.type === NodeType.Const) return;
 
-  node.view.collapsed ? expand() : collapse(node);
+  node.collapsed ? expand() : collapse(node);
 }
 
 export default clickNode;

@@ -97,6 +97,7 @@ function TabContent({
         <form>
           <label>
             <input
+              disabled={anyClumpActive(clump)}
               checked={autoExpand}
               type="checkbox"
               onChange={() => {
@@ -107,7 +108,7 @@ function TabContent({
             Auto Expand
           </label>
           <details className="clumping-summary">
-            <summary>Clumping</summary>
+            <summary>Clumping (disables collapsing)</summary>
             <label>
               <input
                 type="checkbox"
@@ -169,6 +170,14 @@ function TabContent({
       </div>
     </div>
   );
+}
+
+function anyClumpActive(clump: ClumpObject): boolean {
+  for (const c of Object.values(clump)) {
+    if (!(c instanceof Object) && c) return true;
+  }
+
+  return false;
 }
 
 export default Sandwich;

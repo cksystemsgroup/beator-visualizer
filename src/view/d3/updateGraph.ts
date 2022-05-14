@@ -15,7 +15,7 @@ function updateGraph(
     nodeOnClick(d, model, graphState, simulation, setTarget);
 
   graphState.nodeGroup = graphState.nodeGroup.data(
-    Array.from(graphState.nodes.values())
+    Array.from(graphState.nodes.values()) // Filter and update
   );
   graphState.nodeGroup.exit().remove();
 
@@ -23,7 +23,7 @@ function updateGraph(
     .enter()
     .append("circle")
     .attr("class", (d) => d.type)
-    .attr("r", (d) => d.view.radius)
+    .attr("r", (d) => d.radius)
     .attr("nid", (d) => d.nid)
     .on("click", onClick)
     .call(drag(simulation) as any)
@@ -31,9 +31,7 @@ function updateGraph(
 
   graphState.nodeGroup.append("title").text(({ type: t }) => t);
 
-  graphState.linkGroup = graphState.linkGroup.data(
-    Array.from(graphState.links.values()).flat()
-  );
+  graphState.linkGroup = graphState.linkGroup.data(graphState.links); // update
   graphState.linkGroup.exit().remove();
   graphState.linkGroup = graphState.linkGroup
     .enter()

@@ -8,7 +8,7 @@ function createSimulation(graphState: GraphState) {
       const dx = d.target.x - d.source.x;
       const dy = d.target.y - d.source.y;
       const length = Math.sqrt(dx * dx + dy * dy);
-      const scaleFactor = (d.target.view.radius + 10) / length; // TODO: remove magic number (arrowsize)
+      const scaleFactor = (d.target.radius + 10) / length; // TODO: remove magic number (arrowsize)
 
       return d3.line()([
         [d.source.x, d.source.y],
