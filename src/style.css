@@ -41,7 +41,7 @@ summary {
   overflow: hidden;
 }
 
-.settings {
+.sandwich {
   bottom: 0;
   right: 0;
   overflow: hidden;
@@ -60,7 +60,7 @@ summary {
 }
 
 .active-tabs {
-  background: #17bebb;
+  background: #76b7b2;
 }
 
 button {
@@ -83,7 +83,7 @@ button {
 .selected {
   font-weight: bold;
   line-height: 20pt;
-  background-color: #17bebb;
+  background-color: #76b7b2;
 }
 
 summary,
@@ -123,40 +123,52 @@ summary,
 .Sort,
 .Initialization {
   cursor: pointer;
-  fill: #17bebb;
+  fill: #bab0ac;
 }
 
 .Bad,
 .Next {
-  fill: darkred;
+  fill: #e15759;
 }
 
 .Constant,
 .Input {
-  fill: green;
+  fill: #59a14f;
 }
 
 .State {
-  fill: mediumseagreen;
+  fill: #76b7b2;
 }
 
-.And {
-  fill: orange;
-}
-
-.Not {
-  fill: darkblue;
-}
-
-.Equals {
-  fill: plum;
+.And,
+.Not,
+.Equals,
+.Less-than {
+  fill: #f28e2b;
 }
 
 .If-then-else {
-  fill: slategrey;
+  fill: #b07aa1;
+}
+
+.Addition,
+.Subtraction,
+.Division,
+.Multiplication,
+.Remainder,
+.Extend {
+  fill: #ff9da7;
+}
+
+.Read {
+  fill: #9c755f;
+}
+
+.Write {
+  fill: #edc948;
 }
 
 .clicked {
-  stroke: red;
+  stroke: #4e79a7;
   stroke-width: 3px;
 }

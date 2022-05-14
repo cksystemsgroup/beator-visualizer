@@ -6,7 +6,7 @@ import GlobalInfo from "./GlobalInfo";
 import Graph from "./Graph";
 import LocalInfo from "./LocalInfo";
 import Selection from "./Selection";
-import Settings from "./Settings";
+import Sandwich from "./Sandwich";
 
 function Interface({ model }: { model: Model }) {
   const [target, setTarget] = useState<ModelNode>();
@@ -30,7 +30,7 @@ function Interface({ model }: { model: Model }) {
       <LocalInfo {...props} />
       <GlobalInfo {...props} />
       <Selection {...props} />
-      <Settings {...props} />
+      <Sandwich {...props} />
     </>
   );
 }

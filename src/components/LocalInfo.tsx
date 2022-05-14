@@ -25,7 +25,7 @@ function LocalInfo({ target }: { target: ModelNode | undefined }) {
           <li>
             <b>Type:</b> {target.type}
           </li>
-          {target.immediate && (
+          {target.immediate !== undefined && (
             <li>
               <b>Value:</b> {target.immediate}
             </li>

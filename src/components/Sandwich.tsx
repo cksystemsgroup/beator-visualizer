@@ -1,7 +1,7 @@
 import React from "react";
 import { ModelNode } from "../model/NodeTypes";
 
-function Settings({
+function Sandwich({
   autoExpand,
   setAutoExpand,
   setTarget,
@@ -11,8 +11,8 @@ function Settings({
   setTarget: React.Dispatch<React.SetStateAction<ModelNode | undefined>>;
 }) {
   return (
-    <details className="settings">
-      <summary>Settings</summary>
+    <details className="sandwich">
+      <summary>Sandwich</summary>
       <label>
         <input
           checked={autoExpand}
@@ -28,4 +28,4 @@ function Settings({
   );
 }
 
-export default Settings;
+export default Sandwich;
