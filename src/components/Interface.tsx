@@ -13,6 +13,13 @@ function Interface({ model }: { model: Model }) {
   const [selected, setSelected] = useState(model.bads[0]);
   const [autoExpand, setAutoExpand] = useState(true);
 
+  const [clumpIf, setClumpIf] = useState(false);
+  const [clumpLogic, setClumpLogic] = useState(false);
+  const [clumpConst, setClumpConst] = useState(false);
+  const [clumpState, setClumpState] = useState(false);
+  const [clumpWrite, setClumpWrite] = useState(false);
+  const [clumpArith, setClumpArith] = useState(false);
+
   const props = {
     model,
     target,
@@ -22,6 +29,20 @@ function Interface({ model }: { model: Model }) {
     autoExpand,
     setAutoExpand,
     result: createMetrics(model),
+    clump: {
+      clumpIf,
+      setClumpIf,
+      clumpLogic,
+      setClumpLogic,
+      clumpConst,
+      setClumpConst,
+      clumpState,
+      setClumpState,
+      clumpWrite,
+      setClumpWrite,
+      clumpArith,
+      setClumpArith,
+    },
   };
 
   return (

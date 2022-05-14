@@ -18,6 +18,7 @@ export class ModelNode {
     this.view = {
       collapsed: true,
       index: nid,
+      radius: 10,
     };
   }
 
@@ -88,4 +89,5 @@ interface View {
   index: number;
   x?: number;
   y?: number;
+  radius: number;
 }

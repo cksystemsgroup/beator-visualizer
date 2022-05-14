@@ -23,7 +23,7 @@ function updateGraph(
     .enter()
     .append("circle")
     .attr("class", (d) => d.type)
-    .attr("r", 10)
+    .attr("r", (d) => d.view.radius)
     .attr("nid", (d) => d.nid)
     .on("click", onClick)
     .call(drag(simulation) as any)

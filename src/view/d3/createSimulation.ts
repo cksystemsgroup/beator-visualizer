@@ -5,17 +5,14 @@ import { GraphState, Link } from "./types";
 function createSimulation(graphState: GraphState) {
   const ticked = () => {
     graphState.linkGroup.attr("d", (d: any) => {
-      const dx = d.target.view.x - d.source.view.x;
-      const dy = d.target.view.y - d.source.view.y;
+      const dx = d.target.x - d.source.x;
+      const dy = d.target.y - d.source.y;
       const length = Math.sqrt(dx * dx + dy * dy);
-      const scaleFactor = (10 + 10) / length; // TODO: remove magic numbers (radius and arrowsize)
+      const scaleFactor = (d.target.view.radius + 10) / length; // TODO: remove magic number (arrowsize)
 
       return d3.line()([
-        [d.source.view.x, d.source.view.y],
-        [
-          d.target.view.x - dx * scaleFactor,
-          d.target.view.y - dy * scaleFactor,
-        ],
+        [d.source.x, d.source.y],
+        [d.target.x - dx * scaleFactor, d.target.y - dy * scaleFactor],
       ]);
     });
 

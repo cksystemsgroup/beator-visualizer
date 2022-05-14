@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { ModelNode } from "../model/NodeTypes";
+import { ClumpObject } from "../view/d3/types";
 
 function Sandwich(props: {
   autoExpand: boolean;
   setAutoExpand: React.Dispatch<React.SetStateAction<boolean>>;
   setTarget: React.Dispatch<React.SetStateAction<ModelNode | undefined>>;
+  clump: ClumpObject;
 }) {
   const [active, setActive] = useState(1);
 
@@ -51,11 +53,13 @@ function TabContent({
   autoExpand,
   setAutoExpand,
   setTarget,
+  clump,
 }: {
   active: number;
   autoExpand: boolean;
   setAutoExpand: React.Dispatch<React.SetStateAction<boolean>>;
   setTarget: React.Dispatch<React.SetStateAction<ModelNode | undefined>>;
+  clump: ClumpObject;
 }) {
   return (
     <div className="content-tabs">
@@ -90,7 +94,7 @@ function TabContent({
         Virtual Memory <br />
       </div>
       <div className={active === 2 ? "content  active-content" : "content"}>
-        <p>
+        <form>
           <label>
             <input
               checked={autoExpand}
@@ -105,36 +109,60 @@ function TabContent({
           <details className="clumping-summary">
             <summary>Clumping</summary>
             <label>
-              <input type="checkbox" onChange={() => {}} />
+              <input
+                type="checkbox"
+                checked={clump.clumpIf}
+                onChange={() => clump.setClumpIf((x) => !x)}
+              />
               If-then-else
             </label>
             <br />
             <label>
-              <input type="checkbox" onChange={() => {}} />
+              <input
+                type="checkbox"
+                checked={clump.clumpLogic}
+                onChange={() => clump.setClumpLogic((x) => !x)}
+              />
               Logic
             </label>
             <br />
             <label>
-              <input type="checkbox" onChange={() => {}} />
+              <input
+                type="checkbox"
+                checked={clump.clumpConst}
+                onChange={() => clump.setClumpConst((x) => !x)}
+              />
               Constant
             </label>
             <br />
             <label>
-              <input type="checkbox" onChange={() => {}} />
+              <input
+                type="checkbox"
+                checked={clump.clumpState}
+                onChange={() => clump.setClumpState((x) => !x)}
+              />
               State
             </label>
             <br />
             <label>
-              <input type="checkbox" onChange={() => {}} />
+              <input
+                type="checkbox"
+                checked={clump.clumpWrite}
+                onChange={() => clump.setClumpWrite((x) => !x)}
+              />
               Write
             </label>
             <br />
             <label>
-              <input type="checkbox" onChange={() => {}} />
+              <input
+                type="checkbox"
+                checked={clump.clumpArith}
+                onChange={() => clump.setClumpArith((x) => !x)}
+              />
               Arithmetic
             </label>
           </details>
-        </p>
+        </form>
       </div>
       <div className={active === 3 ? "content  active-content" : "content"}>
         <p>Nothing here yet!</p>

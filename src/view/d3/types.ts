@@ -26,3 +26,18 @@ export type GraphState = {
   linkGroup: LineGroup;
   svgGroup: SvgGroup;
 };
+
+export type ClumpObject = {
+  clumpIf: boolean;
+  setClumpIf: React.Dispatch<React.SetStateAction<boolean>>;
+  clumpLogic: boolean;
+  setClumpLogic: React.Dispatch<React.SetStateAction<boolean>>;
+  clumpConst: boolean;
+  setClumpConst: React.Dispatch<React.SetStateAction<boolean>>;
+  clumpState: boolean;
+  setClumpState: React.Dispatch<React.SetStateAction<boolean>>;
+  clumpWrite: boolean;
+  setClumpWrite: React.Dispatch<React.SetStateAction<boolean>>;
+  clumpArith: boolean;
+  setClumpArith: React.Dispatch<React.SetStateAction<boolean>>;
+};
