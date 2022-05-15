@@ -1,4 +1,4 @@
-import Metrics from "../model/Result";
+import { Metrics } from "../../../types/model-types";
 
 function GlobalInfo({ result }: { result: Metrics }) {
   return (

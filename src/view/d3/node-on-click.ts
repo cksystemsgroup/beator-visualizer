@@ -1,14 +1,15 @@
-import Model from "../../model/Model";
-import clickNode from "./clickNode";
-import { GraphState, Simulation, TargetFunction } from "./types";
-import updateGraph from "./updateGraph";
+import clickNode from "./click-node";
+import { GraphState, Simulation } from "../../types/graph-types";
+import updateGraph from "./update-graph";
+import { SetGraphNodeQ } from "../../types/react-types";
+import { Model } from "../../types/model-types";
 
 function nodeOnClick(
   d: { target: Element },
   model: Model,
   graphState: GraphState,
   simulation: Simulation,
-  setTarget: TargetFunction,
+  setTarget: SetGraphNodeQ,
   {
     clumpIf,
     clumpLogic,

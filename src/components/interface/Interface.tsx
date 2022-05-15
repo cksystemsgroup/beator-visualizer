@@ -1,12 +1,11 @@
 import { useState } from "react";
-import Model from "../model/Model";
-import { createMetrics } from "../model/Result";
-import GlobalInfo from "./GlobalInfo";
-import Graph from "./Graph";
-import LocalInfo from "./LocalInfo";
-import Selection from "./Selection";
-import Sandwich from "./Sandwich";
-import { GraphNode } from "../view/d3/types";
+import GlobalInfo from "./global/GlobalInfo";
+import Graph from "./graph/Graph";
+import LocalInfo from "./local/LocalInfo";
+import Selection from "./selection/Selection";
+import Sandwich from "./sandwich/Sandwich";
+import { GraphNode } from "../../types/graph-types";
+import { Metrics, Model } from "../../types/model-types";
 
 function Interface({ model }: { model: Model }) {
   const [target, setTarget] = useState<GraphNode>();
@@ -29,7 +28,7 @@ function Interface({ model }: { model: Model }) {
     setSelected,
     autoExpand,
     setAutoExpand,
-    result: createMetrics(model),
+    result: new Metrics(model),
     clump: {
       clumpIf,
       setClumpIf,

@@ -1,9 +1,9 @@
-import processLine from "./LineProcessor";
-import { newModel } from "./Model";
-import processNodes from "./NodeProcessor";
+import { Model } from "../types/model-types";
+import processLine from "./line-processor";
+import processNodes from "./node-processor";
 
 function processModel(text: string) {
-  const model = newModel();
+  const model = new Model();
 
   const lines = text.split("\n");
   lines.forEach((x) => processLine(x, model));

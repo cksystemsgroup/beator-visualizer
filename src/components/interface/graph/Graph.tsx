@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
-import Model from "../model/Model";
-import updateGraph from "../view/d3/updateGraph";
-import setupGraph from "../view/d3/setupGraph";
-import { ClumpObject, TargetFunction } from "../view/d3/types";
-import { ModelNode } from "../model/NodeTypes";
-import reset from "../view/reset";
-import expand from "../view/d3/expand";
+import updateGraph from "../../../view/d3/update-graph";
+import setupGraph from "../../../view/d3/setup-graph";
+import { ModelNode } from "../../../types/node-types";
+import reset from "../../../view/reset";
+import expand from "../../../view/d3/expand";
+import { ClumpObject, SetGraphNodeQ } from "../../../types/react-types";
+import { Model } from "../../../types/model-types";
 
 function Graph({
   model,
@@ -23,7 +23,7 @@ function Graph({
   },
 }: {
   model: Model;
-  setTarget: TargetFunction;
+  setTarget: SetGraphNodeQ;
   selected: ModelNode;
   autoExpand: boolean;
   clump: ClumpObject;

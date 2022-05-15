@@ -1,6 +1,6 @@
 import * as d3 from "d3";
-import { ModelNode, SortType } from "../../model/NodeTypes";
-import { GraphNode, GraphState, Link } from "./types";
+import { ModelNode, SortType } from "../../types/node-types";
+import { GraphNode, GraphState, Link } from "../../types/graph-types";
 
 function createSimulation(graphState: GraphState) {
   const ticked = () => {

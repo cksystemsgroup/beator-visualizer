@@ -1,6 +1,15 @@
 export class ModelNode {
-  readonly stats: Stats;
-  view: View;
+  readonly stats: Stats = {
+    depth: 0,
+    dependancy: 0,
+  };
+
+  index: number;
+
+  collapsed = true;
+  radius = 10;
+  x = 0;
+  y = 0;
 
   constructor(
     readonly nid: number,
@@ -10,62 +19,19 @@ export class ModelNode {
     readonly immediate?: number,
     readonly name?: string
   ) {
-    this.stats = {
-      depth: 0,
-      dependancy: 0,
-    };
-
-    this.view = {
-      collapsed: true,
-      index: nid,
-      radius: 10,
-      x: 0,
-      y: 0,
-    };
+    this.index = nid;
   }
 
   get id() {
     return this.nid;
   }
 
-  get index() {
-    return this.view.index;
-  }
-
-  set index(v) {
-    this.view.index = v;
-  }
-
-  get x() {
-    return this.view.x;
-  }
-
-  set x(v) {
-    this.view.x = v;
-  }
-
-  get y() {
-    return this.view.y;
-  }
-
-  set y(v) {
-    this.view.y = v;
-  }
-
-  get radius() {
-    return this.view.radius;
-  }
-
-  set radius(v) {
-    this.view.radius = v;
-  }
-
-  get collapsed() {
-    return this.view.collapsed;
-  }
-
-  set collapsed(v) {
-    this.view.collapsed = v;
+  reset() {
+    this.collapsed = true;
+    this.index = this.nid;
+    this.x = 0;
+    this.y = 0;
+    this.radius = 10;
   }
 }
 
@@ -107,10 +73,14 @@ interface Stats {
   dependants?: ModelNode[];
 }
 
-interface View {
-  collapsed: boolean;
-  index: number;
+export type ClumpNode = {
   x: number;
   y: number;
   radius: number;
-}
+  type: string;
+  id: string;
+  size: number;
+  sort: SortType.Clump;
+  minDepth: number;
+  maxDepth: number;
+};

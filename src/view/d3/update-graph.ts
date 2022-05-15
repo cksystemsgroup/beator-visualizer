@@ -1,22 +1,26 @@
 import { ForceLink } from "d3";
-import Model from "../../model/Model";
-import { ModelNode, NodeType, SortType } from "../../model/NodeTypes";
-import drag from "./drag";
-import nodeOnClick from "./nodeOnClick";
 import {
   ClumpNode,
+  ModelNode,
+  NodeType,
+  SortType,
+} from "../../types/node-types";
+import drag from "./drag";
+import nodeOnClick from "./node-on-click";
+import {
   GraphNode,
   GraphState,
   Link,
   Simulation,
-  TargetFunction,
-} from "./types";
+} from "../../types/graph-types";
+import { SetGraphNodeQ } from "../../types/react-types";
+import { Model } from "../../types/model-types";
 
 function updateGraph(
   graphState: GraphState,
   simulation: Simulation,
   model: Model,
-  setTarget: TargetFunction,
+  setTarget: SetGraphNodeQ,
   {
     clumpIf,
     clumpLogic,

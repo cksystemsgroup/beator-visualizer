@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { CircleGroup, Group, LineGroup } from "./types";
+import { CircleGroup, Group, LineGroup } from "../../types/graph-types";
 
 export function svgGroup(element: Element) {
   return d3

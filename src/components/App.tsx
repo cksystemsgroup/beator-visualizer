@@ -1,9 +1,9 @@
 import { useState } from "react";
-import processModel from "../model/ModelProcessor";
+import processModel from "../model/model-processor";
 
 import "../style.css";
 import Form from "./Form";
-import Interface from "./Interface";
+import Interface from "./interface/Interface";
 
 function App() {
   const [text, setText] = useState<string>();

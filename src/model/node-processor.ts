@@ -1,5 +1,5 @@
-import Model from "./Model";
-import { ModelNode, NodeType } from "./NodeTypes";
+import { Model } from "../types/model-types";
+import { ModelNode, NodeType } from "../types/node-types";
 
 export default function processNodes(model: Model) {
   model.dagRoots.forEach((x) => recursivePath(x, 0, x));

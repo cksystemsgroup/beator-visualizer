@@ -1,8 +1,8 @@
-import { ModelNode } from "../../model/NodeTypes";
+import { ModelNode } from "../../types/node-types";
 import * as d3 from "d3";
-import createSimulation from "./createSimulation";
+import createSimulation from "./create-simulation";
 import { svgGroup, linkGroup, nodeGroup, applyMarker } from "./groups";
-import { GraphState, Group, Simulation } from "./types";
+import { GraphState, Group, Simulation } from "../../types/graph-types";
 
 function setupGraph(
   element: Element,

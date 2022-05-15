@@ -1,11 +1,8 @@
 import { useState } from "react";
-import exampleModel from "../model/ExampleModel";
+import exampleModel from "../model/example-model";
+import { SetStringQ } from "../types/react-types";
 
-function Form({
-  setText,
-}: {
-  setText: React.Dispatch<React.SetStateAction<string | undefined>>;
-}) {
+function Form({ setText }: { setText: SetStringQ }) {
   let [file, setFile] = useState<File>();
   return (
     <form>

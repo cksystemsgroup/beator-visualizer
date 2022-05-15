@@ -1,5 +1,5 @@
-import { ModelNode, NodeType } from "../../model/NodeTypes";
-import { GraphState } from "./types";
+import { ModelNode, NodeType } from "../../types/node-types";
+import { GraphState } from "../../types/graph-types";
 
 function clickNode(node: ModelNode, graphState: GraphState) {
   const expand = () => {

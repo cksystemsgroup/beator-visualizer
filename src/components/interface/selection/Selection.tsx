@@ -1,6 +1,7 @@
 import { useState } from "react";
-import Model from "../model/Model";
-import { ModelNode, NodeType } from "../model/NodeTypes";
+import { Model } from "../../../types/model-types";
+import { ModelNode, NodeType } from "../../../types/node-types";
+import { SetModelNode, SetNumber } from "../../../types/react-types";
 
 function Selection({
   model,
@@ -9,7 +10,7 @@ function Selection({
 }: {
   model: Model;
   selected: ModelNode;
-  setSelected: React.Dispatch<React.SetStateAction<ModelNode>>;
+  setSelected: SetModelNode;
 }) {
   const [active, setActive] = useState(1);
 
@@ -33,7 +34,7 @@ function TabsItselves({
   setActive,
 }: {
   active: number;
-  setActive: React.Dispatch<React.SetStateAction<number>>;
+  setActive: SetNumber;
 }) {
   return (
     <div className="bloc-tabs">
@@ -70,7 +71,7 @@ function TabContent({
   model: Model;
   active: number;
   selected: ModelNode;
-  setSelected: React.Dispatch<React.SetStateAction<ModelNode>>;
+  setSelected: SetModelNode;
 }) {
   model.dagRoots.sort(sortRoots);
   const bads = model.bads.sort(sortRoots);

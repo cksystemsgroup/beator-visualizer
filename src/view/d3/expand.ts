@@ -1,6 +1,6 @@
-import { ModelNode } from "../../model/NodeTypes";
-import clickNode from "./clickNode";
-import { GraphState } from "./types";
+import { ModelNode } from "../../types/node-types";
+import clickNode from "./click-node";
+import { GraphState } from "../../types/graph-types";
 
 function expand(graphState: GraphState, selected: ModelNode) {
   const exp = (x: ModelNode) => {

@@ -1,4 +1,4 @@
-import { Simulation } from "./types";
+import { Simulation } from "../../types/graph-types";
 import * as d3 from "d3";
 
 function drag(simulation: Simulation) {

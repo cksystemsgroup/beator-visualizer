@@ -1,11 +1,10 @@
-import Model from "../model/Model";
-import { TargetFunction } from "./d3/types";
+import { Model } from "../types/model-types";
+import { SetGraphNodeQ } from "../types/react-types";
 
-function reset(model: Model, setTarget: TargetFunction, element: Element) {
+function reset(model: Model, setTarget: SetGraphNodeQ, element: Element) {
   element.replaceChildren();
   setTarget(undefined);
-  for (const n of model.nodes.values())
-    n.view = { collapsed: true, index: n.nid, x: 0, y: 0, radius: 10 };
+  for (const n of model.nodes.values()) n.reset();
 }
 
 export default reset;

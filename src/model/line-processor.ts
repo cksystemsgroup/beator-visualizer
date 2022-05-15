@@ -1,5 +1,5 @@
-import Model from "./Model";
-import { ModelNode, NodeType, SortType } from "./NodeTypes";
+import { Model } from "../types/model-types";
+import { ModelNode, NodeType, SortType } from "../types/node-types";
 
 export default function processLine(line: string, model: Model) {
   const createNode = (line: string): [number, ModelNode] | undefined => {
