@@ -127,6 +127,8 @@ button {
 .Subtraction,
 .Write,
 .tabs,
+.Arithmetic,
+.Logic,
 summary {
   cursor: pointer;
 }
