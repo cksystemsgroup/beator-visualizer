@@ -16,7 +16,8 @@ html {
 .local,
 .global,
 .selection,
-.sandwich {
+.sandwich,
+.file-form {
   position: fixed;
   box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
   border-radius: 5px;
@@ -289,4 +290,13 @@ li.Write::before {
   line-height: 10vh;
   font-style: italic;
   color: #777;
+}
+
+.file-form {
+  width: 250px;
+  margin-left: calc(50% - 125px);
+}
+
+.file-form input {
+  margin: 10px;
 }
