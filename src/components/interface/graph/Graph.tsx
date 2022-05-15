@@ -1,11 +1,9 @@
 import { useEffect, useRef } from "react";
-import updateGraph from "../../../view/d3/update-graph";
-import setupGraph from "../../../view/d3/setup-graph";
-import { ModelNode } from "../../../types/node-types";
-import reset from "../../../view/reset";
+import { GraphProps } from "../../../types/react-types";
 import expand from "../../../view/d3/expand";
-import { ClumpObject, SetGraphNodeQ } from "../../../types/react-types";
-import { Model } from "../../../types/model-types";
+import setupGraph from "../../../view/d3/setup-graph";
+import updateGraph from "../../../view/d3/update-graph";
+import reset from "../../../view/reset";
 
 function Graph({
   model,
@@ -21,31 +19,14 @@ function Graph({
     clumpArith,
     clumpInput,
   },
-}: {
-  model: Model;
-  setTarget: SetGraphNodeQ;
-  selected: ModelNode;
-  autoExpand: boolean;
-  clump: ClumpObject;
-}) {
+}: GraphProps) {
   const ref = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     reset(model, setTarget, ref.current!);
     const [state, sim] = setupGraph(ref.current!, selected);
 
-    if (
-      autoExpand ||
-      clumpIf ||
-      clumpLogic ||
-      clumpConst ||
-      clumpState ||
-      clumpWrite ||
-      clumpArith ||
-      clumpInput
-    )
-      expand(state, selected);
-    updateGraph(state, sim, model, setTarget, {
+    const clumps = {
       clumpIf,
       clumpLogic,
       clumpConst,
@@ -53,7 +34,12 @@ function Graph({
       clumpWrite,
       clumpArith,
       clumpInput,
-    });
+    };
+
+    if (Object.values(clumps).reduce((a, x) => a || x, false) || autoExpand)
+      expand(state, selected);
+
+    updateGraph(state, sim, model, setTarget, clumps);
   }, [
     model,
     setTarget,

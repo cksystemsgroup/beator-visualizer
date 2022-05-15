@@ -1,20 +1,11 @@
-import {
-  ClumpObject,
-  SetBoolean,
-  SetGraphNodeQ,
-} from "../../../types/react-types";
+import { ClumpObject, SandwichProps } from "../../../types/react-types";
 
 function Settings({
   autoExpand,
   setAutoExpand,
   setTarget,
   clump,
-}: {
-  autoExpand: boolean;
-  setAutoExpand: SetBoolean;
-  setTarget: SetGraphNodeQ;
-  clump: ClumpObject;
-}) {
+}: SandwichProps) {
   return (
     <form>
       <label>

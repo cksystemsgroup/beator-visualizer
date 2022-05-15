@@ -1,41 +1,20 @@
 import { useState } from "react";
-import { Model } from "../../../types/model-types";
 import { ModelNode, NodeType } from "../../../types/node-types";
-import { SetModelNode, SetNumber } from "../../../types/react-types";
+import { SelectionProps, TabsItSelvesProps } from "../../../types/react-types";
 
-function Selection({
-  model,
-  selected,
-  setSelected,
-}: {
-  model: Model;
-  selected: ModelNode;
-  setSelected: SetModelNode;
-}) {
+function Selection(props: SelectionProps) {
   const [active, setActive] = useState(1);
 
   return (
     <details className="selection" open>
       <summary>Selection</summary>
       <TabsItselves active={active} setActive={setActive} />
-
-      <TabContent
-        model={model}
-        active={active}
-        selected={selected}
-        setSelected={setSelected}
-      />
+      <TabContent active={active} {...props} />
     </details>
   );
 }
 
-function TabsItselves({
-  active,
-  setActive,
-}: {
-  active: number;
-  setActive: SetNumber;
-}) {
+function TabsItselves({ active, setActive }: TabsItSelvesProps) {
   return (
     <div className="bloc-tabs">
       <button
@@ -67,12 +46,7 @@ function TabContent({
   active,
   selected,
   setSelected,
-}: {
-  model: Model;
-  active: number;
-  selected: ModelNode;
-  setSelected: SetModelNode;
-}) {
+}: { active: number } & SelectionProps) {
   model.dagRoots.sort(sortRoots);
   const bads = model.bads.sort(sortRoots);
   const pcs = model.dagRoots.filter(filterPCs);

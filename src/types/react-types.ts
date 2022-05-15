@@ -1,4 +1,5 @@
 import { GraphNode } from "./graph-types";
+import { Model } from "./model-types";
 import { ModelNode } from "./node-types";
 
 export type SetBoolean = React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,7 +14,7 @@ export type SetGraphNodeQ = React.Dispatch<
 export type SetNumber = React.Dispatch<React.SetStateAction<number>>;
 export type SetModelNode = React.Dispatch<React.SetStateAction<ModelNode>>;
 
-export type ClumpObject = {
+export interface ClumpObject {
   clumpIf: boolean;
   setClumpIf: SetBoolean;
   clumpLogic: boolean;
@@ -28,4 +29,30 @@ export type ClumpObject = {
   setClumpArith: SetBoolean;
   clumpInput: boolean;
   setClumpInput: SetBoolean;
-};
+}
+
+export interface SandwichProps {
+  autoExpand: boolean;
+  setAutoExpand: SetBoolean;
+  setTarget: SetGraphNodeQ;
+  clump: ClumpObject;
+}
+
+export interface TabsItSelvesProps {
+  active: number;
+  setActive: SetNumber;
+}
+
+export interface SelectionProps {
+  model: Model;
+  selected: ModelNode;
+  setSelected: SetModelNode;
+}
+
+export interface GraphProps {
+  model: Model;
+  setTarget: SetGraphNodeQ;
+  selected: ModelNode;
+  autoExpand: boolean;
+  clump: ClumpObject;
+}

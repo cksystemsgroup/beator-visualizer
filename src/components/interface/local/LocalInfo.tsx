@@ -3,7 +3,7 @@ import { GraphNode } from "../../../types/graph-types";
 import ClumpInfo from "./ClumpInfo";
 import NodeInfo from "./NodeInfo";
 
-function LocalInfo({ target }: { target: GraphNode | undefined }) {
+function LocalInfo({ target }: { target?: GraphNode }) {
   return (
     <details className="local" open>
       <summary>Local Information</summary>
