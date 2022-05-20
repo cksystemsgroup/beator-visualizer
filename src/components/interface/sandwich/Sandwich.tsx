@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { SandwichProps, TabsItSelvesProps } from "../../../types/react-types";
 import Legend from "./Legend";
+import Misc from "./Misc";
 import Settings from "./Settings";
 
 function Sandwich(props: SandwichProps) {
@@ -47,7 +48,7 @@ function TabContent({ active, ...props }: SandwichProps & { active: number }) {
         <Settings {...props} />
       </div>
       <div className={active === 3 ? "content  active-content" : "content"}>
-        <p>Nothing here yet!</p>
+        <Misc {...props} />
       </div>
     </div>
   );

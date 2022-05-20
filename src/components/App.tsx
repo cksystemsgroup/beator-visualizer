@@ -10,7 +10,7 @@ function App() {
 
   if (!text) return <Form setText={setText} />;
 
-  return <Interface model={processModel(text)} />;
+  return <Interface model={processModel(text)} text={text} />;
 }
 
 export default App;

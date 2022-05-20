@@ -36,6 +36,8 @@ export interface SandwichProps {
   setAutoExpand: SetBoolean;
   setTarget: SetGraphNodeQ;
   clump: ClumpObject;
+  showFile: boolean;
+  setShowFile: SetBoolean;
 }
 
 export interface TabsItSelvesProps {

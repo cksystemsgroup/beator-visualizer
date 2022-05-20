@@ -6,8 +6,9 @@ import Selection from "./selection/Selection";
 import Sandwich from "./sandwich/Sandwich";
 import { GraphNode } from "../../types/graph-types";
 import { Metrics, Model } from "../../types/model-types";
+import ModelFile from "../ModelFile";
 
-function Interface({ model }: { model: Model }) {
+function Interface({ model, text }: { model: Model; text: string }) {
   const [target, setTarget] = useState<GraphNode>();
   const [selected, setSelected] = useState(model.bads[0]);
   const [autoExpand, setAutoExpand] = useState(true);
@@ -20,7 +21,10 @@ function Interface({ model }: { model: Model }) {
   const [clumpArith, setClumpArith] = useState(false);
   const [clumpInput, setClumpInput] = useState(false);
 
+  const [showFile, setShowFile] = useState(false);
+
   const props = {
+    text,
     model,
     target,
     setTarget,
@@ -45,6 +49,8 @@ function Interface({ model }: { model: Model }) {
       clumpInput,
       setClumpInput,
     },
+    showFile,
+    setShowFile,
   };
 
   return (
@@ -54,6 +60,7 @@ function Interface({ model }: { model: Model }) {
       <GlobalInfo {...props} />
       <Selection {...props} />
       <Sandwich {...props} />
+      {showFile && <ModelFile {...props} />}
     </>
   );
 }

@@ -17,7 +17,8 @@ html {
 .global,
 .selection,
 .sandwich,
-.file-form {
+.file-form,
+.model-file-modal {
   position: fixed;
   box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
   border-radius: 5px;
@@ -312,4 +313,25 @@ li.Write::before {
 
 .file-form input {
   margin: 10px;
+}
+
+.model-file-modal {
+  background-color: #f5f5f5;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 95%;
+  margin-left: 20%;
+  overflow: hidden;
+}
+
+.model-file {
+  overflow: auto;
+  font-family: "Courier New", Courier, monospace;
+  height: 97%;
+}
+
+.model-file-modal button {
+  position: absolute;
+  right: 10px;
 }
