@@ -151,12 +151,18 @@ summary {
   fill: #bab0ac;
 }
 
-.Bad,
-.Next {
+.Bad {
   fill: #e15759;
 }
 
-.Constant,
+.Next {
+  fill: #4e79a5;
+}
+
+.Constant {
+  fill: #bcbd3b;
+}
+
 .Input {
   fill: #59a14f;
 }
@@ -196,7 +202,7 @@ summary {
 }
 
 .clicked {
-  stroke: #4e79a7;
+  stroke: #a41a1a;
   stroke-width: 3px;
 }
 
@@ -207,7 +213,6 @@ summary {
 
 .legend li::before {
   content: "⬤";
-  color: #000;
   font-weight: 700;
   display: inline-block;
   width: 1em;
@@ -220,7 +225,15 @@ li.Bad::before {
 }
 
 li.Constant::before {
+  color: #bcbd3b;
+}
+
+li.Input::before {
   color: #59a14f;
+}
+
+li.Next::before {
+  color: #4e79a5;
 }
 
 li.State::before {

@@ -8,7 +8,7 @@ function NodeInfo({ n }: { n: ModelNode }) {
       </li>
       {n.sort && (
         <li>
-          <b>Sort Type:</b> {n.sort}
+          <b>Sort:</b> {n.sort}
         </li>
       )}
       {n.name && (
@@ -17,7 +17,7 @@ function NodeInfo({ n }: { n: ModelNode }) {
         </li>
       )}
       <li>
-        <b>Type:</b> {n.type}
+        <b>Class:</b> {n.nodeClass}
       </li>
       {n.immediate !== undefined && (
         <li>

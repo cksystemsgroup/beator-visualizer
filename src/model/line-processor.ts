@@ -71,9 +71,9 @@ export default function processLine(line: string, model: Model) {
   const entry = createNode(line);
   if (!entry) return;
 
-  if (entry[1].type === NodeType.Sort) return;
+  if (entry[1].nodeClass === NodeType.Sort) return;
 
-  if (entry[1].type === NodeType.Init) {
+  if (entry[1].nodeClass === NodeType.Init) {
     entry[1].parents[0].parents.push(entry[1].parents[1]);
     return;
   }

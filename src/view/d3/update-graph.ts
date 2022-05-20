@@ -129,14 +129,14 @@ function updateGraph(
   graphState.nodeGroup = graphState.nodeGroup
     .enter()
     .append("circle")
-    .attr("class", (d) => d.type)
+    .attr("class", (d) => d.nodeClass)
     .attr("r", (d) => d.radius)
     .attr("nid", (d) => d.id)
     .on("click", onClick)
     .call(drag(simulation) as any)
     .merge(graphState.nodeGroup);
 
-  graphState.nodeGroup.append("title").text(({ type: t }) => t);
+  graphState.nodeGroup.append("title").text(({ nodeClass: t }) => t);
 
   graphState.linkGroup = graphState.linkGroup.data(linkCandidates);
   graphState.linkGroup.exit().remove();
@@ -183,7 +183,7 @@ function clumper(
     id: clumpType,
     x: 0,
     y: 0,
-    type: clumpType,
+    nodeClass: clumpType,
     radius: 20,
     size: nrOfFiltered,
     sort: SortType.Clump,
@@ -237,7 +237,7 @@ function clumper(
 
 function typer(types: NodeType[], n: GraphNode) {
   for (const type of types) {
-    if (n.type === type) return true;
+    if (n.nodeClass === type) return true;
   }
 
   return false;

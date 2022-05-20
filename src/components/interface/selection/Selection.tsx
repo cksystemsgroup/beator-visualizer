@@ -108,8 +108,8 @@ function TabContent({
 }
 
 const sortRoots = (a: ModelNode, b: ModelNode) => {
-  const aVal = a.type === NodeType.Bad ? a.name! : a.parents[0].name!;
-  const bVal = b.type === NodeType.Bad ? b.name! : b.parents[0].name!;
+  const aVal = a.nodeClass === NodeType.Bad ? a.name! : a.parents[0].name!;
+  const bVal = b.nodeClass === NodeType.Bad ? b.name! : b.parents[0].name!;
   if (aVal < bVal) return -1;
   if (aVal > bVal) return 1;
   return 0;
@@ -124,7 +124,7 @@ const filterRegs = (x: ModelNode) => {
 };
 
 const filterOther = (x: ModelNode) => {
-  return !(x.type === NodeType.Bad || filterPCs(x) || filterRegs(x));
+  return !(x.nodeClass === NodeType.Bad || filterPCs(x) || filterRegs(x));
 };
 
 export default Selection;

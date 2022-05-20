@@ -2,8 +2,10 @@ function Legend() {
   return (
     <>
       <ul className="legend">
-        <li className="Bad">Bad, Next</li>
-        <li className="Constant">Constant, Input</li>
+        <li className="Bad">Bad</li>
+        <li className="Next">Next</li>
+        <li className="Constant">Constant</li>
+        <li className="Input">Input</li>
         <li className="State">State</li>
         <li className="And">And, Not, Equals, Less-than</li>
         <li className="If-then-else">If-then-else</li>

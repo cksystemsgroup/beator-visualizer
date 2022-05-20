@@ -23,7 +23,7 @@ function clickNode(node: ModelNode, graphState: GraphState) {
     });
   };
 
-  if (node.type === NodeType.Const) return;
+  if (node.nodeClass === NodeType.Const) return;
 
   node.collapsed ? expand() : collapse(node);
 }

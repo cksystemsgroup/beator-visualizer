@@ -8,7 +8,7 @@ function ClumpInfo({ n }: { n: ClumpNode }) {
       </p>
       <ul>
         <li>
-          <b>Type:</b> {n.type}
+          <b>Type:</b> {n.nodeClass}
         </li>
         <li>
           <b>Number of contained Nodes:</b> {n.size}

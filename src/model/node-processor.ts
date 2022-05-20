@@ -22,9 +22,9 @@ export default function processNodes(model: Model) {
       }
     }
 
-    if (n.type === NodeType.Const) return [1, [n]];
-    if (n.type === NodeType.Input) return [1, [n]];
-    if (n.type === NodeType.State) return [1, [n]];
+    if (n.nodeClass === NodeType.Const) return [1, [n]];
+    if (n.nodeClass === NodeType.Input) return [1, [n]];
+    if (n.nodeClass === NodeType.State) return [1, [n]];
 
     n.parents.forEach((x) => {
       const [d, p] = recursivePath(x, depth + 1, n);

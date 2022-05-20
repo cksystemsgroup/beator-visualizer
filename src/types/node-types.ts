@@ -13,7 +13,7 @@ export class ModelNode {
 
   constructor(
     readonly nid: number,
-    readonly type: NodeType,
+    readonly nodeClass: NodeType,
     readonly parents: ModelNode[],
     readonly sort: SortType,
     readonly immediate?: number,
@@ -77,7 +77,7 @@ export type ClumpNode = {
   x: number;
   y: number;
   radius: number;
-  type: string;
+  nodeClass: string;
   id: string;
   size: number;
   sort: SortType.Clump;
