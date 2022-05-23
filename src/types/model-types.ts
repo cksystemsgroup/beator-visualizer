@@ -6,8 +6,8 @@ export class Model {
 
   nodes = new Map<number, ModelNode>();
   roots: ModelNode[] = [];
-  maxDepth = 0;
-  maxDependancy = 0;
+  maxDepth = -Infinity;
+  maxDependancy = -Infinity;
   sortMap = new Map<number, SortType>();
 }
 
@@ -17,6 +17,7 @@ export class Metrics {
   nrOfStates: number;
   longestPathLength: number;
   maxDependancy: number;
+  maxDependantNode: ModelNode;
 
   constructor(model: Model) {
     this.nrOfNodes = model.nodes.size;
@@ -26,6 +27,7 @@ export class Metrics {
     this.nrOfStates = model.roots.length - this.nrOfBads;
     this.longestPathLength = model.maxDepth;
     this.maxDependancy = model.maxDependancy;
+    this.maxDependantNode = model.maxDependantNode!;
   }
 }
 

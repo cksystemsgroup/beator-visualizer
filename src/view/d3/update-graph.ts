@@ -57,8 +57,8 @@ function updateGraph(
     [nodeCandidates, linkCandidates] = clumper(
       nodeCandidates,
       linkCandidates,
-      "If-then-else",
-      [NodeType.Ite],
+      "IfThenElse",
+      [NodeType.IfThenElse],
       graphState
     );
 
@@ -67,7 +67,7 @@ function updateGraph(
       nodeCandidates,
       linkCandidates,
       "Logic",
-      [NodeType.And, NodeType.Eq, NodeType.Ult, NodeType.Not],
+      [NodeType.And, NodeType.Equals, NodeType.LessThan, NodeType.Not],
       graphState
     );
 
@@ -76,7 +76,7 @@ function updateGraph(
       nodeCandidates,
       linkCandidates,
       "Constant",
-      [NodeType.Const],
+      [NodeType.Constant],
       graphState
     );
 
@@ -104,12 +104,12 @@ function updateGraph(
       linkCandidates,
       "Arithmetic",
       [
-        NodeType.Add,
-        NodeType.Sub,
-        NodeType.Div,
-        NodeType.Ext,
-        NodeType.Mul,
-        NodeType.Rem,
+        NodeType.Addition,
+        NodeType.Subtraction,
+        NodeType.Division,
+        NodeType.Extend,
+        NodeType.Multiplication,
+        NodeType.Remainder,
       ],
       graphState
     );

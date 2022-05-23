@@ -8,7 +8,7 @@ function Legend() {
         <li className="Input">Input</li>
         <li className="State">State</li>
         <li className="And">And, Not, Equals, Less-than</li>
-        <li className="If-then-else">If-then-else</li>
+        <li className="IfThenElse">If-then-else</li>
         <li className="Addition">
           Addition, Subtraction, Division, Multiplication, Remainder, Extend
         </li>

@@ -31,14 +31,14 @@ function NodeInfo({ n }: { n: ModelNode }) {
         <details>
           <summary>
             <b>Dependancy:</b>{" "}
-            {Object.values(n.stats.dependancy).reduce((a, x) => a + x, 0)}
+            {Object.values(n.stats.dependancy).reduce((a, x) => a + x.size, 0)}
           </summary>
           <ul>
             {Object.entries(n.stats.dependancy).map(
               ([x, y]) =>
-                y !== 0 && (
+                y.size !== 0 && (
                   <li key={x}>
-                    <b>{x}: </b> {y}
+                    <b>{x}: </b> {y.size}
                   </li>
                 )
             )}

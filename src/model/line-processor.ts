@@ -1,5 +1,6 @@
 import { Model, NodeParams } from "../types/model-types";
 import {
+  Dependancy,
   ModelNode,
   NodeType,
   NodeTypeMap,
@@ -9,22 +10,22 @@ import {
 
 const NODE_TYPES: NodeTypeMap = {
   sort: NodeType.Sort,
-  constd: NodeType.Const,
+  constd: NodeType.Constant,
   read: NodeType.Read,
   write: NodeType.Write,
-  add: NodeType.Add,
-  sub: NodeType.Sub,
-  mul: NodeType.Mul,
-  udiv: NodeType.Div,
-  urem: NodeType.Rem,
-  ult: NodeType.Ult,
-  eq: NodeType.Eq,
+  add: NodeType.Addition,
+  sub: NodeType.Subtraction,
+  mul: NodeType.Multiplication,
+  udiv: NodeType.Division,
+  urem: NodeType.Remainder,
+  ult: NodeType.LessThan,
+  eq: NodeType.Equals,
   and: NodeType.And,
-  uext: NodeType.Ext,
-  ite: NodeType.Ite,
+  uext: NodeType.Extend,
+  ite: NodeType.IfThenElse,
   not: NodeType.Not,
   state: NodeType.State,
-  init: NodeType.Init,
+  init: NodeType.Initialization,
   input: NodeType.Input,
   bad: NodeType.Bad,
   next: NodeType.Next,
@@ -51,9 +52,25 @@ export default function processLine(line: string, model: Model) {
 
   const n = new ModelNode(nid, type, ...getParameters(line, model));
 
-  if (type === NodeType.Init) return n.parents[0].parents.push(n.parents[1]);
+  if (type === NodeType.Initialization)
+    return n.parents[0].parents.push(n.parents[1]);
   if (type === NodeType.Next) model.roots.push(n);
   if (type === NodeType.Bad) model.roots.push(n);
+
+  n.stats.dependancy = sumDependancy(n.parents);
+  //n.stats.depth =
+  //  n.parents.reduce((a, x) => (x.stats.depth > a ? x.stats.depth : a), -1) + 1;
+
+  if (
+    Object.values(n.stats.dependancy).reduce((a, x) => a + x.size, 0) >
+    model.maxDependancy
+  ) {
+    model.maxDependancy = Object.values(n.stats.dependancy).reduce(
+      (a, x) => a + x.size,
+      0
+    );
+    model.maxDependantNode = n;
+  }
 
   model.nodes.set(nid, n);
 }
@@ -67,14 +84,14 @@ const getParameters = (line: string, model: Model): NodeParams => {
   const u = undefined;
 
   switch (getClass(inst)) {
-    case NodeType.Const:
+    case NodeType.Constant:
       return [[], sort, int(operands[1])];
     case NodeType.State:
     case NodeType.Input:
       return [operands.slice(1, -1).map(parseN), sort, u, operands.at(-1)];
     case NodeType.Bad:
       return [operands.slice(0, -1).map(parseN), sort, u, operands.at(-1)];
-    case NodeType.Ext:
+    case NodeType.Extend:
       return [operands.slice(1, -1).map(parseN), sort, int(operands.at(-1)!)];
     default:
       return [operands.slice(1).map(parseN), sort];
@@ -103,3 +120,17 @@ const parseSort = (s: string, model: Model) => model.sortMap.get(parseInt(s))!;
 
 const bindModel = (f: (a: string, b: Model) => any, m: Model) => (x: string) =>
   f(x, m);
+
+const sumDependancy = (nodes: ModelNode[]) => {
+  return nodes.reduce((a, b) => {
+    const depB = b.stats.dependancy;
+
+    for (const k in depB) {
+      depB[k].forEach((x) => a[k].add(x));
+    }
+
+    a[b.nodeClass].add(b);
+
+    return a;
+  }, new Dependancy());
+};

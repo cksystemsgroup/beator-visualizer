@@ -1,6 +1,6 @@
 export class ModelNode {
   readonly stats: Stats = {
-    depth: 0,
+    depth: -Infinity,
     dependancy: new Dependancy(),
   };
 
@@ -36,26 +36,26 @@ export class ModelNode {
 }
 
 export enum NodeType {
-  Const = "Constant",
+  Constant = "Constant",
   Read = "Read",
   Write = "Write",
-  Add = "Addition",
-  Sub = "Subtraction",
-  Mul = "Multiplication",
-  Div = "Division",
-  Rem = "Remainder",
-  Ult = "Less-than",
-  Ext = "Extend",
-  Ite = "If-then-else",
+  Addition = "Addition",
+  Subtraction = "Subtraction",
+  Multiplication = "Multiplication",
+  Division = "Division",
+  Remainder = "Remainder",
+  LessThan = "LessThan",
+  Extend = "Extend",
+  IfThenElse = "IfThenElse",
   And = "And",
   Not = "Not",
-  Eq = "Equals",
+  Equals = "Equals",
   Input = "Input",
   Bad = "Bad",
   State = "State",
   Next = "Next",
   Sort = "Sort",
-  Init = "Initialization",
+  Initialization = "Initialization",
 }
 
 export enum SortType {
@@ -84,22 +84,28 @@ export type ClumpNode = {
   maxDepth: number;
 };
 
-class Dependancy {
-  constant = 0;
-  write = 0;
-  add = 0;
-  sub = 0;
-  mul = 0;
-  div = 0;
-  rem = 0;
-  ult = 0;
-  ext = 0;
-  ite = 0;
-  and = 0;
-  not = 0;
-  eq = 0;
-  input = 0;
-  state = 0;
+export class Dependancy {
+  [k: string]: Set<ModelNode>;
+  Constant = new Set<ModelNode>();
+  Read = new Set<ModelNode>();
+  Write = new Set<ModelNode>();
+  Addition = new Set<ModelNode>();
+  Subtraction = new Set<ModelNode>();
+  Multiplication = new Set<ModelNode>();
+  Division = new Set<ModelNode>();
+  Remainder = new Set<ModelNode>();
+  LessThan = new Set<ModelNode>();
+  Extend = new Set<ModelNode>();
+  IfThenElse = new Set<ModelNode>();
+  And = new Set<ModelNode>();
+  Not = new Set<ModelNode>();
+  Equals = new Set<ModelNode>();
+  Input = new Set<ModelNode>();
+  Bad = new Set<ModelNode>();
+  State = new Set<ModelNode>();
+  Next = new Set<ModelNode>();
+  Sort = new Set<ModelNode>();
+  Initialization = new Set<ModelNode>();
 }
 
 export type NodeTypeMap = { [key: string]: NodeType };

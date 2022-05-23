@@ -118,9 +118,9 @@ button {
 .Division,
 .Equals,
 .Extend,
-.If-then-else,
+.IfThenElse,
 .Input,
-.Less-than,
+.LessThan,
 .Multiplication,
 .Next,
 .Not,
@@ -180,13 +180,13 @@ summary {
 
 .And,
 .Equals,
-.Less-than,
+.LessThan,
 .Not,
 .Logic {
   fill: #f28e2b;
 }
 
-.If-then-else {
+.IfThenElse {
   fill: #b07aa1;
 }
 
@@ -251,7 +251,7 @@ li.And::before {
   color: #f28e2b;
 }
 
-li.If-then-else::before {
+li.IfThenElse::before {
   color: #b07aa1;
 }
 
