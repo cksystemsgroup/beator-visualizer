@@ -10,7 +10,7 @@ import ModelFile from "../ModelFile";
 
 function Interface({ model, text }: { model: Model; text: string }) {
   const [target, setTarget] = useState<GraphNode>();
-  const [selected, setSelected] = useState(model.bads[0]);
+  const [selected, setSelected] = useState(model.roots[0]);
   const [autoExpand, setAutoExpand] = useState(true);
 
   const [clumpIf, setClumpIf] = useState(false);

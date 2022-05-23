@@ -48,7 +48,7 @@ function TabContent({
   setSelected,
 }: { active: number } & SelectionProps) {
   model.roots.sort(sortRoots);
-  const bads = model.bads.sort(sortRoots);
+  const bads = model.roots.filter(filterBads);
   const pcs = model.roots.filter(filterPCs);
   const regs = model.roots.filter(filterRegs);
   const oth = model.roots.filter(filterOther);
@@ -115,16 +115,11 @@ const sortRoots = (a: ModelNode, b: ModelNode) => {
   return 0;
 };
 
-const filterPCs = (x: ModelNode) => {
-  return x.parents[0].name?.startsWith("pc=");
-};
-
-const filterRegs = (x: ModelNode) => {
-  return x.parents[0].name?.match("^[rfsgta][0-9ap][01]?$");
-};
-
-const filterOther = (x: ModelNode) => {
-  return !(x.nodeClass === NodeType.Bad || filterPCs(x) || filterRegs(x));
-};
+const filterBads = (x: ModelNode) => x.nodeClass === NodeType.Bad;
+const filterPCs = (x: ModelNode) => x.parents[0].name?.startsWith("pc=");
+const filterRegs = (x: ModelNode) =>
+  x.parents[0].name?.match("^[rfsgta][0-9ap][01]?$");
+const filterOther = (x: ModelNode) =>
+  !(x.nodeClass === NodeType.Bad || filterPCs(x) || filterRegs(x));
 
 export default Selection;

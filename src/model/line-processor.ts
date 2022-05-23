@@ -51,11 +51,7 @@ export default function processLine(line: string, model: Model) {
 
     const node = new ModelNode(nid, type, ...getParameters(type, operands));
 
-    if (type === NodeType.Next) model.roots.push(node);
-    else if (type === NodeType.Bad) {
-      model.roots.push(node);
-      model.bads.push(node);
-    }
+    if (type === NodeType.Next || type === NodeType.Bad) model.roots.push(node);
 
     return [nid, node];
   };

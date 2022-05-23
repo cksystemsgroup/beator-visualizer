@@ -1,4 +1,4 @@
-import { ModelNode, SortType } from "../types/node-types";
+import { ModelNode, NodeType, SortType } from "../types/node-types";
 
 export class Model {
   maxDepthStart?: ModelNode;
@@ -6,7 +6,6 @@ export class Model {
 
   nodes = new Map<number, ModelNode>();
   roots: ModelNode[] = [];
-  bads: ModelNode[] = [];
   maxDepth = 0;
   maxDependancy = 0;
   sortMap = new Map<number, SortType>();
@@ -21,8 +20,10 @@ export class Metrics {
 
   constructor(model: Model) {
     this.nrOfNodes = model.nodes.size;
-    this.nrOfBads = model.bads.length;
-    this.nrOfStates = model.roots.length - model.bads.length;
+    this.nrOfBads = model.roots.filter(
+      (x) => x.nodeClass === NodeType.Bad
+    ).length;
+    this.nrOfStates = model.roots.length - this.nrOfBads;
     this.longestPathLength = model.maxDepth;
     this.maxDependancy = model.maxDependancy;
   }
