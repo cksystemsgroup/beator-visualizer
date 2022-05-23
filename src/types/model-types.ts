@@ -16,6 +16,7 @@ export class Metrics {
   nrOfBads: number;
   nrOfStates: number;
   longestPathLength: number;
+  longestPathStart: ModelNode;
   maxDependancy: number;
   maxDependantNode: ModelNode;
 
@@ -28,6 +29,7 @@ export class Metrics {
     this.longestPathLength = model.maxDepth;
     this.maxDependancy = model.maxDependancy;
     this.maxDependantNode = model.maxDependantNode!;
+    this.longestPathStart = model.maxDepthStart!;
   }
 }
 

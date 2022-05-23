@@ -52,14 +52,25 @@ export default function processLine(line: string, model: Model) {
 
   const n = new ModelNode(nid, type, ...getParameters(line, model));
 
-  if (type === NodeType.Initialization)
-    return n.parents[0].parents.push(n.parents[1]);
+  if (type === NodeType.Initialization) {
+    const state = n.parents[0];
+    state.parents.push(n.parents[1]);
+    state.stats.dependancy = sumDependancy(state.parents);
+    state.stats.height =
+      state.parents.reduce(
+        (a, x) => (x.stats.height > a ? x.stats.height : a),
+        -1
+      ) + 1;
+    return;
+  }
+
   if (type === NodeType.Next) model.roots.push(n);
   if (type === NodeType.Bad) model.roots.push(n);
 
   n.stats.dependancy = sumDependancy(n.parents);
-  //n.stats.depth =
-  //  n.parents.reduce((a, x) => (x.stats.depth > a ? x.stats.depth : a), -1) + 1;
+  n.stats.height =
+    n.parents.reduce((a, x) => (x.stats.height > a ? x.stats.height : a), -1) +
+    1;
 
   if (
     Object.values(n.stats.dependancy).reduce((a, x) => a + x.size, 0) >

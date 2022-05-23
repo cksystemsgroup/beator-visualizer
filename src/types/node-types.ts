@@ -1,6 +1,7 @@
 export class ModelNode {
   readonly stats: Stats = {
     depth: -Infinity,
+    height: Infinity,
     dependancy: new Dependancy(),
   };
 
@@ -69,6 +70,7 @@ export enum SortType {
 interface Stats {
   pathChild?: ModelNode;
   depth: number;
+  height: number;
   dependancy: Dependancy;
 }
 

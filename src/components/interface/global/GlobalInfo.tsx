@@ -14,8 +14,13 @@ function GlobalInfo({ result }: { result: Metrics }) {
         <li>
           <b>States:</b> {result.nrOfStates} PCs + registers
         </li>
-        <li>
-          <b>Longest Path:</b> {result.longestPathLength} nodes long
+        <li className="dependancy-details">
+          <details>
+            <summary>
+              <b>Longest Path:</b> {result.longestPathLength} nodes long
+            </summary>
+            {result.longestPathStart.name}
+          </details>
         </li>
         <li className="dependancy-details">
           <details>
