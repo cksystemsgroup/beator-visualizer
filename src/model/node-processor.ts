@@ -2,8 +2,8 @@ import { Model } from "../types/model-types";
 import { ModelNode, NodeType } from "../types/node-types";
 
 export default function processNodes(model: Model) {
-  model.dagRoots.forEach((x) => recursivePath(x, 0, x));
-  model.iniRoots.forEach((x) => recursivePath(x.parents[0], 0, x));
+  model.roots.forEach((x) => recursivePath(x, 0, x));
+  // model.iniRoots.forEach((x) => recursivePath(x.parents[0], 0, x));
 
   function recursivePath(
     n: ModelNode,
@@ -16,9 +16,9 @@ export default function processNodes(model: Model) {
     if (n.stats.depth < depth) {
       n.stats.pathChild = caller;
       n.stats.depth = depth;
-      if (depth > model.dagDepthMax) {
-        model.dagDepthMax = depth;
-        model.dagStartMax = n;
+      if (depth > model.maxDepth) {
+        model.maxDepth = depth;
+        model.maxDepthStart = n;
       }
     }
 
@@ -32,9 +32,9 @@ export default function processNodes(model: Model) {
       p.forEach((x) => aggregatorN.push(x));
     });
 
-    if (aggregatorD > model.dagEntanglementMax) {
-      model.dagEntanglementMax = aggregatorD;
-      model.dagEntangledMax = n;
+    if (aggregatorD > model.maxDependancy) {
+      model.maxDependancy = aggregatorD;
+      model.maxDependantNode = n;
     }
     n.stats.dependancy = aggregatorD;
     n.stats.dependants = aggregatorN;

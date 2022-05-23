@@ -84,3 +84,6 @@ export type ClumpNode = {
   minDepth: number;
   maxDepth: number;
 };
+
+export type NodeTypeMap = { [key: string]: NodeType };
+export type SortTypeMap = { [key: string]: SortType };

@@ -1,19 +1,14 @@
 import { ModelNode, SortType } from "../types/node-types";
 
 export class Model {
-  dagStartMax?: ModelNode;
-  iniStartMax?: ModelNode;
-  dagEntangledMax?: ModelNode;
-  iniEntangledMax?: ModelNode;
+  maxDepthStart?: ModelNode;
+  maxDependantNode?: ModelNode;
 
   nodes = new Map<number, ModelNode>();
-  dagRoots: ModelNode[] = [];
-  iniRoots: ModelNode[] = [];
+  roots: ModelNode[] = [];
   bads: ModelNode[] = [];
-  dagDepthMax = 0;
-  iniDepthMax = 0;
-  dagEntanglementMax = 0;
-  iniEntanglementMax = 0;
+  maxDepth = 0;
+  maxDependancy = 0;
   sortMap = new Map<number, SortType>();
 }
 
@@ -22,13 +17,13 @@ export class Metrics {
   nrOfBads: number;
   nrOfStates: number;
   longestPathLength: number;
-  maxEntanglement: number;
+  maxDependancy: number;
 
   constructor(model: Model) {
     this.nrOfNodes = model.nodes.size;
     this.nrOfBads = model.bads.length;
-    this.nrOfStates = model.dagRoots.length - model.bads.length;
-    this.longestPathLength = model.dagDepthMax;
-    this.maxEntanglement = model.dagEntanglementMax;
+    this.nrOfStates = model.roots.length - model.bads.length;
+    this.longestPathLength = model.maxDepth;
+    this.maxDependancy = model.maxDependancy;
   }
 }

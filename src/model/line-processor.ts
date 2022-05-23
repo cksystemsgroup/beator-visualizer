@@ -1,33 +1,66 @@
 import { Model } from "../types/model-types";
-import { ModelNode, NodeType, SortType } from "../types/node-types";
+import {
+  ModelNode,
+  NodeType,
+  NodeTypeMap,
+  SortType,
+  SortTypeMap,
+} from "../types/node-types";
+
+const NODE_TYPES: NodeTypeMap = {
+  sort: NodeType.Sort,
+  constd: NodeType.Const,
+  read: NodeType.Read,
+  write: NodeType.Write,
+  add: NodeType.Add,
+  sub: NodeType.Sub,
+  mul: NodeType.Mul,
+  udiv: NodeType.Div,
+  urem: NodeType.Rem,
+  ult: NodeType.Ult,
+  eq: NodeType.Eq,
+  and: NodeType.And,
+  uext: NodeType.Ext,
+  ite: NodeType.Ite,
+  not: NodeType.Not,
+  state: NodeType.State,
+  init: NodeType.Init,
+  input: NodeType.Input,
+  bad: NodeType.Bad,
+  next: NodeType.Next,
+};
+
+const SORT_TYPES: SortTypeMap = {
+  bytes: SortType.Bytes,
+  byte: SortType.Bytes,
+  word: SortType.Word,
+  memory: SortType.Memory,
+  Boolean: SortType.Boolean,
+};
 
 export default function processLine(line: string, model: Model) {
   const createNode = (line: string): [number, ModelNode] | undefined => {
     const [nidStr, inst, ...operands] = line.split(" ");
     const nid = parseInt(nidStr);
-    const type = determineType(inst);
+    const type = getClass(inst);
 
     if (type === NodeType.Sort) {
-      model.sortMap.set(nid, getSortType(operands.at(-1)!));
+      model.sortMap.set(nid, getSort(operands.at(-1)!));
       return;
     }
 
-    const node = new ModelNode(
-      nid,
-      type,
-      ...determineParameters(type, operands)
-    );
+    const node = new ModelNode(nid, type, ...getParameters(type, operands));
 
-    if (type === NodeType.Next) model.dagRoots.push(node);
+    if (type === NodeType.Next) model.roots.push(node);
     else if (type === NodeType.Bad) {
-      model.dagRoots.push(node);
+      model.roots.push(node);
       model.bads.push(node);
     }
 
     return [nid, node];
   };
 
-  function determineParameters(
+  function getParameters(
     type: NodeType,
     operands: string[]
   ): [ModelNode[], SortType, number?, string?] {
@@ -81,65 +114,18 @@ export default function processLine(line: string, model: Model) {
   model.nodes.set(...entry);
 }
 
-function determineType(type: string) {
-  switch (type) {
-    case "sort":
-      return NodeType.Sort;
-    case "constd":
-      return NodeType.Const;
-    case "read":
-      return NodeType.Read;
-    case "write":
-      return NodeType.Write;
-    case "add":
-      return NodeType.Add;
-    case "sub":
-      return NodeType.Sub;
-    case "mul":
-      return NodeType.Mul;
-    case "udiv":
-      return NodeType.Div;
-    case "urem":
-      return NodeType.Rem;
-    case "ult":
-      return NodeType.Ult;
-    case "eq":
-      return NodeType.Eq;
-    case "and":
-      return NodeType.And;
-    case "uext":
-      return NodeType.Ext;
-    case "ite":
-      return NodeType.Ite;
-    case "not":
-      return NodeType.Not;
-    case "state":
-      return NodeType.State;
-    case "init":
-      return NodeType.Init;
-    case "input":
-      return NodeType.Input;
-    case "bad":
-      return NodeType.Bad;
-    case "next":
-      return NodeType.Next;
-    default:
-      throw new Error(`Unknown instruction: ${type}`);
-  }
+function getClass(clss: string) {
+  const t = NODE_TYPES[clss];
+
+  if (!t) throw new Error(`Unknown instruction: ${clss}`);
+
+  return t;
 }
 
-function getSortType(t: string) {
-  switch (t) {
-    case "bytes":
-    case "byte":
-      return SortType.Bytes;
-    case "word":
-      return SortType.Word;
-    case "memory":
-      return SortType.Memory;
-    case "Boolean":
-      return SortType.Boolean;
-    default:
-      throw Error(`Unrecognized sort type: ${t}`);
-  }
+function getSort(sort: string) {
+  const s = SORT_TYPES[sort];
+
+  if (!s) throw new Error(`Unknown sort: ${sort}`);
+
+  return s;
 }

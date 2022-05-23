@@ -18,7 +18,7 @@ function GlobalInfo({ result }: { result: Metrics }) {
           <b>Longest Path:</b> {result.longestPathLength} nodes long
         </li>
         <li>
-          <b>Max Entanglement:</b> {result.maxEntanglement} nodes
+          <b>Max Entanglement:</b> {result.maxDependancy} nodes
         </li>
       </ul>
     </details>

@@ -47,11 +47,11 @@ function TabContent({
   selected,
   setSelected,
 }: { active: number } & SelectionProps) {
-  model.dagRoots.sort(sortRoots);
+  model.roots.sort(sortRoots);
   const bads = model.bads.sort(sortRoots);
-  const pcs = model.dagRoots.filter(filterPCs);
-  const regs = model.dagRoots.filter(filterRegs);
-  const oth = model.dagRoots.filter(filterOther);
+  const pcs = model.roots.filter(filterPCs);
+  const regs = model.roots.filter(filterRegs);
+  const oth = model.roots.filter(filterOther);
 
   return (
     <div className="content-tabs">
