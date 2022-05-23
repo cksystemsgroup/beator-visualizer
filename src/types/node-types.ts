@@ -1,7 +1,7 @@
 export class ModelNode {
   readonly stats: Stats = {
     depth: 0,
-    dependancy: 0,
+    dependancy: new Dependancy(),
   };
 
   index: number;
@@ -69,8 +69,7 @@ export enum SortType {
 interface Stats {
   pathChild?: ModelNode;
   depth: number;
-  dependancy: number;
-  dependants?: ModelNode[];
+  dependancy: Dependancy;
 }
 
 export type ClumpNode = {
@@ -84,6 +83,24 @@ export type ClumpNode = {
   minDepth: number;
   maxDepth: number;
 };
+
+class Dependancy {
+  constant = 0;
+  write = 0;
+  add = 0;
+  sub = 0;
+  mul = 0;
+  div = 0;
+  rem = 0;
+  ult = 0;
+  ext = 0;
+  ite = 0;
+  and = 0;
+  not = 0;
+  eq = 0;
+  input = 0;
+  state = 0;
+}
 
 export type NodeTypeMap = { [key: string]: NodeType };
 export type SortTypeMap = { [key: string]: SortType };

@@ -36,8 +36,8 @@ export default function processNodes(model: Model) {
       model.maxDependancy = aggregatorD;
       model.maxDependantNode = n;
     }
-    n.stats.dependancy = aggregatorD;
-    n.stats.dependants = aggregatorN;
+    // n.stats.dependancy = aggregatorD;
+    // n.stats.dependants = aggregatorN;
     return [aggregatorD, aggregatorN];
   }
 }
