@@ -28,3 +28,5 @@ export class Metrics {
     this.maxDependancy = model.maxDependancy;
   }
 }
+
+export type NodeParams = [ModelNode[], SortType, number?, string?];

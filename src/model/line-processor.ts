@@ -1,4 +1,4 @@
-import { Model } from "../types/model-types";
+import { Model, NodeParams } from "../types/model-types";
 import {
   ModelNode,
   NodeType,
@@ -39,89 +39,67 @@ const SORT_TYPES: SortTypeMap = {
 };
 
 export default function processLine(line: string, model: Model) {
-  const createNode = (line: string): [number, ModelNode] | undefined => {
-    const [nidStr, inst, ...operands] = line.split(" ");
-    const nid = parseInt(nidStr);
-    const type = getClass(inst);
-
-    if (type === NodeType.Sort) {
-      model.sortMap.set(nid, getSort(operands.at(-1)!));
-      return;
-    }
-
-    const node = new ModelNode(nid, type, ...getParameters(type, operands));
-
-    if (type === NodeType.Next || type === NodeType.Bad) model.roots.push(node);
-
-    return [nid, node];
-  };
-
-  function getParameters(
-    type: NodeType,
-    operands: string[]
-  ): [ModelNode[], SortType, number?, string?] {
-    if (type === NodeType.Const)
-      return [
-        [],
-        model.sortMap.get(parseInt(operands[0]))!,
-        parseInt(operands[1]),
-      ];
-    if (type === NodeType.State || type === NodeType.Input) {
-      return [
-        operands.slice(1, -1).map((x) => model.nodes.get(parseInt(x))!),
-        model.sortMap.get(parseInt(operands[0]))!,
-        undefined,
-        operands.at(-1),
-      ];
-    } else if (type === NodeType.Bad) {
-      return [
-        operands.slice(0, -1).map((x) => model.nodes.get(parseInt(x))!),
-        model.sortMap.get(parseInt(operands[0]))!,
-        undefined,
-        operands.at(-1),
-      ];
-    } else if (type === NodeType.Ext) {
-      return [
-        operands.slice(1, -1).map((x) => model.nodes.get(parseInt(x))!),
-        model.sortMap.get(parseInt(operands[0]))!,
-        parseInt(operands.at(-1)!),
-      ];
-    } else {
-      return [
-        operands.slice(1).map((x) => model.nodes.get(parseInt(x))!),
-        model.sortMap.get(parseInt(operands[0]))!,
-      ];
-    }
-  }
-
   if (line.startsWith(";")) return;
   if (line === "") return;
 
-  const entry = createNode(line);
-  if (!entry) return;
+  const [nidStr, inst, ...operands] = line.split(" ");
+  const nid = parseInt(nidStr);
+  const type = getClass(inst);
 
-  if (entry[1].nodeClass === NodeType.Sort) return;
+  if (type === NodeType.Sort)
+    return model.sortMap.set(nid, getSort(operands.at(-1)!));
 
-  if (entry[1].nodeClass === NodeType.Init) {
-    entry[1].parents[0].parents.push(entry[1].parents[1]);
-    return;
-  }
+  const n = new ModelNode(nid, type, ...getParameters(line, model));
 
-  model.nodes.set(...entry);
+  if (type === NodeType.Init) return n.parents[0].parents.push(n.parents[1]);
+  if (type === NodeType.Next) model.roots.push(n);
+  if (type === NodeType.Bad) model.roots.push(n);
+
+  model.nodes.set(nid, n);
 }
 
-function getClass(clss: string) {
+const getParameters = (line: string, model: Model): NodeParams => {
+  const [, inst, ...operands] = line.split(" ");
+
+  const parseN = bindModel(parseNid, model);
+  const int = parseInt;
+  const sort = parseSort(operands[0], model);
+  const u = undefined;
+
+  switch (getClass(inst)) {
+    case NodeType.Const:
+      return [[], sort, int(operands[1])];
+    case NodeType.State:
+    case NodeType.Input:
+      return [operands.slice(1, -1).map(parseN), sort, u, operands.at(-1)];
+    case NodeType.Bad:
+      return [operands.slice(0, -1).map(parseN), sort, u, operands.at(-1)];
+    case NodeType.Ext:
+      return [operands.slice(1, -1).map(parseN), sort, int(operands.at(-1)!)];
+    default:
+      return [operands.slice(1).map(parseN), sort];
+  }
+};
+
+const getClass = (clss: string) => {
   const t = NODE_TYPES[clss];
 
   if (!t) throw new Error(`Unknown instruction: ${clss}`);
 
   return t;
-}
+};
 
-function getSort(sort: string) {
+const getSort = (sort: string) => {
   const s = SORT_TYPES[sort];
 
   if (!s) throw new Error(`Unknown sort: ${sort}`);
 
   return s;
-}
+};
+
+const parseNid = (nid: string, model: Model) => model.nodes.get(parseInt(nid))!;
+
+const parseSort = (s: string, model: Model) => model.sortMap.get(parseInt(s))!;
+
+const bindModel = (f: (a: string, b: Model) => any, m: Model) => (x: string) =>
+  f(x, m);
