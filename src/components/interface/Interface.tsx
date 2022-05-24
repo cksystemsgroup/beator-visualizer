@@ -21,6 +21,7 @@ function Interface({ model, text }: { model: Model; text: string }) {
   const [clumpArith, setClumpArith] = useState(false);
   const [clumpInput, setClumpInput] = useState(false);
 
+  const [showPath, setShowPath] = useState(false);
   const [showFile, setShowFile] = useState(false);
 
   const props = {
@@ -51,6 +52,8 @@ function Interface({ model, text }: { model: Model; text: string }) {
     },
     showFile,
     setShowFile,
+    showPath,
+    setShowPath,
   };
 
   return (

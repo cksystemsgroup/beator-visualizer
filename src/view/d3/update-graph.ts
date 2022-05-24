@@ -204,7 +204,6 @@ function clumper(
       )
         newClump.maxDepth = x.source.stats.depth;
 
-      if (x.target.sort === SortType.Clump) console.log("here");
       x.source = newClump;
     }
 

@@ -5,12 +5,16 @@ function Settings({
   setAutoExpand,
   setTarget,
   clump,
+  showPath,
+  setShowPath,
+  model,
+  setSelected,
 }: SandwichProps) {
   return (
     <form>
       <label>
         <input
-          disabled={anyClumpActive(clump)}
+          disabled={anyClumpActive(clump) || showPath}
           checked={autoExpand}
           type="checkbox"
           onChange={() => {
@@ -24,6 +28,7 @@ function Settings({
         <summary>Clumping (disables collapsing)</summary>
         <label>
           <input
+            disabled={showPath}
             type="checkbox"
             checked={
               clump.clumpIf &&
@@ -58,6 +63,7 @@ function Settings({
         <br />
         <label>
           <input
+            disabled={showPath}
             type="checkbox"
             checked={clump.clumpIf}
             onChange={() => clump.setClumpIf((x) => !x)}
@@ -67,6 +73,7 @@ function Settings({
         <br />
         <label>
           <input
+            disabled={showPath}
             type="checkbox"
             checked={clump.clumpLogic}
             onChange={() => clump.setClumpLogic((x) => !x)}
@@ -76,6 +83,7 @@ function Settings({
         <br />
         <label>
           <input
+            disabled={showPath}
             type="checkbox"
             checked={clump.clumpConst}
             onChange={() => clump.setClumpConst((x) => !x)}
@@ -85,6 +93,7 @@ function Settings({
         <br />
         <label>
           <input
+            disabled={showPath}
             type="checkbox"
             checked={clump.clumpState}
             onChange={() => clump.setClumpState((x) => !x)}
@@ -94,6 +103,7 @@ function Settings({
         <br />
         <label>
           <input
+            disabled={showPath}
             type="checkbox"
             checked={clump.clumpWrite}
             onChange={() => clump.setClumpWrite((x) => !x)}
@@ -103,6 +113,7 @@ function Settings({
         <br />
         <label>
           <input
+            disabled={showPath}
             type="checkbox"
             checked={clump.clumpArith}
             onChange={() => clump.setClumpArith((x) => !x)}
@@ -112,6 +123,7 @@ function Settings({
         <br />
         <label>
           <input
+            disabled={showPath}
             type="checkbox"
             checked={clump.clumpInput}
             onChange={() => clump.setClumpInput((x) => !x)}
@@ -119,6 +131,27 @@ function Settings({
           Input
         </label>
       </details>
+      <label>
+        <input
+          type="checkbox"
+          checked={showPath}
+          onChange={() => {
+            if (!showPath) {
+              setSelected(model.maxDepthStart!);
+              clump.setClumpIf(false);
+              clump.setClumpArith(false);
+              clump.setClumpConst(false);
+              clump.setClumpLogic(false);
+              clump.setClumpWrite(false);
+              clump.setClumpState(false);
+              clump.setClumpInput(false);
+              setAutoExpand(false);
+            }
+            setShowPath((x) => !x);
+          }}
+        />
+        Show Longest Path
+      </label>
     </form>
   );
 }

@@ -93,7 +93,7 @@ const getParameters = (line: string, model: Model): NodeParams => {
   const int = parseInt;
   const sort = parseSort(operands[0], model);
   const u = undefined;
-
+  // TODO: next braucht namen
   switch (getClass(inst)) {
     case NodeType.Constant:
       return [[], sort, int(operands[1])];

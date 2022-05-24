@@ -38,6 +38,10 @@ export interface SandwichProps {
   clump: ClumpObject;
   showFile: boolean;
   setShowFile: SetBoolean;
+  showPath: boolean;
+  setShowPath: SetBoolean;
+  model: Model;
+  setSelected: SetModelNode;
 }
 
 export interface TabsItSelvesProps {
@@ -57,4 +61,5 @@ export interface GraphProps {
   selected: ModelNode;
   autoExpand: boolean;
   clump: ClumpObject;
+  showPath: boolean;
 }

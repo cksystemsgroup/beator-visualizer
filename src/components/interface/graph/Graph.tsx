@@ -19,6 +19,7 @@ function Graph({
     clumpArith,
     clumpInput,
   },
+  showPath,
 }: GraphProps) {
   const ref = useRef<SVGSVGElement>(null);
 
@@ -36,8 +37,12 @@ function Graph({
       clumpInput,
     };
 
-    if (Object.values(clumps).reduce((a, x) => a || x, false) || autoExpand)
-      expand(state, selected);
+    if (
+      Object.values(clumps).reduce((a, x) => a || x, false) ||
+      autoExpand ||
+      showPath
+    )
+      expand(state, selected, showPath);
 
     updateGraph(state, sim, model, setTarget, clumps);
   }, [
@@ -52,6 +57,7 @@ function Graph({
     clumpWrite,
     clumpArith,
     clumpInput,
+    showPath,
   ]);
 
   return <svg ref={ref} />;
