@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { GraphProps } from "../../../types/react-types";
+import clickNode from "../../../view/d3/click-node";
 import expand from "../../../view/d3/expand";
 import setupGraph from "../../../view/d3/setup-graph";
 import updateGraph from "../../../view/d3/update-graph";
@@ -41,8 +42,10 @@ function Graph({
       Object.values(clumps).reduce((a, x) => a || x, false) ||
       autoExpand ||
       showPath
-    )
+    ) {
       expand(state, selected, showPath);
+      if (showPath && !autoExpand) clickNode(selected, state);
+    }
 
     updateGraph(state, sim, model, setTarget, clumps);
   }, [

@@ -341,8 +341,3 @@ li.Write::before {
   position: absolute;
   right: 10px;
 }
-
-.on-path {
-  stroke: red;
-  stroke-width: 5;
-}

@@ -150,22 +150,25 @@ function updateGraph(
       return "";
     })
     .attr("stroke-width", (d) => {
+      const multiplier = d.source.onPath && d.target.onPath ? 2 : 1;
       switch (d.sort) {
         case SortType.Clump:
-          return 2;
+          return multiplier * 2;
         case SortType.Boolean:
-          return 1;
+          return multiplier * 1;
         case SortType.Bytes:
-          return 1.5;
+          return multiplier * 1.5;
         case SortType.Word:
-          return 2;
+          return multiplier * 2;
         case SortType.Memory:
-          return 5;
+          return multiplier * 5;
         default:
-          return 2;
+          return multiplier * 2;
       }
     })
-    .attr("class", (d) => (d.source.onPath && d.target.onPath ? "on-path" : ""))
+    .style("stroke", (d) =>
+      d.source.onPath && d.target.onPath ? "#f00" : "333"
+    )
     .attr("stroke-dasharray", (d) => (d.sort === SortType.Clump ? "4 4" : ""));
 
   simulation.nodes(nodeCandidates);
