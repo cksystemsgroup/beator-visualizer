@@ -145,7 +145,6 @@ function Settings({
               clump.setClumpWrite(false);
               clump.setClumpState(false);
               clump.setClumpInput(false);
-              setAutoExpand(false);
             }
             setShowPath((x) => !x);
           }}

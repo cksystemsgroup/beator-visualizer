@@ -7,8 +7,15 @@ function expand(
   selected: ModelNode,
   showPath: boolean
 ) {
+  const pexp = (x: ModelNode, h: number): any => {
+    x.onPath = true;
+    clickNode(x, graphState);
+    for (const n of x.parents)
+      if (n.stats.height === h - 1) return pexp(n, h - 1);
+  };
+
   if (showPath) {
-    console.log("Showing the longest path");
+    pexp(selected, selected.stats.height);
     return;
   }
 

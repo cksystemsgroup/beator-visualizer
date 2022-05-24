@@ -30,8 +30,9 @@ export function linkGroup(group: Group) {
 }
 
 export function applyMarker(group: Group) {
-  group
-    .append("defs")
+  const defs = group.append("defs");
+
+  defs
     .append("marker")
     .attr("id", "triangle")
     .attr("viewBox", "0 -5 10 10")
@@ -42,6 +43,20 @@ export function applyMarker(group: Group) {
     .attr("markerUnits", "userSpaceOnUse")
     .attr("orient", "auto")
     .append("path")
-    .attr("fill", "#333")
+    .style("fill", "#333")
+    .attr("d", "M0,-5L10,0L0,5");
+
+  defs
+    .append("marker")
+    .attr("id", "triangleR")
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 1)
+    .attr("refY", 0)
+    .attr("markerWidth", 10)
+    .attr("markerHeight", 10)
+    .attr("markerUnits", "userSpaceOnUse")
+    .attr("orient", "auto")
+    .append("path")
+    .style("fill", "#f00")
     .attr("d", "M0,-5L10,0L0,5");
 }

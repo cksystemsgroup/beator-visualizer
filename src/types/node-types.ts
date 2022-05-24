@@ -11,6 +11,7 @@ export class ModelNode {
   radius = 10;
   x = 0;
   y = 0;
+  onPath = false;
 
   constructor(
     readonly nid: number,
@@ -33,6 +34,7 @@ export class ModelNode {
     this.x = 0;
     this.y = 0;
     this.radius = 10;
+    this.onPath = false;
   }
 }
 
@@ -84,6 +86,7 @@ export type ClumpNode = {
   sort: SortType.Clump;
   minDepth: number;
   maxDepth: number;
+  onPath: boolean;
 };
 
 export class Dependancy {

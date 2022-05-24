@@ -144,9 +144,11 @@ function updateGraph(
     .enter()
     .append("path")
     .merge(graphState.linkGroup)
-    .attr("marker-end", (d) =>
-      d.sort !== SortType.Clump ? "url(#triangle)" : ""
-    )
+    .attr("marker-end", (d) => {
+      if (d.source.onPath && d.target.onPath) return "url(#triangleR)";
+      if (d.sort !== SortType.Clump) return "url(#triangle)";
+      return "";
+    })
     .attr("stroke-width", (d) => {
       switch (d.sort) {
         case SortType.Clump:
@@ -163,6 +165,7 @@ function updateGraph(
           return 2;
       }
     })
+    .attr("class", (d) => (d.source.onPath && d.target.onPath ? "on-path" : ""))
     .attr("stroke-dasharray", (d) => (d.sort === SortType.Clump ? "4 4" : ""));
 
   simulation.nodes(nodeCandidates);
@@ -189,6 +192,7 @@ function clumper(
     sort: SortType.Clump,
     minDepth: Infinity,
     maxDepth: 0,
+    onPath: false,
   };
 
   linkCandidates.forEach((x) => {
