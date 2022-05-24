@@ -146,7 +146,7 @@ function Settings({
             setShowPath((x) => !x);
           }}
         />
-        Show Longest Path
+        Show Longest Path in Current Selection
       </label>
     </form>
   );

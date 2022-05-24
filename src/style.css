@@ -13,34 +13,49 @@ html {
   user-select: none;
 }
 
-.local,
 .global,
-.selection,
-.sandwich,
-.file-form,
-.model-file-modal {
+.local {
   position: fixed;
+  overflow: auto;
+}
+
+.global,
+.local,
+.selection {
   box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
   border-radius: 5px;
   margin: 10px;
   padding: 10px;
   width: 20vw;
+}
+
+.sandwich,
+.selection {
+  position: fixed;
+}
+
+.file-form {
+  margin: 10px;
   overflow: auto;
 }
 
-.local,
-.global {
-  width: 16vw;
+.file-form,
+.model-file-modal {
+  position: fixed;
+  box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+  border-radius: 5px;
+  padding: 10px;
+  width: 20vw;
 }
 
-.local[open],
-.global[open] {
+.global[open],
+.local[open] {
   min-height: 15vh;
   max-height: 45vh;
 }
 
-.selection[open],
-.sandwich[open] {
+.sandwich[open],
+.selection[open] {
   height: 45vh;
 }
 
@@ -105,6 +120,10 @@ button {
   display: block;
 }
 
+.content li:hover:not(.selected) {
+  background-color: rgba(117, 184, 178, 0.5);
+}
+
 .selected {
   font-weight: 700;
   line-height: 20pt;
@@ -113,6 +132,7 @@ button {
 
 .Addition,
 .And,
+.Arithmetic,
 .Bad,
 .Constant,
 .Division,
@@ -121,6 +141,7 @@ button {
 .IfThenElse,
 .Input,
 .LessThan,
+.Logic,
 .Multiplication,
 .Next,
 .Not,
@@ -130,8 +151,6 @@ button {
 .Subtraction,
 .Write,
 .tabs,
-.Arithmetic,
-.Logic,
 summary {
   cursor: pointer;
 }
@@ -181,8 +200,8 @@ summary {
 .And,
 .Equals,
 .LessThan,
-.Not,
-.Logic {
+.Logic,
+.Not {
   fill: #f28e2b;
 }
 
@@ -191,12 +210,12 @@ summary {
 }
 
 .Addition,
+.Arithmetic,
 .Division,
 .Extend,
 .Multiplication,
 .Remainder,
-.Subtraction,
-.Arithmetic {
+.Subtraction {
   fill: #ff9da7;
 }
 
@@ -327,7 +346,7 @@ li.Write::before {
   left: 0;
   width: 60%;
   height: 95%;
-  margin-left: 20%;
+  margin: 10px 10px 10px 20%;
   overflow: hidden;
 }
 
@@ -340,4 +359,14 @@ li.Write::before {
 .model-file-modal button {
   position: absolute;
   right: 10px;
+}
+
+li summary {
+  margin: 0;
+}
+
+li details p,
+li details ul {
+  margin: 0;
+  padding-left: 30px;
 }

@@ -19,7 +19,7 @@ function GlobalInfo({ result }: { result: Metrics }) {
             <summary>
               <b>Longest Path:</b> {result.longestPathLength} nodes long
             </summary>
-            {result.longestPathStart.name}
+            <p>{result.longestPathStart.name}</p>
           </details>
         </li>
         <li className="dependancy-details">
@@ -27,7 +27,7 @@ function GlobalInfo({ result }: { result: Metrics }) {
             <summary>
               <b>Max Dependancy:</b> {result.maxDependancy} nodes
             </summary>
-            {result.maxDependantNode.name}
+            <p>{result.maxDependantNode.name}</p>
           </details>
         </li>
       </ul>
