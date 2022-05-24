@@ -7,8 +7,6 @@ function Settings({
   clump,
   showPath,
   setShowPath,
-  model,
-  setSelected,
 }: SandwichProps) {
   return (
     <form>
@@ -137,7 +135,6 @@ function Settings({
           checked={showPath}
           onChange={() => {
             if (!showPath) {
-              setSelected(model.maxDepthStart!);
               clump.setClumpIf(false);
               clump.setClumpArith(false);
               clump.setClumpConst(false);

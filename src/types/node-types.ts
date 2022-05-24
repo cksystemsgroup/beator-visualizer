@@ -86,7 +86,6 @@ export type ClumpNode = {
   sort: SortType.Clump;
   minDepth: number;
   maxDepth: number;
-  onPath: boolean;
 };
 
 export class Dependancy {

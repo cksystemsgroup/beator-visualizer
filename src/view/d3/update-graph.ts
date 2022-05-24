@@ -145,12 +145,12 @@ function updateGraph(
     .append("path")
     .merge(graphState.linkGroup)
     .attr("marker-end", (d) => {
-      if (d.source.onPath && d.target.onPath) return "url(#triangleR)";
+      if (linkOnPath(d)) return "url(#triangleR)";
       if (d.sort !== SortType.Clump) return "url(#triangle)";
       return "";
     })
     .attr("stroke-width", (d) => {
-      const multiplier = d.source.onPath && d.target.onPath ? 2 : 1;
+      const multiplier = linkOnPath(d) ? 2 : 1;
       switch (d.sort) {
         case SortType.Clump:
           return multiplier * 2;
@@ -166,9 +166,7 @@ function updateGraph(
           return multiplier * 2;
       }
     })
-    .style("stroke", (d) =>
-      d.source.onPath && d.target.onPath ? "#f00" : "333"
-    )
+    .style("stroke", (d) => (linkOnPath(d) ? "#f00" : "333"))
     .attr("stroke-dasharray", (d) => (d.sort === SortType.Clump ? "4 4" : ""));
 
   simulation.nodes(nodeCandidates);
@@ -195,7 +193,6 @@ function clumper(
     sort: SortType.Clump,
     minDepth: Infinity,
     maxDepth: 0,
-    onPath: false,
   };
 
   linkCandidates.forEach((x) => {
@@ -247,6 +244,16 @@ function typer(types: NodeType[], n: GraphNode) {
   }
 
   return false;
+}
+
+function linkOnPath(d: Link) {
+  return (
+    d.source instanceof ModelNode &&
+    d.target instanceof ModelNode &&
+    d.source.onPath &&
+    d.target.onPath &&
+    d.source.stats.height - d.target.stats.height === 1
+  );
 }
 
 export default updateGraph;

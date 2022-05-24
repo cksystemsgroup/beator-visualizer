@@ -104,6 +104,9 @@ const getParameters = (line: string, model: Model): NodeParams => {
       return [operands.slice(0, -1).map(parseN), sort, u, operands.at(-1)];
     case NodeType.Extend:
       return [operands.slice(1, -1).map(parseN), sort, int(operands.at(-1)!)];
+    case NodeType.Next:
+      const name = parseN(operands[1]).name;
+      return [operands.slice(1).map(parseN), sort, undefined, name];
     default:
       return [operands.slice(1).map(parseN), sort];
   }

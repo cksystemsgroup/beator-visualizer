@@ -40,8 +40,6 @@ export interface SandwichProps {
   setShowFile: SetBoolean;
   showPath: boolean;
   setShowPath: SetBoolean;
-  model: Model;
-  setSelected: SetModelNode;
 }
 
 export interface TabsItSelvesProps {
