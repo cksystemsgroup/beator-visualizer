@@ -129,7 +129,15 @@ function updateGraph(
   graphState.nodeGroup = graphState.nodeGroup
     .enter()
     .append("circle")
-    .attr("class", (d) => d.nodeClass)
+    .attr("class", (d) => {
+      if (
+        d instanceof ModelNode &&
+        d.nodeClass === NodeType.State &&
+        d.parents.length === 0
+      )
+        return "Input";
+      else return d.nodeClass;
+    })
     .attr("r", (d) => d.radius)
     .attr("nid", (d) => d.id)
     .on("click", onClick)

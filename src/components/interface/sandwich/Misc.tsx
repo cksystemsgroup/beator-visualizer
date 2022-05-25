@@ -8,16 +8,24 @@ function Misc({
   setShowFile: SetBoolean;
 }) {
   return (
-    <div>
-      <input
-        type="button"
-        disabled={showFile}
-        onClick={() => {
-          setShowFile(true);
-        }}
-        value="Show Model File"
-      />
-    </div>
+    <>
+      <div>
+        <input
+          type="button"
+          disabled={showFile}
+          onClick={() => {
+            setShowFile(true);
+          }}
+          value="Show Model File"
+        />
+      </div>
+      <a
+        href="https://github.com/geo-bert/beator-visualizer/blob/master/paper.pdf"
+        target="_blank"
+        rel="noopener noreferrer">
+        Link to paper
+      </a>
+    </>
   );
 }
 
