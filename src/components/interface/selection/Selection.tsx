@@ -48,13 +48,31 @@ function TabContent({
   setSelected,
 }: { active: number } & SelectionProps) {
   model.roots.sort(sortRoots);
+  model.states.sort(sortStates);
+
+  const [nextOrState, setNextOrState] = useState(false);
+
+  const pcsState = model.states.filter(filterPCsS);
+  const regsState = model.states.filter(filterRegsS);
+  const othState = model.states.filter(filterOtherS);
+
   const bads = model.roots.filter(filterBads);
-  const pcs = model.roots.filter(filterPCs);
-  const regs = model.roots.filter(filterRegs);
-  const oth = model.roots.filter(filterOther);
+  const pcsNext = model.roots.filter(filterPCs);
+  const regsNext = model.roots.filter(filterRegs);
+  const othNext = model.roots.filter(filterOther);
 
   return (
     <div className="content-tabs">
+      {active !== 1 && (
+        <label>
+          <input
+            type="checkbox"
+            checked={nextOrState}
+            onChange={() => setNextOrState((x) => !x)}
+          />{" "}
+          {nextOrState ? "State" : "Next"}
+        </label>
+      )}
       <div className={active === 1 ? "content  active-content" : "content"}>
         <ul>
           {bads.map((x) => (
@@ -69,38 +87,65 @@ function TabContent({
       </div>
       <div className={active === 2 ? "content  active-content" : "content"}>
         <ul>
-          {pcs.map((x) => (
-            <li
-              className={x === selected ? "selected" : ""}
-              key={`${x.nid}`}
-              onClick={() => setSelected(x)}>
-              {x.parents[0].name}
-            </li>
-          ))}
+          {!nextOrState
+            ? pcsNext.map((x) => (
+                <li
+                  className={x === selected ? "selected" : ""}
+                  key={`${x.nid}`}
+                  onClick={() => setSelected(x)}>
+                  {x.parents[0].name}
+                </li>
+              ))
+            : pcsState.map((x) => (
+                <li
+                  className={x === selected ? "selected" : ""}
+                  key={`${x.nid}`}
+                  onClick={() => setSelected(x)}>
+                  {x.name}
+                </li>
+              ))}
         </ul>
       </div>
       <div className={active === 3 ? "content  active-content" : "content"}>
         <ul>
-          {regs.map((x) => (
-            <li
-              className={x === selected ? "selected" : ""}
-              key={`${x.nid}`}
-              onClick={() => setSelected(x)}>
-              {x.parents[0].name}
-            </li>
-          ))}
+          {!nextOrState
+            ? regsNext.map((x) => (
+                <li
+                  className={x === selected ? "selected" : ""}
+                  key={`${x.nid}`}
+                  onClick={() => setSelected(x)}>
+                  {x.parents[0].name}
+                </li>
+              ))
+            : regsState.map((x) => (
+                <li
+                  className={x === selected ? "selected" : ""}
+                  key={`${x.nid}`}
+                  onClick={() => setSelected(x)}>
+                  {x.name}
+                </li>
+              ))}
         </ul>
       </div>
       <div className={active === 4 ? "content  active-content" : "content"}>
         <ul>
-          {oth.map((x) => (
-            <li
-              className={x === selected ? "selected" : ""}
-              key={`${x.nid}`}
-              onClick={() => setSelected(x)}>
-              {x.parents[0].name}
-            </li>
-          ))}
+          {!nextOrState
+            ? othNext.map((x) => (
+                <li
+                  className={x === selected ? "selected" : ""}
+                  key={`${x.nid}`}
+                  onClick={() => setSelected(x)}>
+                  {x.parents[0].name}
+                </li>
+              ))
+            : othState.map((x) => (
+                <li
+                  className={x === selected ? "selected" : ""}
+                  key={`${x.nid}`}
+                  onClick={() => setSelected(x)}>
+                  {x.name}
+                </li>
+              ))}
         </ul>
       </div>
     </div>
@@ -115,11 +160,23 @@ const sortRoots = (a: ModelNode, b: ModelNode) => {
   return 0;
 };
 
+const sortStates = (a: ModelNode, b: ModelNode) => {
+  const aVal = a.name!;
+  const bVal = b.name!;
+  if (aVal < bVal) return -1;
+  if (aVal > bVal) return 1;
+  return 0;
+};
+
 const filterBads = (x: ModelNode) => x.nodeClass === NodeType.Bad;
 const filterPCs = (x: ModelNode) => x.parents[0].name?.startsWith("pc=");
 const filterRegs = (x: ModelNode) =>
   x.parents[0].name?.match("^[rfsgta][0-9ap][01]?$");
 const filterOther = (x: ModelNode) =>
   !(x.nodeClass === NodeType.Bad || filterPCs(x) || filterRegs(x));
+
+const filterPCsS = (x: ModelNode) => x.name!.startsWith("pc=");
+const filterRegsS = (x: ModelNode) => x.name!.match("^[rfsgta][0-9ap][01]?$");
+const filterOtherS = (x: ModelNode) => !(filterPCsS(x) || filterRegsS(x));
 
 export default Selection;

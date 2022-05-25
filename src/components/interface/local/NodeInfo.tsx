@@ -27,9 +27,11 @@ function NodeInfo({ n }: { n: ModelNode }) {
       <li>
         <b>Depth:</b> {n.stats.depth}
       </li>
-      <li>
-        <b>Depth from State:</b> {n.stats.depthS}
-      </li>
+      {n.stats.depthS !== -Infinity && (
+        <li>
+          <b>Depth from State:</b> {n.stats.depthS}
+        </li>
+      )}
       <li className="dependancy-details">
         <details>
           <summary>
