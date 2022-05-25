@@ -50,37 +50,33 @@ export default function processLine(line: string, model: Model) {
   if (type === NodeType.Sort)
     return model.sortMap.set(nid, getSort(operands.at(-1)!));
 
-  const n = new ModelNode(nid, type, ...getParameters(line, model));
+  let n = new ModelNode(nid, type, ...getParameters(line, model));
 
   if (type === NodeType.Initialization) {
     const state = n.parents[0];
     state.parents.push(n.parents[1]);
-    state.stats.dependancy = sumDependancy(state.parents);
-    state.stats.height =
-      state.parents.reduce(
-        (a, x) => (x.stats.height > a ? x.stats.height : a),
-        -1
-      ) + 1;
-    return;
+    n = state;
   }
 
   if (type === NodeType.Next) model.roots.push(n);
   if (type === NodeType.Bad) model.roots.push(n);
+  if (type === NodeType.State) model.states.push(n);
 
   n.stats.dependancy = sumDependancy(n.parents);
   n.stats.height =
     n.parents.reduce((a, x) => (x.stats.height > a ? x.stats.height : a), -1) +
     1;
 
-  if (
-    Object.values(n.stats.dependancy).reduce((a, x) => a + x.size, 0) >
-    model.maxDependancy
-  ) {
-    model.maxDependancy = Object.values(n.stats.dependancy).reduce(
-      (a, x) => a + x.size,
-      0
-    );
+  const dep = Object.values(n.stats.dependancy).reduce((a, x) => a + x.size, 0);
+
+  if (dep > model.maxDependancy) {
+    model.maxDependancy = dep;
     model.maxDependantNode = n;
+  }
+
+  if (n.nodeClass === NodeType.State && dep > model.maxDependancyS) {
+    model.maxDependancyS = dep;
+    model.maxDependantNodeS = n;
   }
 
   model.nodes.set(nid, n);

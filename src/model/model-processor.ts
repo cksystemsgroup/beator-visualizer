@@ -14,6 +14,10 @@ function processModel(text: string) {
     x.stats.height > a.stats.height ? x : a
   );
 
+  model.maxDepthStartS = model.states.reduce((a, x) =>
+    x.stats.height > a.stats.height ? x : a
+  );
+
   return model;
 }
 

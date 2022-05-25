@@ -30,6 +30,23 @@ function GlobalInfo({ result }: { result: Metrics }) {
             <p>{result.maxDependantNode.name}</p>
           </details>
         </li>
+        <li className="dependancy-details">
+          <details>
+            <summary>
+              <b>Longest Path from State:</b> {result.longestPathLengthS} nodes
+              long
+            </summary>
+            <p>{result.longestPathStartS.name}</p>
+          </details>
+        </li>
+        <li className="dependancy-details">
+          <details>
+            <summary>
+              <b>Max Dependancy from State:</b> {result.maxDependancyS} nodes
+            </summary>
+            <p>{result.maxDependantNodeS.name}</p>
+          </details>
+        </li>
       </ul>
     </details>
   );

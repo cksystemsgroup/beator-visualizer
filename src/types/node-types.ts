@@ -3,6 +3,7 @@ export class ModelNode {
     depth: -Infinity,
     height: Infinity,
     dependancy: new Dependancy(),
+    depthS: -Infinity,
   };
 
   index: number;
@@ -74,6 +75,7 @@ interface Stats {
   depth: number;
   height: number;
   dependancy: Dependancy;
+  depthS: number;
 }
 
 export type ClumpNode = {
