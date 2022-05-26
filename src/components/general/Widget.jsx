@@ -15,7 +15,7 @@ export default function Widget({ children, title, expanded, sx }) {
         ...sx,
       }}>
       <AccordionSummary
-        sx={{ borderBottom: "1px solid #999" }}
+        sx={{ borderBottom: 1, borderColor: "divider" }}
         expandIcon={<ExpandMoreIcon />}>
         {title}
       </AccordionSummary>

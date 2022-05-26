@@ -8,8 +8,8 @@ import {
   ListItemText,
 } from "@mui/material";
 
-export function CollapsableItem({ title, elements, childFn }) {
-  const [open, setOpen] = useState(true);
+export function CollapsableItem({ title, elements, childFn, closed = false }) {
+  const [open, setOpen] = useState(!closed);
 
   if (elements.length === 0)
     return (
@@ -43,5 +43,25 @@ export function Item({ property, value, unit = "" }) {
         <b>{property}:</b> {value} {unit}
       </ListItemText>
     </ListItem>
+  );
+}
+
+export function ItemButton({ itemName, onClick, selected }) {
+  return (
+    <ListItemButton
+      selected={selected}
+      onClick={onClick}
+      sx={{ p: 0 }}
+      disableRipple>
+      <ListItemText>{itemName}</ListItemText>
+    </ListItemButton>
+  );
+}
+
+export function MyList({ children }) {
+  return (
+    <List disablePadding sx={{ maxHeight: "100%", overflow: "auto" }}>
+      {children}
+    </List>
   );
 }

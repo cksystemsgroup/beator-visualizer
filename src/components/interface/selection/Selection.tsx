@@ -1,43 +1,29 @@
+import { Box, FormControlLabel, Switch, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import { ModelNode, NodeType } from "../../../types/node-types";
-import { SelectionProps, TabsItSelvesProps } from "../../../types/react-types";
+import { SelectionProps } from "../../../types/react-types";
+import { ItemButton, MyList } from "../../general/ListUtils";
 import Widget from "../../general/Widget";
 
 function Selection(props: SelectionProps) {
-  const [active, setActive] = useState(1);
+  const [active, setActive] = useState(0);
 
   return (
     <Widget title="Selection" expanded sx={{ top: "10px", right: "10px" }}>
-      <TabsItselves active={active} setActive={setActive} />
-      <TabContent active={active} {...props} />
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={active}
+          onChange={(_, newValue) => setActive(newValue)}
+          variant="scrollable"
+          scrollButtons="auto">
+          <Tab label="Bads" disableRipple />
+          <Tab label="PCs" disableRipple />
+          <Tab label="Regs" disableRipple />
+          <Tab label="Other" disableRipple />
+        </Tabs>
+      </Box>
+      <TabContent {...props} active={active} />
     </Widget>
-  );
-}
-
-function TabsItselves({ active, setActive }: TabsItSelvesProps) {
-  return (
-    <div className="bloc-tabs">
-      <button
-        className={active === 1 ? "tabs active-tabs" : "tabs"}
-        onClick={() => setActive(1)}>
-        Bads
-      </button>
-      <button
-        className={active === 2 ? "tabs active-tabs" : "tabs"}
-        onClick={() => setActive(2)}>
-        PCs
-      </button>
-      <button
-        className={active === 3 ? "tabs active-tabs" : "tabs"}
-        onClick={() => setActive(3)}>
-        Regs
-      </button>
-      <button
-        className={active === 4 ? "tabs active-tabs" : "tabs"}
-        onClick={() => setActive(4)}>
-        Other
-      </button>
-    </div>
   );
 }
 
@@ -62,93 +48,103 @@ function TabContent({
   const othNext = model.roots.filter(filterOther);
 
   return (
-    <div className="content-tabs">
-      {active !== 1 && (
-        <label>
-          <input
-            type="checkbox"
-            checked={nextOrState}
-            onChange={() => setNextOrState((x) => !x)}
-          />{" "}
-          {nextOrState ? "State" : "Next"}
-        </label>
+    <>
+      {active !== 0 && (
+        <FormControlLabel
+          control={
+            <Switch
+              checked={nextOrState}
+              onChange={() => setNextOrState((x) => !x)}
+            />
+          }
+          label={nextOrState ? "Next" : "State"}
+        />
       )}
-      <div className={active === 1 ? "content  active-content" : "content"}>
-        <ul>
+      <TabPanel value={active} index={0}>
+        <MyList>
           {bads.map((x) => (
-            <li
-              className={x === selected ? "selected" : ""}
-              key={`${x.nid}`}
-              onClick={() => setSelected(x)}>
-              {x.name}
-            </li>
+            <ItemButton
+              key={x.nid}
+              itemName={x.name}
+              selected={x === selected}
+              onClick={() => setSelected(x)}
+            />
           ))}
-        </ul>
-      </div>
-      <div className={active === 2 ? "content  active-content" : "content"}>
-        <ul>
-          {!nextOrState
-            ? pcsNext.map((x) => (
-                <li
-                  className={x === selected ? "selected" : ""}
-                  key={`${x.nid}`}
-                  onClick={() => setSelected(x)}>
-                  {x.parents[0].name}
-                </li>
-              ))
-            : pcsState.map((x) => (
-                <li
-                  className={x === selected ? "selected" : ""}
-                  key={`${x.nid}`}
-                  onClick={() => setSelected(x)}>
-                  {x.name}
-                </li>
-              ))}
-        </ul>
-      </div>
-      <div className={active === 3 ? "content  active-content" : "content"}>
-        <ul>
-          {!nextOrState
-            ? regsNext.map((x) => (
-                <li
-                  className={x === selected ? "selected" : ""}
-                  key={`${x.nid}`}
-                  onClick={() => setSelected(x)}>
-                  {x.parents[0].name}
-                </li>
-              ))
-            : regsState.map((x) => (
-                <li
-                  className={x === selected ? "selected" : ""}
-                  key={`${x.nid}`}
-                  onClick={() => setSelected(x)}>
-                  {x.name}
-                </li>
-              ))}
-        </ul>
-      </div>
-      <div className={active === 4 ? "content  active-content" : "content"}>
-        <ul>
-          {!nextOrState
-            ? othNext.map((x) => (
-                <li
-                  className={x === selected ? "selected" : ""}
-                  key={`${x.nid}`}
-                  onClick={() => setSelected(x)}>
-                  {x.parents[0].name}
-                </li>
-              ))
-            : othState.map((x) => (
-                <li
-                  className={x === selected ? "selected" : ""}
-                  key={`${x.nid}`}
-                  onClick={() => setSelected(x)}>
-                  {x.name}
-                </li>
-              ))}
-        </ul>
-      </div>
-    </div>
+        </MyList>
+      </TabPanel>
+      <TabPanel value={!nextOrState ? active : -1} index={1}>
+        <MyList>
+          {pcsNext.map((x) => (
+            <ItemButton
+              key={x.nid}
+              itemName={x.name}
+              selected={x === selected}
+              onClick={() => setSelected(x)}
+            />
+          ))}
+        </MyList>
+      </TabPanel>
+      <TabPanel value={!nextOrState ? active : -1} index={2}>
+        <MyList>
+          {regsNext.map((x) => (
+            <ItemButton
+              key={x.nid}
+              itemName={x.name}
+              selected={x === selected}
+              onClick={() => setSelected(x)}
+            />
+          ))}
+        </MyList>
+      </TabPanel>
+      <TabPanel value={!nextOrState ? active : -1} index={3}>
+        <MyList>
+          {othNext.map((x) => (
+            <ItemButton
+              key={x.nid}
+              itemName={x.name}
+              selected={x === selected}
+              onClick={() => setSelected(x)}
+            />
+          ))}
+        </MyList>
+      </TabPanel>
+      <TabPanel value={nextOrState ? active : -1} index={1}>
+        <MyList>
+          {pcsState.map((x) => (
+            <ItemButton
+              key={x.nid}
+              itemName={x.name}
+              selected={x === selected}
+              onClick={() => setSelected(x)}
+            />
+          ))}
+        </MyList>
+      </TabPanel>
+      <TabPanel value={nextOrState ? active : -1} index={2}>
+        <MyList>
+          {regsState.map((x) => (
+            <ItemButton
+              key={x.nid}
+              itemName={x.name}
+              selected={x === selected}
+              onClick={() => setSelected(x)}
+            />
+          ))}
+        </MyList>
+      </TabPanel>
+      <TabPanel value={nextOrState ? active : -1} index={3}>
+        <MyList>
+          {othState.map((x) => (
+            <ItemButton
+              key={x.nid}
+              itemName={x.name}
+              selected={x === selected}
+              onClick={() => setSelected(x)}
+            />
+          ))}
+        </MyList>
+      </TabPanel>
+    </>
   );
 }
 
@@ -167,6 +163,28 @@ const sortStates = (a: ModelNode, b: ModelNode) => {
   if (aVal > bVal) return 1;
   return 0;
 };
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index } = props;
+
+  return (
+    <>
+      {value === index && (
+        <Box
+          hidden={value !== index}
+          sx={{ maxHeight: index === 0 ? "85%" : "72%", overflow: "auto" }}>
+          {children}
+        </Box>
+      )}
+    </>
+  );
+}
 
 const filterBads = (x: ModelNode) => x.nodeClass === NodeType.Bad;
 const filterPCs = (x: ModelNode) => x.parents[0].name?.startsWith("pc=");

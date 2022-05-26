@@ -1,12 +1,11 @@
-import { List } from "@mui/material";
 import { ModelNode } from "../../../types/node-types";
-import { Item, CollapsableItem } from "../../general/ListUtils";
+import { Item, CollapsableItem, MyList } from "../../general/ListUtils";
 
 function NodeInfo({ n }: { n: ModelNode }) {
   const u = undefined;
 
   return (
-    <List disablePadding sx={{ maxHeight: "100%", overflow: "auto" }}>
+    <MyList>
       <Item property="NID" value={n.nid} />
       {n.sort && <Item property="Sort" value={n.sort} />}
       {n.name && <Item property="Name" value={n.name} />}
@@ -28,7 +27,7 @@ function NodeInfo({ n }: { n: ModelNode }) {
           ([, x]) => x.size !== 0
         )}
       />
-    </List>
+    </MyList>
   );
 }
 
