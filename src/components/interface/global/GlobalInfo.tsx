@@ -1,4 +1,6 @@
+import { List } from "@mui/material";
 import { Metrics } from "../../../types/model-types";
+import { CollapsableItem, Item } from "../../general/ListUtils";
 import Widget from "../../general/Widget";
 
 function GlobalInfo({ result }: { result: Metrics }) {
@@ -7,16 +9,53 @@ function GlobalInfo({ result }: { result: Metrics }) {
       title="Global Information"
       expanded
       sx={{ bottom: "10px", left: "10px" }}>
-      <ul>
-        <li>
-          <b>Size:</b> {result.nrOfNodes} nodes
-        </li>
-        <li>
-          <b>Bads:</b> {result.nrOfBads} bad instructions
-        </li>
-        <li>
-          <b>States:</b> {result.nrOfStates} PCs + registers
-        </li>
+      <List disablePadding sx={{ maxHeight: "100%", overflow: "auto" }}>
+        <Item property="Size" value={result.nrOfNodes} unit="nodes" />
+        <Item property="Bads" value={result.nrOfBads} unit="bad instructions" />
+        <Item
+          property="States"
+          value={result.nrOfStates}
+          unit="PCs + registers"
+        />
+        <CollapsableItem
+          title={
+            <>
+              <b>Longest Path:</b> {result.longestPathLength} nodes long
+            </>
+          }
+          elements={[result.longestPathStart.name]}
+          childFn={(x: string) => <Item property="Source Node" value={x} />}
+        />
+        <CollapsableItem
+          title={
+            <>
+              <b>Longest Path from State:</b> {result.longestPathLengthS} nodes
+              long
+            </>
+          }
+          elements={[result.longestPathStartS.name]}
+          childFn={(x: string) => <Item property="Source Node" value={x} />}
+        />
+        <CollapsableItem
+          title={
+            <>
+              <b>Max Dependancy:</b> {result.maxDependancy} nodes
+            </>
+          }
+          elements={[result.maxDependantNode.name]}
+          childFn={(x: string) => <Item property="Source Node" value={x} />}
+        />
+        <CollapsableItem
+          title={
+            <>
+              <b>Max Dependancy from State:</b> {result.maxDependancyS} nodes
+            </>
+          }
+          elements={[result.maxDependantNodeS.name]}
+          childFn={(x: string) => <Item property="Source Node" value={x} />}
+        />
+      </List>
+      {/* <ul>
         <li className="dependancy-details">
           <details>
             <summary>
@@ -50,7 +89,7 @@ function GlobalInfo({ result }: { result: Metrics }) {
             <p>{result.maxDependantNodeS.name}</p>
           </details>
         </li>
-      </ul>
+      </ul> */}
     </Widget>
   );
 }

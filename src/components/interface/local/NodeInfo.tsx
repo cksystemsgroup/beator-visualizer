@@ -23,10 +23,10 @@ function NodeInfo({ n }: { n: ModelNode }) {
             {Object.values(n.stats.dependancy).reduce((a, x) => a + x.size, 0)}
           </>
         }
-        childFn={([x, y]: any) =>
-          y.size !== 0 && <Item key={x} property={x} value={y.size} />
-        }
-        elements={Object.entries(n.stats.dependancy)}
+        childFn={([x, y]: any) => <Item key={x} property={x} value={y.size} />}
+        elements={Object.entries(n.stats.dependancy).filter(
+          ([, x]) => x.size !== 0
+        )}
       />
     </List>
   );

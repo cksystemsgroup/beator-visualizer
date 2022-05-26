@@ -11,12 +11,19 @@ import {
 export function CollapsableItem({ title, elements, childFn }) {
   const [open, setOpen] = useState(true);
 
+  if (elements.length === 0)
+    return (
+      <ListItem disablePadding>
+        <ListItemText>{title}</ListItemText>
+      </ListItem>
+    );
+
   return (
     <>
       <ListItemButton
         onClick={() => setOpen((x) => !x)}
         disableRipple
-        sx={{ p: 0, width: "90%" }}>
+        sx={{ p: 0, width: "95%" }}>
         <ListItemText primary={title} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
@@ -29,11 +36,11 @@ export function CollapsableItem({ title, elements, childFn }) {
   );
 }
 
-export function Item({ property, value }) {
+export function Item({ property, value, unit = "" }) {
   return (
     <ListItem disablePadding>
       <ListItemText>
-        <b>{property}:</b> {value}
+        <b>{property}:</b> {value} {unit}
       </ListItemText>
     </ListItem>
   );
