@@ -3,7 +3,7 @@ import GlobalInfo from "./global/GlobalInfo";
 import Graph from "./graph/Graph";
 import LocalInfo from "./local/LocalInfo";
 import Selection from "./selection/Selection";
-import Menu from "./sandwich/Menu";
+import Menu from "./menu/Menu";
 import { GraphNode } from "../../types/graph-types";
 import { Metrics, Model } from "../../types/model-types";
 import ModelFile from "../ModelFile";

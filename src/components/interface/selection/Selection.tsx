@@ -12,11 +12,7 @@ function Selection(props: SelectionProps) {
   return (
     <Widget title="Selection" expanded sx={{ top: "10px", right: "10px" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={active}
-          onChange={(_, newValue) => setActive(newValue)}
-          variant="scrollable"
-          scrollButtons="auto">
+        <Tabs value={active} onChange={(_, newValue) => setActive(newValue)}>
           <Tab label="Bads" disableRipple />
           <Tab label="PCs" disableRipple />
           <Tab label="Regs" disableRipple />

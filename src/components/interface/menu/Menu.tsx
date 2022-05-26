@@ -18,10 +18,7 @@ function Menu(props: SandwichProps) {
       expandIcon={<MenuIcon />}
       expanded={false}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={active}
-          onChange={(_, newValue) => setActive(newValue)}
-          centered>
+        <Tabs value={active} onChange={(_, newValue) => setActive(newValue)}>
           <Tab label="Legend" disableRipple />
           <Tab label="Settings" disableRipple />
           <Tab label="Misc." disableRipple />

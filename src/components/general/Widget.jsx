@@ -13,7 +13,7 @@ export default function Widget({
       defaultExpanded={expanded}
       disableGutters
       sx={{
-        width: "20vw",
+        width: "25vw",
         position: "fixed",
         overflow: "hidden",
         maxHeight: "40vh",
