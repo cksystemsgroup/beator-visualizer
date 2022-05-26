@@ -79,6 +79,8 @@ export default function processLine(line: string, model: Model) {
     model.maxDependantNodeS = n;
   }
 
+  if (type === NodeType.Initialization) return;
+
   model.nodes.set(nid, n);
 }
 
