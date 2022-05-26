@@ -281,11 +281,13 @@ function getColor(d: GraphNode) {
     case NodeType.And:
     case NodeType.Equals:
     case NodeType.LessThan:
+    case "Logic":
     case NodeType.Not:
       return "#f28e2b";
     case NodeType.IfThenElse:
       return "#b07aa1";
     case NodeType.Addition:
+    case "Arithmetic":
     case NodeType.Division:
     case NodeType.Extend:
     case NodeType.Multiplication:
