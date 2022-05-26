@@ -29,7 +29,7 @@ function Form({ setText }: { setText: SetStringQ }) {
         Please select a valid BEATOR2 file to start
       </Typography>
       <Button
-        sx={{ mt: 1, mb: 1, color: "#26a69a", borderColor: "#26a69a" }}
+        sx={{ mt: 1, mb: 1 }}
         startIcon={<UploadIcon />}
         variant="outlined"
         component="label"
@@ -43,7 +43,7 @@ function Form({ setText }: { setText: SetStringQ }) {
         />
       </Button>
       <Button
-        sx={{ mt: 1, mb: 1, backgroundColor: "#26a69a" }}
+        sx={{ mt: 1, mb: 1 }}
         disabled={!file}
         variant="contained"
         onClick={() => file!.text().then(setText)}
@@ -51,7 +51,8 @@ function Form({ setText }: { setText: SetStringQ }) {
         Evaluate Model
       </Button>
       <Button
-        sx={{ mt: 1, mb: 1, color: "#26a69a" }}
+        color="primary"
+        sx={{ mt: 1, mb: 1 }}
         variant="text"
         onClick={() => setText(exampleModel)}
         disableRipple>
