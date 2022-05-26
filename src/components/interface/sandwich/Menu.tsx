@@ -1,19 +1,21 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
-import { SandwichProps, TabsItSelvesProps } from "../../../types/react-types";
+import { SandwichProps } from "../../../types/react-types";
 import { TabPanel } from "../../general/TabUtils";
 import Widget from "../../general/Widget";
 import Legend from "./Legend";
 import Misc from "./Misc";
 import Settings from "./Settings";
+import MenuIcon from "@mui/icons-material/Menu";
 
-function Sandwich(props: SandwichProps) {
+function Menu(props: SandwichProps) {
   const [active, setActive] = useState(0);
 
   return (
     <Widget
-      title="Sandwich"
+      title="Menu"
       sx={{ bottom: "10px", right: "10px" }}
+      expandIcon={<MenuIcon />}
       expanded={false}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
@@ -46,4 +48,4 @@ function TabContent({ active, ...props }: SandwichProps & { active: number }) {
   );
 }
 
-export default Sandwich;
+export default Menu;

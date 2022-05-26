@@ -140,6 +140,8 @@ function updateGraph(
     })
     .attr("r", (d) => d.radius)
     .attr("nid", (d) => d.id)
+    .style("cursor", "pointer")
+    .attr("fill", (d) => getColor(d)!)
     .on("click", onClick)
     .call(drag(simulation) as any)
     .merge(graphState.nodeGroup);
@@ -262,6 +264,39 @@ function linkOnPath(d: Link) {
     d.target.onPath &&
     d.source.stats.height - d.target.stats.height === 1
   );
+}
+
+function getColor(d: GraphNode) {
+  switch (d.nodeClass) {
+    case NodeType.Bad:
+      return "#e15759";
+    case NodeType.Next:
+      return "#4e79a5";
+    case NodeType.Constant:
+      return "#bcbd3b";
+    case NodeType.Input:
+      return "#59a14f";
+    case NodeType.State:
+      return "#76b7b2";
+    case NodeType.And:
+    case NodeType.Equals:
+    case NodeType.LessThan:
+    case NodeType.Not:
+      return "#f28e2b";
+    case NodeType.IfThenElse:
+      return "#b07aa1";
+    case NodeType.Addition:
+    case NodeType.Division:
+    case NodeType.Extend:
+    case NodeType.Multiplication:
+    case NodeType.Remainder:
+    case NodeType.Subtraction:
+      return "#ff9da7";
+    case NodeType.Read:
+      return "#9c755f";
+    case NodeType.Write:
+      return "#edc948";
+  }
 }
 
 export default updateGraph;

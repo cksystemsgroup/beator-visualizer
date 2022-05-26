@@ -1,6 +1,5 @@
 import { useState } from "react";
 import processModel from "../model/model-processor";
-import "../style.css";
 import Form from "./Form";
 import Interface from "./interface/Interface";
 

@@ -1,27 +1,52 @@
+import { Box, Modal } from "@mui/material";
 import { SetBoolean } from "../types/react-types";
 
+const style = {
+  position: "absolute",
+  mt: "1vh",
+  height: "98vh",
+  left: "50%",
+  transform: "translateX(-50%)",
+  overflow: "auto",
+  width: "75%",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+};
+
 function ModelFile({
+  showFile,
   setShowFile,
   text,
 }: {
+  showFile: boolean;
   setShowFile: SetBoolean;
   text: string;
 }) {
   return (
-    <div className="model-file-modal">
-      Model File
-      <button type="button" onClick={() => setShowFile(false)}>
-        Close
-      </button>{" "}
-      <br />
-      <div className="model-file">
+    <Modal open={showFile} onClose={() => setShowFile(false)}>
+      <Box sx={style}>
         {text.split("\n").map((x, i) => (
           <span key={i}>
             {x} <br />
           </span>
         ))}
-      </div>
-    </div>
+      </Box>
+    </Modal>
+    // <div className="model-file-modal">
+    //   Model File
+    //   <button type="button" onClick={() => setShowFile(false)}>
+    //     Close
+    //   </button>{" "}
+    //   <br />
+    //   <div className="model-file">
+    //     {text.split("\n").map((x, i) => (
+    //       <span key={i}>
+    //         {x} <br />
+    //       </span>
+    //     ))}
+    //   </div>
+    // </div>
   );
 }
 

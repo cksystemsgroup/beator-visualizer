@@ -3,7 +3,7 @@ import GlobalInfo from "./global/GlobalInfo";
 import Graph from "./graph/Graph";
 import LocalInfo from "./local/LocalInfo";
 import Selection from "./selection/Selection";
-import Sandwich from "./sandwich/Sandwich";
+import Menu from "./sandwich/Menu";
 import { GraphNode } from "../../types/graph-types";
 import { Metrics, Model } from "../../types/model-types";
 import ModelFile from "../ModelFile";
@@ -62,8 +62,8 @@ function Interface({ model, text }: { model: Model; text: string }) {
       <LocalInfo {...props} />
       <GlobalInfo {...props} />
       <Selection {...props} />
-      <Sandwich {...props} />
-      {showFile && <ModelFile {...props} />}
+      <Menu {...props} />
+      <ModelFile {...props} />
     </>
   );
 }

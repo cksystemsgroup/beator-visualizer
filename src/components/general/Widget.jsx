@@ -1,7 +1,13 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 
-export default function Widget({ children, title, expanded, sx }) {
+export default function Widget({
+  children,
+  title,
+  expanded,
+  sx,
+  expandIcon = <ExpandMoreIcon />,
+}) {
   return (
     <Accordion
       defaultExpanded={expanded}
@@ -16,7 +22,7 @@ export default function Widget({ children, title, expanded, sx }) {
       }}>
       <AccordionSummary
         sx={{ borderBottom: 1, borderColor: "divider" }}
-        expandIcon={<ExpandMoreIcon />}>
+        expandIcon={expandIcon}>
         {title}
       </AccordionSummary>
       <AccordionDetails sx={{ height: "35vh" }}>{children}</AccordionDetails>

@@ -28,16 +28,20 @@ function nodeOnClick(
     clumpInput: boolean;
   }
 ) {
-  const oldTargetElement = document.querySelector(".clicked");
+  const oldTargetElement = document.querySelector("[clicked='clicked']");
   const newTargetElement = d.target;
   const clickedNode = model.nodes.get(
     parseInt(newTargetElement.getAttribute("nid")!)
   )!;
 
   if (oldTargetElement !== newTargetElement) {
-    oldTargetElement?.classList.remove("clicked");
+    oldTargetElement?.removeAttribute("clicked");
+    oldTargetElement?.removeAttribute("stroke");
+    oldTargetElement?.removeAttribute("stroke-width");
 
-    newTargetElement.classList.add("clicked");
+    newTargetElement.setAttribute("clicked", "clicked");
+    newTargetElement.setAttribute("stroke", "#57606c");
+    newTargetElement.setAttribute("stroke-width", "3px");
 
     if (clickedNode) setTarget(clickedNode);
     else {
