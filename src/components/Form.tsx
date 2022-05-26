@@ -1,4 +1,4 @@
-import PestControlIcon from "@mui/icons-material/PestControl";
+import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import UploadIcon from "@mui/icons-material/Upload";
 import { Avatar, Button, FormGroup, Typography } from "@mui/material";
 import { useState } from "react";
@@ -17,7 +17,7 @@ function Form({ setText }: { setText: SetStringQ }) {
         alignContent: "center",
       }}>
       <Avatar sx={{ mt: 5, bgcolor: "#26a69a" }}>
-        <PestControlIcon />
+        <MusicNoteIcon />
       </Avatar>
       <Typography component="h1" variant="h3" sx={{ mb: 2 }}>
         Beatle
@@ -26,7 +26,7 @@ function Form({ setText }: { setText: SetStringQ }) {
         Visualize and analyze BEATOR2 models
       </Typography>
       <Typography component="h2" variant="h6">
-        Please select a valid BEATOR2 file to start
+        Select a valid BEATOR2 file to start
       </Typography>
       <Button
         sx={{ mt: 1, mb: 1 }}
