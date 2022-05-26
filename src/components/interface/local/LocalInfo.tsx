@@ -3,6 +3,7 @@ import { GraphNode } from "../../../types/graph-types";
 import ClumpInfo from "./ClumpInfo";
 import NodeInfo from "./NodeInfo";
 import Widget from "../../general/Widget";
+import { Typography } from "@mui/material";
 
 function LocalInfo({ target }: { target?: GraphNode }) {
   return (
@@ -11,7 +12,9 @@ function LocalInfo({ target }: { target?: GraphNode }) {
       expanded
       sx={{ top: "10px", left: "10px" }}>
       {!target ? (
-        <p className="no-node">No node selected!</p>
+        <Typography fontStyle="italic" color="#999" mt={2}>
+          No node selected!
+        </Typography>
       ) : target instanceof ModelNode ? (
         <NodeInfo n={target} />
       ) : (

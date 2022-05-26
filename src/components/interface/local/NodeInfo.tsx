@@ -26,6 +26,7 @@ function NodeInfo({ n }: { n: ModelNode }) {
         elements={Object.entries(n.stats.dependancy).filter(
           ([, x]) => x.size !== 0
         )}
+        closed
       />
     </MyList>
   );

@@ -8,7 +8,7 @@ export function TabPanel(props) {
       {value === index && (
         <Box
           hidden={value !== index}
-          sx={{ maxHeight: !smaller ? "85%" : "72%", overflow: "auto" }}>
+          sx={{ maxHeight: !smaller ? "80%" : "65%", overflow: "auto" }}>
           {children}
         </Box>
       )}

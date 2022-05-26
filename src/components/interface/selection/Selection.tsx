@@ -70,7 +70,7 @@ function TabContent({
           ))}
         </MyList>
       </TabPanel>
-      <TabPanel value={!nextOrState ? active : -1} index={1}>
+      <TabPanel value={!nextOrState ? active : -1} index={1} smaller>
         <MyList>
           {pcsNext.map((x) => (
             <ItemButton
@@ -82,7 +82,7 @@ function TabContent({
           ))}
         </MyList>
       </TabPanel>
-      <TabPanel value={!nextOrState ? active : -1} index={2}>
+      <TabPanel value={!nextOrState ? active : -1} index={2} smaller>
         <MyList>
           {regsNext.map((x) => (
             <ItemButton
@@ -94,7 +94,7 @@ function TabContent({
           ))}
         </MyList>
       </TabPanel>
-      <TabPanel value={!nextOrState ? active : -1} index={3}>
+      <TabPanel value={!nextOrState ? active : -1} index={3} smaller>
         <MyList>
           {othNext.map((x) => (
             <ItemButton
@@ -106,7 +106,7 @@ function TabContent({
           ))}
         </MyList>
       </TabPanel>
-      <TabPanel value={nextOrState ? active : -1} index={1}>
+      <TabPanel value={nextOrState ? active : -1} index={1} smaller>
         <MyList>
           {pcsState.map((x) => (
             <ItemButton
@@ -118,7 +118,7 @@ function TabContent({
           ))}
         </MyList>
       </TabPanel>
-      <TabPanel value={nextOrState ? active : -1} index={2}>
+      <TabPanel value={nextOrState ? active : -1} index={2} smaller>
         <MyList>
           {regsState.map((x) => (
             <ItemButton
@@ -130,7 +130,7 @@ function TabContent({
           ))}
         </MyList>
       </TabPanel>
-      <TabPanel value={nextOrState ? active : -1} index={3}>
+      <TabPanel value={nextOrState ? active : -1} index={3} smaller>
         <MyList>
           {othState.map((x) => (
             <ItemButton
