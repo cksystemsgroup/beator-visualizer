@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ModelNode, NodeType } from "../../../types/node-types";
 import { SelectionProps } from "../../../types/react-types";
 import { ItemButton, MyList } from "../../general/ListUtils";
+import { TabPanel } from "../../general/TabUtils";
 import Widget from "../../general/Widget";
 
 function Selection(props: SelectionProps) {
@@ -55,9 +56,10 @@ function TabContent({
             <Switch
               checked={nextOrState}
               onChange={() => setNextOrState((x) => !x)}
+              color="default"
             />
           }
-          label={nextOrState ? "Next" : "State"}
+          label={nextOrState ? "State" : "Next"}
         />
       )}
       <TabPanel value={active} index={0}>
@@ -163,28 +165,6 @@ const sortStates = (a: ModelNode, b: ModelNode) => {
   if (aVal > bVal) return 1;
   return 0;
 };
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index } = props;
-
-  return (
-    <>
-      {value === index && (
-        <Box
-          hidden={value !== index}
-          sx={{ maxHeight: index === 0 ? "85%" : "72%", overflow: "auto" }}>
-          {children}
-        </Box>
-      )}
-    </>
-  );
-}
 
 const filterBads = (x: ModelNode) => x.nodeClass === NodeType.Bad;
 const filterPCs = (x: ModelNode) => x.parents[0].name?.startsWith("pc=");
