@@ -1,9 +1,12 @@
 import { Metrics } from "../../../types/model-types";
+import Widget from "../../general/Widget";
 
 function GlobalInfo({ result }: { result: Metrics }) {
   return (
-    <details className="global" open>
-      <summary>Global Information</summary>
+    <Widget
+      title="Global Information"
+      expanded
+      sx={{ bottom: "10px", left: "10px" }}>
       <ul>
         <li>
           <b>Size:</b> {result.nrOfNodes} nodes
@@ -48,7 +51,7 @@ function GlobalInfo({ result }: { result: Metrics }) {
           </details>
         </li>
       </ul>
-    </details>
+    </Widget>
   );
 }
 

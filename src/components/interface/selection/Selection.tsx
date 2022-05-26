@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { ModelNode, NodeType } from "../../../types/node-types";
 import { SelectionProps, TabsItSelvesProps } from "../../../types/react-types";
+import Widget from "../../general/Widget";
 
 function Selection(props: SelectionProps) {
   const [active, setActive] = useState(1);
 
   return (
-    <details className="selection" open>
-      <summary>Selection</summary>
+    <Widget title="Selection" expanded sx={{ top: "10px", right: "10px" }}>
       <TabsItselves active={active} setActive={setActive} />
       <TabContent active={active} {...props} />
-    </details>
+    </Widget>
   );
 }
 

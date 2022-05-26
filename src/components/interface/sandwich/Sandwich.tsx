@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { SandwichProps, TabsItSelvesProps } from "../../../types/react-types";
+import Widget from "../../general/Widget";
 import Legend from "./Legend";
 import Misc from "./Misc";
 import Settings from "./Settings";
@@ -8,11 +9,13 @@ function Sandwich(props: SandwichProps) {
   const [active, setActive] = useState(2);
 
   return (
-    <details className="sandwich">
-      <summary className="s-summary">☰</summary>
+    <Widget
+      title="Sandwich"
+      sx={{ bottom: "10px", right: "10px" }}
+      expanded={false}>
       <TabsItselves active={active} setActive={setActive} />
       <TabContent {...props} active={active} />
-    </details>
+    </Widget>
   );
 }
 
