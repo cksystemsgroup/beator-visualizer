@@ -33,20 +33,6 @@ function ModelFile({
         ))}
       </Box>
     </Modal>
-    // <div className="model-file-modal">
-    //   Model File
-    //   <button type="button" onClick={() => setShowFile(false)}>
-    //     Close
-    //   </button>{" "}
-    //   <br />
-    //   <div className="model-file">
-    //     {text.split("\n").map((x, i) => (
-    //       <span key={i}>
-    //         {x} <br />
-    //       </span>
-    //     ))}
-    //   </div>
-    // </div>
   );
 }
 
