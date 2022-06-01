@@ -7,7 +7,8 @@ function GlobalInfo({ result }: { result: Metrics }) {
     <Widget
       title="Global Information"
       expanded
-      sx={{ bottom: "10px", left: "10px" }}>
+      sx={{ bottom: "10px", left: "10px" }}
+    >
       <MyList>
         <Item property="Size" value={result.nrOfNodes} unit="nodes" />
         <Item property="Bads" value={result.nrOfBads} unit="bad instructions" />
@@ -28,19 +29,21 @@ function GlobalInfo({ result }: { result: Metrics }) {
           )}
           closed
         />
-        <CollapsableItem
-          title={
-            <>
-              <b>Longest Path from State:</b> {result.longestPathLengthS} nodes
-              long
-            </>
-          }
-          elements={[result.longestPathStartS.name]}
-          childFn={(x: string) => (
-            <Item property="Source Node" value={x} key={x} />
-          )}
-          closed
-        />
+        {result.longestPathStartS && (
+          <CollapsableItem
+            title={
+              <>
+                <b>Longest Path from State:</b> {result.longestPathLengthS}{" "}
+                nodes long
+              </>
+            }
+            elements={[result.longestPathStartS.name]}
+            childFn={(x: string) => (
+              <Item property="Source Node" value={x} key={x} />
+            )}
+            closed
+          />
+        )}
         <CollapsableItem
           title={
             <>

@@ -9,14 +9,16 @@ function processModel(text: string) {
   lines.forEach((x) => processLine(x, model));
 
   processNodes(model);
+  console.log(model.states);
 
   model.maxDepthStart = [...model.nodes.values()].reduce((a, x) =>
     x.stats.height > a.stats.height ? x : a
   );
 
-  model.maxDepthStartS = model.states.reduce((a, x) =>
-    x.stats.height > a.stats.height ? x : a
-  );
+  if (model.states.length !== 0)
+    model.maxDepthStartS = model.states.reduce((a, x) =>
+      x.stats.height > a.stats.height ? x : a
+    );
 
   return model;
 }
