@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/beator-visualizer/static/js/main.b8540c83.js",
+    "index.html": "/beator-visualizer/index.html",
+    "main.b8540c83.js.map": "/beator-visualizer/static/js/main.b8540c83.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.b8540c83.js"
+  ]
+}
