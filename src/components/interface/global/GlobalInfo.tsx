@@ -47,7 +47,7 @@ function GlobalInfo({ result }: { result: Metrics }) {
         <CollapsableItem
           title={
             <>
-              <b>Max Dependancy:</b> {result.maxDependancy} nodes
+              <b>Max Dependency:</b> {result.maxDependancy} nodes
             </>
           }
           elements={[result.maxDependantNode.name]}
@@ -59,7 +59,7 @@ function GlobalInfo({ result }: { result: Metrics }) {
         <CollapsableItem
           title={
             <>
-              <b>Max Dependancy from State:</b> {result.maxDependancyS} nodes
+              <b>Max Dependency from State:</b> {result.maxDependancyS} nodes
             </>
           }
           elements={[result.maxDependantNodeS.name]}

@@ -18,7 +18,7 @@ function NodeInfo({ n }: { n: ModelNode }) {
       <CollapsableItem
         title={
           <>
-            <b>Dependancy:</b>{" "}
+            <b>Dependency:</b>{" "}
             {Object.values(n.stats.dependancy).reduce((a, x) => a + x.size, 0)}
           </>
         }
