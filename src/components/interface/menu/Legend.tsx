@@ -26,7 +26,7 @@ function Legend() {
         <ListItemIcon sx={{ minWidth: "28px" }}>
           <CircleIcon sx={{ fill: "#59a14f" }} />
         </ListItemIcon>
-        <ListItemText>Input</ListItemText>
+        <ListItemText>Input, uninitialized State</ListItemText>
       </ListItem>
       <ListItem disablePadding>
         <ListItemIcon sx={{ minWidth: "28px" }}>

@@ -267,6 +267,12 @@ function linkOnPath(d: Link) {
 }
 
 function getColor(d: GraphNode) {
+  if (
+    d instanceof ModelNode &&
+    d.nodeClass === NodeType.State &&
+    d.parents.length === 0
+  )
+    return "#59a14f";
   switch (d.nodeClass) {
     case NodeType.Bad:
       return "#e15759";
