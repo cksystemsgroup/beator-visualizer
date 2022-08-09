@@ -1,46 +1,51 @@
-# Getting Started with Create React App
+# Beatle
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A visualization tool for the BEATOR2 model format.
 
-## Available Scripts
+Read the [thesis](thesis.pdf) for an in depth look at the features.
 
-In the project directory, you can run:
+# How to use
 
-### `npm start`
+In the browser:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Open the [website](https://geo-bert.github.io/beator-visualizer/)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+EITHER
 
-### `npm test`
+- Click the _upload file_ button
+- Select desired model
+- Click _evaluate model_ button
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+OR
 
-### `npm run build`
+- Click _use example file_ button
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Locally:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Prerequisites**: [Node.js](https://nodejs.org/en/) and npm
+- Clone repository
+- Run `npm install` to install dependencies
+- Run `npm start` to start local server
+- Load model like in the browser
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The example file models the following C\* source code:
 
-### `npm run eject`
+```c
+uint64_t* x;
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+uint64_t main() {
+  uint64_t a;
+  x = malloc(1);
+  *x = 0;
+  read(0, x, 1);
+  a = *x;
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  return *(x + a);
+}
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+# How to create a model
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Please follow the steps described [here](https://github.com/cksystemsgroup/unicorn#Usage).
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+In this guide the the **unicorn** tool is referred to for generation of the model file. There are other options out there such as [monster](https://github.com/cksystemsgroup/monster) and [beator](https://github.com/cksystemsteaching/selfie/blob/main/tools/beator.c).
