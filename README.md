@@ -8,7 +8,7 @@ Read the [thesis](thesis.pdf) for an in depth look at the features.
 
 In the browser:
 
-- Open the [website](https://geo-bert.github.io/beator-visualizer/)
+- Open the [website](https://cksystemsgroup.github.io/beator-visualizer/)
 
 EITHER
 

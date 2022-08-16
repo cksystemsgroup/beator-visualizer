@@ -2,7 +2,7 @@
   "name": "beator-visualizer",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://geo-bert.github.io/beator-visualizer",
+  "homepage": "https://cksystemsgroup.github.io/beator-visualizer",
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
